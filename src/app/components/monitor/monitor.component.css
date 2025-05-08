@@ -17,11 +17,6 @@ mat-toolbar {
     width: 100%;
   }
   
-/*CSS personalizados */
-details {
-    margin: 10px;
-    text-align: end;
-}
 
 
 span.ExameLiberado {
@@ -65,6 +60,25 @@ span.Ativo {
     text-transform: uppercase;
 }
 
+.display-1 {
+    font-size: xx-large;
+}
+
+.display-2 {
+    font-size:x-large;
+}
+
+.display-3 {
+    font-size:larger;
+}
+
+.display-4 {
+    font-size:medium;
+}
+
+.display-5 {
+    font-size:small;
+}
 
 
 span.Liberado {
@@ -98,10 +112,7 @@ span.Solicitado {
     gap: 10px;
 }
 
-/* Ou usando Angular Material */
-mat-spinner {
-    margin: 20px auto;
-}
+
 
 .red {
     color: red;
@@ -115,10 +126,6 @@ mat-spinner {
     color: orange;
 }
 
-.my-custom-badge-accent.mat-badge-accent .mat-badge-content {
-    background-color: transparent;
-    color: white;
-}
 
 .loading-container {
     position: absolute;
@@ -133,194 +140,30 @@ mat-spinner {
     justify-content: center;
 }
 
-.uppercase {
-    text-transform: uppercase;
-    text-align: left;
+mat-spinner {
+    margin: 20px auto;
 }
 
-.bold {
-    font-weight: bold;
-}
-
-.form-field {
-    color: white;
-    border-radius: 10px;
-}
-
-.align-start {
-    text-align: start;
-}
-
-.align-end {
-    text-align: end;
-}
-
-.margin-top {
-    margin-top: 20px;
-}
-
-.margin-top-10 {
-    margin-top: 10px;
-}
-
-
-.padding-top-10 {
-    padding-top: 10px;
-}
-
-.padding-top-20 {
-    padding-top: 20px;
-}
-
-.padding-bottom10 {
-    padding-bottom: 10px
-}
-
-.color-empresa {
-    background-image: linear-gradient(to right, #667f8d, #405059);
-}
-
-.color-cacamba {
-    background-image: linear-gradient(to right, #21bbbb, #0c8f8f);
-}
-
-.color-tonelada {
-    background-image: linear-gradient(to right, #aedaab, #73b06f);
-}
-
-.color-qualidade {
-    background-image: linear-gradient(to right, #fccf77, #ffad08);
-}
-
-.color-usuario {
-    background-image: linear-gradient(to right, #6dc3f5, #2e5166);
-}
-
-.color-evento {
-    background-image: linear-gradient(to right, #6dc3f5, #2e5166);
-}
-
-.color-alarme {
-    background-image: linear-gradient(to right, #662740, #220d15);
-}
-
-.color-camera {
-    background-image: linear-gradient(to right, #d2d09f, #868566);
-}
-
-.color-dispositivo {
-    background-image: linear-gradient(to right, #ab9a89, #63594f);
-}
-
-.color-sucateiro {
-    background-image: linear-gradient(to right, #667f8d, #405059);
-}
-
-.color-configuracao {
-    background-image: linear-gradient(to right, #8f8f8f, #272727)
-}
-
-.color-monitoramento {
-    background-image: linear-gradient(to right, #61a6ab, #3c686b)
-}
-
-.color-contrato {
-    background-image: linear-gradient(to right, #c5be8b, #8b865f)
-}
-
-.content {
-    margin-top: 5px;
-    user-select: none
-}
-
-.icon-indicador {
-    width: 55px;
-    height: 55px
-}
-
-.icon-cacamba {
-    width: 25px;
-    height: 25px
-}
-
-.icon {
-    width: 25px;
-    height: 25px;
-    margin: 0;
-    padding: 0;
-}
-
-.card-margin {
-    margin-right: 10px;
-}
-
-.col-space {
-    padding: 5px;
-}
-
-.gradient {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    animation: changeBackgroundColor 7s infinite;
-}
-
-.readonly-wrapper {
-    cursor: not-allowed;
-}
-
-abbr {
-    text-decoration: none;
-
-}
-
-abbr:hover::after {
-    text-decoration: none;
-}
-
-.help {
-    vertical-align: middle;
-}
-
-.btn-negar {
-    color:#dc3c46;
-  }
-  
-
-.readonly-wrapper .readonly-block {
-    pointer-events: none;
-}
-
-section {
-    display: table;
-  }
-  
-  .example-label {
-    display: table-cell;
-    font-size: 14px;
-    margin-left: 8px;
-    min-width: 120px;
-  }
-  
-  .example-button-row {
-    display: table-cell;
-    max-width: 600px;
-  }
-  
-  .example-button-row .mat-mdc-button-base {
-    margin: 8px 8px 8px 0;
-  }
-  
-  .example-flex-container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-  
-  .example-button-container {
-    display: flex;
-    justify-content: center;
-    width: 140px;
+  @media (min-width: 1400px) and (max-width: 2000px) {
+    .display-1 {
+        font-size: 4rem;
+    }
+    
+    .display-2 {
+        font-size: 3rem;
+    }
+    
+    .display-3 {
+        font-size: 2rem;
+    }
+    
+    .display-4 {
+        font-size: 1rem;
+    }
+    
+    .display-5 {
+        font-size:0.5rem;
+    }   
+      
+   
   }

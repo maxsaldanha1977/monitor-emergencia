@@ -1,26 +1,34 @@
 <mat-toolbar>
-  <img class="img-fluid m-3 rounded" src="assets/img/ic-monitor.svg" alt="Logo" height="50px" width="50px" /> 
-  <span class="h1 text-danger align-middle mt-3">{{ title }}</span>
+  <img
+    class="img-fluid m-3 rounded"
+    src="assets/img/ic-monitor.svg"
+    alt="Logo"
+    height="50px"
+    width="50px"
+  />
+  <span class="text-danger text-bolder display-1 align-middle mt-3">{{
+    title
+  }}</span>
   <span class="example-spacer"></span>
-  <span class="align-middle fs-3"> {{ dataHoraFormatada }}.</span>
+  <span class="align-middle display-3"> {{ dataHoraFormatada }}.</span>
 
   <span class="example-spacer"></span>
   <div>
-    <p class="fs-3 my-3">Tempo Médio:</p>
-    @if(tempoMedio.tempoMedio !== '' ){ @if(tempoMedio.tempoMedio ) {
-    <span class="fs-2">{{ tempoMedio.tempoMedio }}</span>
-    } @if(tempoMedio.baseCalculo) {
-    <span class="fs-2"> nas últimas {{ tempoMedio.baseCalculo }}h.</span>
-    } } @else {
-
+    <p class="display-3 mt-3 card-title fw-lighter">Tempo Médio:</p>
+    @if(tempoMedio.tempoMedio !== '' ) {
+    <span class="display-3 fw-medium">
+      {{ tempoMedio.tempoMedio }} nas últimas
+      {{ tempoMedio.baseCalculo }}h.</span
+    >
+    } @else {
     <h3>Gerando cálculo...</h3>
     }
   </div>
   <span class="example-spacer"></span>
-
   <a
     class="mx-3"
     [routerLink]="['/']"
+    (click)="ngOnDestroy()"
     matTooltip="Clique para sair"
     matTooltipPosition="right"
   >
@@ -166,7 +174,7 @@
               <!-- Pode ser um spinner, barra de progresso, ou mensagem -->
               <mat-spinner></mat-spinner>
               <!-- Se estiver usando Angular Material -->
-              <h3>{{textLoading}}</h3>
+              <h3>{{ textLoading }}</h3>
             </div>
           </div>
           }

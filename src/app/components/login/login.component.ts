@@ -30,7 +30,8 @@ import { OrderModule } from 'ngx-order-pipe';
 export class LoginComponent implements OnInit, OnDestroy {
 
   private intervalId: any;
-  private serviceConfig = inject(ConfiguracaoService)
+  private serviceConfig = inject(ConfiguracaoService);
+  ano: any = new Date().getFullYear();
 
   order: string = 'idConfig'; //identificação para ordenação da listagem   
   disableSelect = new FormControl(false); // Variável para desabilitar o botão de  acessar;

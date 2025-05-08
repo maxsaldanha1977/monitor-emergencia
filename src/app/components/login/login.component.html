@@ -1,5 +1,5 @@
 <div class="background-image">
-  <mat-toolbar>
+  <mat-toolbar >
     <img class="img-fluid m-3"
       src="assets/img/logo-karyon.jpeg"
       alt="Logo"
@@ -10,9 +10,9 @@
   
   <img class="img-fluid m-3"src="assets/img/logo_bioslab.png" alt="Logo"  /> 
    
-  
-    <span class="example-spacer"></span>
-    <span class="h1 text-danger">Monitor de Emergência</span>
+  <span class="example-spacer"></span>
+  <img class="img-fluid m-3 rounded" src="assets/img/ic-monitor.svg" alt="Logo" height="50px" width="50px" /> 
+    <span class="fs-1 text-danger">Monitor de Emergência</span>
     <span class="example-spacer"></span>
     <a
       class="mx-2"
@@ -24,18 +24,16 @@
     </a>
   </mat-toolbar>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-4">
-       
-      </div>
-   
-      <div class="col-8 mx-auto mt-5">
-        <div class="card" style="width: 400px; height: 450px">
-          <div class="card-title text-center">
-            <h3 class="mt-5">Perfil</h3>
-          </div>
-          <div class="card-body mt-5">
+  <div class="container main ">
+    <div class="row ">
+      <div class="col-6 align-middle">
+        <div class="card-title text-center center-vertical">
+          <span class="fs-2">Perfil de Configuração</span>
+        </div>
+      </div>   
+      <div class="col-6 mx-auto ">
+        <div class="card">          
+          <div class="card-body mt-1">
             <span class="mt-5">Selecione</span>
             <div class="border rounded">
               <select
@@ -54,20 +52,74 @@
               }
             </select>
             </div>
-           
+            <div class=" text-center mt-4">
+              <button
+                type="button"
+                class="btn"
+                [routerLink]="['monitor', id]"
+                [disabled]="!id || id === '0'"
+              >
+                Acessar
+              </button>
+            </div>
           </div>
-          <div class="card-body text-center">
-            <button
-              type="button"
-              class="btn"
-              [routerLink]="['monitor', id]"
-              [disabled]="!id || id === '0'"
-            >
-              Acessar
-            </button>
-          </div>
+          
         </div>
       </div>
     </div>
+   
   </div>
+  <footer class="fixed-bottom">
+    <div class="row user-select-none">
+      <div class="col-3">
+        <div class="row">                
+          <div class="col-12">
+              <div class="text-center">
+                  <span class="text-white " style="margin-top: 1rem;">Karyon Consultoria de Informática</span>
+              </div>
+          </div>
+          <div class="col-12 flex-center">  
+                  <img class="profile" src="assets/img/logo-karyon.jpeg" width="70px" height="70px"/>
+          </div>
+      </div>
+      </div>
+      <div class="col-6">   
+        <div class="row ">
+          <div class="col-12 mt-5">
+            <div class="text-white" abbr>Em caso de dúvidas, <!-- acesse a <a class="text-dark" href="http://www.laudoonline.com.br/ajuda/index.htm" target="_blank">Central de ajuda do Laudo online</a>
+              ou --> entre em contato com o nosso <strong>Setor de Suporte</strong>.
+          </div>
+          </div>
+          <div class="col-12">
+            <div class="text-white">Atendimento das 8h às 17h, de segunda à sexta.
+              <span class="text-white">
+                (21) 3622-6400
+              </span>
+            <span class="text-white">
+              (21) 99311-9141
+            </span>
+        </div> 
+          </div>
+          <div class="col-12">
+            <div class="text-center text-white"> <small> Copyright © {{ano}} Laudo Online. Todos os direitos reservados.</small></div> 
+          </div>
+        </div>
+</div>    
+      <div class="col-3">
+         <div class="row">                
+                <div class="col-12 ">
+                    <div class="text-center">
+                        <span class="text-white" style="margin-top: 1rem;">Integrado ao Sistema</span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="text-center animate-right">
+                        <img  src="assets/img/logo_bioslab.png" width="170px" height="70px"/>
+                    </div>
+                </div>
+            </div>
+      </div>
+    </div>
+   
+  </footer>
 </div>

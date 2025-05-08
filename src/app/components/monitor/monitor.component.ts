@@ -66,15 +66,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getMonitoramento();
-    this.getTempoMedio();
     this.atualizarDataHora();
-
-    this.intervalIdHora = setInterval(() => {
-      this.atualizarDataHora();
-      this.monitoramento.forEach((monitor) => {
-        monitor.decorrido = calcularDiferencaHora(monitor.dtCadastro);
-      });
-    }, 1000);
   }
 
   ngOnDestroy(): void {
@@ -130,7 +122,9 @@ export class MonitorComponent implements OnInit, OnDestroy {
                 } else {
                   this.textLoading = 'Sem exames em análise no momento!';
                 }
-                console.log('getMonitoramentoById')
+
+                this.getTempoMedio();
+                console.log('getMonitoramento from Monitor');
               });
           } else {
             Swal.fire({
@@ -166,6 +160,13 @@ export class MonitorComponent implements OnInit, OnDestroy {
     this.intervalIdSlide = setInterval(() => {
       this.nextSlide();
     }, this.tempoRefreshTela);
+
+    this.intervalIdHora = setInterval(() => {
+      this.atualizarDataHora();
+      this.monitoramento.forEach((monitor) => {
+        monitor.decorrido = calcularDiferencaHora(monitor.dtCadastro);
+      });
+    }, 1000);
   }
 
   //Serviço retorna o cálculo de Tempo Médio
@@ -176,7 +177,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
         const tempoMedioMinutos = parseInt(response.tempoMedio, 10);
         const horas = Math.floor(tempoMedioMinutos / 60);
         const minutos = tempoMedioMinutos % 60;
-        console.log('getTEmpoMedio');
+        console.log('getTempoMedio from Monitor');
         if (tempoMedioMinutos > 0) {
           this.tempoMedio.tempoMedio =
             horas > 0 ? `${horas}h ${minutos}min` : `${minutos}min`;
