@@ -1,0 +1,242 @@
+<div class="container-fluid">
+  <div
+    class="card card-header"
+    style="background-image: linear-gradient(to left, #d8d8d6, #616161)"
+  >
+    <div class="row">
+      <div class="col-10">
+        <h3 class="card-title text-uppercase bold text-white">
+          {{ title }}
+        </h3>
+      </div>
+      <div class="col-2 text-end">
+        <span class="example-spacer"></span>
+        <a
+          class="mx-2"
+          [routerLink]="['/configuracao']"
+          matTooltip="Clique para acessar as configurações"
+          matTooltipPosition="right"
+        >
+          <i class="bi bi-arrow-left fa-2x text-white"></i>
+        </a>
+        <a
+          class="mx-2"
+          [routerLink]="['/']"
+          matTooltip="Clique para sair"
+          matTooltipPosition="right"
+        >
+          <i class="bi bi-box-arrow-right fa-2x text-white"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <form class="form" (ngSubmit)="edit()" #form="ngForm">
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group readonly-wrapper">
+              <label class="bmd-label-floating"
+                >Descrição
+                <span
+                  class="text-danger"
+                  title="Campo obrigatório, não editável"
+                  >*</span
+                ></label
+              >
+              <input
+                type="text"
+                id="descricao"
+                name="descricao"
+                class="form-control readonly-block"
+                [(ngModel)]="item.descricao"
+                required
+              />
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label
+                class="bmd-label-floating"
+                matTooltip="Campo obrigatório."
+                aria-label="Button that displays a tooltip that can be programmatically disabled"
+                >Exibir Exame Pendente <span class="text-danger">*</span></label
+              >
+              <div class="togglebutton">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked=""
+                    id="exibirExamePendente"
+                    name="exibirExamePendente"
+                    class="form-control"
+                    [(ngModel)]="item.exibirExamePendente"
+                  />
+                  <span class="toggle"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-3">
+            <div class="form-group">
+              <label
+                class="bmd-label-floating"
+                matTooltip="Campo obrigatório."
+                aria-label="Button that displays a tooltip that can be programmatically disabled"
+                >Exibir Registro de Atendimento
+                <span class="text-danger">*</span></label
+              >
+              <div class="togglebutton">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked=""
+                    id="exibirRegistroAtendimento"
+                    name="exibirRegistroAtendimento"
+                    class="form-control"
+                    [(ngModel)]="item.exibirRegistroAtendimento"
+                  />
+                  <span class="toggle"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <div class="form-group readonly-wrapper">
+              <label class="bmd-label-floating"
+                >Tempo de Disponibilidade
+                <span
+                  class="text-danger"
+                  title="Campo obrigatório, não editável"
+                  >*</span
+                ></label
+              >
+              <input
+                type="text"
+                name="tempoDisponibilidade"
+                class="form-control readonly-block"
+                id="tempoDisponibilidade"
+                [(ngModel)]="item.tempoDisponibilidade"
+                required
+              />
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label class="bmd-label-floating"
+                >Tempo de Medição <span class="text-danger">*</span></label
+              >
+
+              <input
+                type="text"
+                id="tempoMedicao"
+                name="tempoMedicao"
+                class="form-control"
+                [(ngModel)]="item.tempoMedicao"
+                required
+              />
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label class="bmd-label-floating"
+                >Tempo de Refresh Tela <span class="text-danger">*</span></label
+              >
+
+              <input
+                type="text"
+                id="tempoRefreshTela"
+                name="tempoRefreshTela"
+                class="form-control"
+                [(ngModel)]="item.tempoRefreshTela"
+                required
+              />
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label class="bmd-label-floating"
+                >Tempo Máximo de Visita
+                <span class="text-danger">*</span></label
+              >
+
+              <input
+                type="text"
+                id="tempoMaximovisita"
+                name="tempoMaximovisita"
+                class="form-control"
+                [(ngModel)]="item.tempoMaximoVisita"
+                required
+              />
+            </div>
+          </div>
+        </div>
+        <label class="bmd-label-floating"
+          >Postos <span class="text-danger">*</span></label
+        >
+
+        <div class="card">
+          <div class="row">
+            <div class="col-3" *ngFor="let item of postos">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  [id]="'posto-' + item.codPosto"
+                  [(ngModel)]="selectedPostos[item.codPosto]"
+                  (ngModelChange)="
+                    onPostoChange(item.codPosto, $event.target.checked)
+                  "
+                  [name]="'posto-' + item.codPosto"
+                />
+                <label
+                  class="form-check-label"
+                  [for]="'posto-' + item.codPosto"
+                >
+                  {{ item.codPosto }} ({{ item.nomePosto }})
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <label class="bmd-label-floating"
+          >Exames <span class="text-danger">*</span></label
+        >
+        <div class="card">
+          <div class="row">
+            <div class="row">
+              <div class="col-3" *ngFor="let item of exames">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    [id]="'exame-' + item.mne"
+                    [(ngModel)]="selectedExames[item.mne]"
+                    (ngModelChange)="
+                      onExameChange(item.mne, $event.target.checked)
+                    "
+                    [name]="'exame-' + item.mne"
+                  />
+                  <label class="form-check-label" [for]="'exame-' + item.mne">
+                    {{ item.mne }} ({{ item.nome }})
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          mat-raised-button
+          type="submit"
+          class="btn btn-rose pull-right"
+          style="background-image: linear-gradient(to right, #3b4141, #1c2b2b)"
+        >
+          Atualizar
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

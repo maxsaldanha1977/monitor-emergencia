@@ -1,0 +1,406 @@
+<div class="container-fluid">
+  <div
+    class="card card-header"
+    style="background-image: linear-gradient(to left, #d8d8d6, #616161)"
+  >
+    <div class="row">
+      <div class="col-10">
+        <h3 class="card-title uppercase bold text-white">
+          {{ title }}
+        </h3>
+      </div>
+      <div class="col-2 text-end">
+        <span class="example-spacer"></span>
+
+        <a
+          class="mx-2"
+          [routerLink]="['/configuracao']"
+          matTooltip="Clique para voltar à tela de configuração."
+          matTooltipPosition="right"
+        >
+          <i class="bi bi-arrow-left fa-2x text-white"></i>
+        </a>
+
+        <a
+          class="mx-2"
+          [routerLink]="['/']"
+          matTooltip="Clique para sair."
+          matTooltipPosition="right"
+        >
+          <i class="bi bi-box-arrow-right fa-2x text-white"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <form [formGroup]="configuracaoForm" (ngSubmit)="onSubmit()">
+        <!-- Seção de Configurações Gerais -->
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Descrição <span class="text-danger">*</span></label>
+              <span class="float-end" id="count-descricao">0/20</span>
+              <input
+                type="text"
+                class="form-control"
+                id="descricao"
+                characterCounter
+                [maxLength]="20"
+                [counterElementId]="'count-descricao'"
+                formControlName="descricao"
+                required
+              />
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label
+                >Exibir Exame Pendente <span class="text-danger">*</span></label
+              >
+              <div class="form-check form-switch">
+                <label class="form-check-label">
+                  <input
+                    type="checkbox"
+                    formControlName="exibirExamePendente"
+                    class="form-check-input"
+                    role="switch"
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-3">
+            <div class="form-group">
+              <label
+                >Exibir Registro Atendimento
+                <span class="text-danger">*</span></label
+              >
+              <div class="toggle-container">
+                <label class="form-check form-switch">
+                  <input
+                    type="checkbox"
+                    formControlName="exibirRegistroAtendimento"
+                    class="form-check-input"
+                    role="switch"
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Campos de Tempo -->
+        <div class="row mb-3">
+          <div class="col-3">
+            <div class="form-group">
+              <label
+                >Tempo de Disponibilidade (0-60)
+                <span class="text-danger">*</span></label
+              >
+
+              <div class="input-group mb-3">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="tempoDisponibilidade"
+                  formControlName="tempoDisponibilidade"
+                  required
+                  min="1"
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                  min="0"
+                  max="60"
+                />
+                <span class="input-group-text" id="basic-addon1">minutos</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label
+                >Tempo de Medição (0-10)
+                <span class="text-danger">*</span>
+              </label>
+              <div class="input-group mb-3">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="tempoMedicao"
+                  formControlName="tempoMedicao"
+                  required
+                  min="0"
+                  max="10"
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                />
+                <span class="input-group-text" id="basic-addon1">minutos</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label
+                >Transição do Slide (0-20)
+                <span class="text-danger">*</span></label
+              >
+              <div class="input-group mb-3">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="tempoRefreshTela"
+                  formControlName="tempoRefreshTela"
+                  required
+                  min="0"
+                  max="20"
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                />
+                <span class="input-group-text" id="basic-addon1">segundos</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label
+                >Tempo Máximo de Visita (0-120)
+                </label
+              >
+              <div class="input-group mb-3">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="tempoMaximoVisita"
+                  formControlName="tempoMaximoVisita"                  
+                  min="0"
+                  max="120"
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                />
+                <span class="input-group-text" id="basic-addon1">minutos</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção de Postos -->
+        <div class="row mb-4">
+          <div class="col-6">
+            <label>Posto <span class="text-danger">*</span></label>
+          </div>
+          <div class="col-6 text-end">
+            <input
+              class="form-control"
+              id="search"
+              matInput
+              type="search"
+              [(ngModel)]="filterPosto"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Pesquisar posto..."
+              style="background-image: none"
+            />
+          </div>
+        </div>
+        <div class="list-group mb-3">
+          <div
+            class="list-group-item"
+            *ngFor="let posto of postosDisponiveis | customFilter : filterPosto"
+          >
+            <div class="row">
+              <div class="col-2">
+                <div class="form-group">
+                  <p class="card-category">Código</p>
+                  <strong>{{ posto.codPosto }}</strong>
+                </div>
+              </div>
+              <div class="col-8">
+                <div class="form-group">
+                  <p class="card-category">Descrição</p>
+                  {{ posto.nomePosto }}
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group">
+                  <p class="card-category">Selecionar</p>
+                  <div class="form-check form-switch">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="posto-{{ posto.codPosto }}"
+                      [checked]="isPostoSelecionado(posto)"
+                      (change)="
+                        togglePostoSelecionado(transformToPostoComLocais(posto))
+                      "
+                    />
+                    <label
+                      class="form-check-label"
+                      for="posto-{{ posto.codPosto }}"
+                    >
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="isPostoSelecionado(posto)" class="config-posto">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-8">
+                      <label class="form-label"
+                        >Locais de Internação
+                        <span class="text-danger">*</span></label
+                      >
+                    </div>
+                    <div class="col-4 text-end">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          [id]="'todos-' + posto.codPosto"
+                          [checked]="
+                            isTodosLocaisSelecionados(
+                              getPostoSelecionado(posto.codPosto)
+                            )
+                          "
+                          (change)="
+                            toggleTodosLocais(
+                              getPostoSelecionado(posto.codPosto)
+                            )
+                          "
+                        />
+                        <label
+                          class="form-check-label fw-bold"
+                          [for]="'todos-' + posto.codPosto"
+                        >
+                          Selecionar todos.
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div
+                        *ngFor="let local of getLocaisDoPosto(posto.codPosto)"
+                        class="col-3"
+                      >
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            [id]="
+                              'local-' +
+                              posto.codPosto +
+                              '-' +
+                              local.codLocalInternacao
+                            "
+                            [checked]="
+                              isLocalSelecionadoParaPosto(
+                                getPostoSelecionado(posto.codPosto),
+                                local
+                              )
+                            "
+                            (change)="
+                              toggleLocalParaPosto(
+                                getPostoSelecionado(posto.codPosto),
+                                local
+                              )
+                            "
+                          />
+                          <label
+                            class="form-check-label"
+                            [for]="
+                              'local-' +
+                              posto.codPosto +
+                              '-' +
+                              local.codLocalInternacao
+                            "
+                          >
+                            <strong>{{ local.codLocalInternacao }} </strong> -
+                            {{ local.nomeLocalInternacao }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção de Exames -->
+        <div class="row mb-3">
+          <div class="col-6">
+            <label>Exame <span class="text-danger">*</span></label>
+          </div>
+
+          <div class="col-6">
+            <input
+              class="form-control"
+              id="search"
+              matInput
+              type="text"
+              [(ngModel)]="filterExame"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="Pesquisar exame..."
+              style="background-image: none"
+            />
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div
+                class="col-4"
+                *ngFor="
+                  let exame of examesDisponiveis
+                    | orderBy : 'mne'
+                    | customFilter : filterExame
+                "
+              >
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="exame-{{ exame.mne }}"
+                    [checked]="isExameSelecionado(exame)"
+                    (change)="toggleExameSelecionado(exame)"
+                  />
+                  <label class="form-check-label" for="exame-{{ exame.mne }}">
+                    <strong>{{ exame.mne }}</strong> - {{ exame.nome }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botão de Submit -->
+        <div class="mt-4 algin-center">
+          <button
+            mat-raised-button
+            type="submit"
+            class="btn btn-rose pull-right text-white"
+            [ngStyle]="{
+              backgroundColor: configuracaoForm.valid ? '#EC407A' : '#db6c91'
+            }"
+            [ngClass]="{
+              'btn btn-rose': configuracaoForm.valid,
+              'btn btn-secondary': !configuracaoForm.valid
+            }"
+            [disabled]="
+              !configuracaoForm.valid ||
+              examesSelecionados.length === 0 ||
+              postosSelecionados.length === 0 ||
+              postosSelecionados.every.length === 0
+            "
+          >
+            SALVAR
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

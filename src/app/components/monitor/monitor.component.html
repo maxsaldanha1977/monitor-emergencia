@@ -1,0 +1,176 @@
+<mat-toolbar>
+  <span class="h1 text-danger align-middle mt-3">{{ title }}</span>
+  <span class="example-spacer"></span>
+  <span class="align-middle fs-3"> {{ dataHoraFormatada }}.</span>
+
+  <span class="example-spacer"></span>
+  <div>
+    <p class="fs-3 my-3">Tempo Médio:</p>
+    @if(tempoMedio.tempoMedio !== '' ){ @if(tempoMedio.tempoMedio ) {
+    <span class="fs-2">{{ tempoMedio.tempoMedio }}</span>
+    } @if(tempoMedio.baseCalculo) {
+    <span class="fs-2"> nas últimas {{ tempoMedio.baseCalculo }}h.</span>
+    } } @else {
+
+    <h3>Gerando cálculo...</h3>
+    }
+  </div>
+  <span class="example-spacer"></span>
+
+  <a
+    class="mx-3"
+    [routerLink]="['/']"
+    matTooltip="Clique para sair"
+    matTooltipPosition="right"
+  >
+    <i class="bi bi-box-arrow-right fa-2x text-dark"></i>
+  </a>
+</mat-toolbar>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="slider-container">
+        <div
+          class="slides-wrapper"
+          [style.transform]="getTransform()"
+          [style.transition]="'transform 0.5s ease-in-out'"
+          style="width: 100%"
+        >
+          <!--Utilizado o ngFor, devido melhor compatibilidade com o slider construído.-->
+          @if(slides.length > 0) {
+          <div
+            class="slide"
+            *ngFor="let slide of slides"
+            style="
+              min-width: 100%;
+              flex-wrap: wrap;
+              gap: 2px;
+              justify-content: center;
+            "
+          >
+            <!-- Foi inserido track exame.mne + '-' + $index para criar um idenficador e evitar a duplicação na leitura do array para verificar os status-->
+            @for (item of slide; track item.nomePaciente + '-' + $index) {
+            <div class="card">
+              <div class="card-body">
+                @if(configuracao.exibirRegistroAtendimento === true){
+                <div class="row">
+                  <div class="col-4 align-start">
+                    <h3 class="card-title text-capitalize text-truncate">
+                      {{ item.nomePaciente }}
+                    </h3>
+                  </div>
+
+                  <div class="col-2 align-start">
+                    <span class="fs-4">Registro: </span>
+                    <span class="h4">{{ item.registroPosto }}</span>
+                  </div>
+                  <div class="col-2 align-start">
+                    <i class="bi bi-alarm mx-1 fs-4"></i>
+                    <span class="h4">{{
+                      item.dtCadastro | date : "HH'h'mm"
+                    }}</span>
+                  </div>
+                  <div class="col-2 align-start">
+                    <i class="bi bi-hourglass-top mx-1 fs-4"></i>
+                    <span class="h4">{{ item.decorrido }}</span>
+                  </div>
+                  <div class="col-2 text-center">
+                    <span class="{{ status(item.situacao) }}">
+                      {{ item.situacao }}</span
+                    >
+                  </div>
+
+                  <div
+                    class="col-lg-12 col-md-12 col-sm-12 align-start text-truncate"
+                  >
+                    <span class="card-category">Exames: </span>
+                    <!-- Foi inserido track exame.mne + '-' + $index para criar um idenficador e evitar a duplicação na leitura do array para verificar os status-->
+                    @for (exame of item.exames; track exame.mne + '-' + $index)
+                    {
+                    <span class="fs-5 bold {{ statusExame(exame.status) }}">{{
+                      exame.mne
+                    }}</span>
+                    <span class="me-1">;</span>
+                    } @empty {
+                    <div class="m-auto mt-4">
+                      <div class="card">
+                        <div class="card-body">
+                          <h1>Sem exames para exibir</h1>
+                        </div>
+                      </div>
+                    </div>
+                    }
+                  </div>
+                </div>
+                } @else {
+                <div class="row">
+                  <div class="col-6 align-start">
+                    <h3 class="card-title text-capitalize text-truncate">
+                      {{ item.nomePaciente }}
+                    </h3>
+                  </div>
+                  <div class="col-2 align-start">
+                    <i class="bi bi-alarm mx-1 fs-4"></i>
+                    <span class="h4">{{
+                      item.dtCadastro | date : "HH'h'mm"
+                    }}</span>
+                  </div>
+                  <div class="col-2 align-start">
+                    <i class="bi bi-hourglass-top mx-1 fs-4"></i>
+                    <span class="h4">{{ item.decorrido }}</span>
+                  </div>
+                  <div class="col-2 text-center">
+                    <span class="{{ status(item.situacao) }}">
+                      {{ item.situacao }}</span
+                    >
+                  </div>
+
+                  <div
+                    class="col-lg-12 col-md-12 col-sm-12 align-start text-truncate"
+                  >
+                    <span class="card-category">Exames: </span>
+                    @for (exame of item.exames; track exame.mne) {
+                    <span class="fs-5 bold {{ statusExame(exame.status) }}">{{
+                      exame.mne
+                    }}</span>
+                    <span class="me-1">;</span>
+                    } @empty {
+                    <div class="m-auto mt-4">
+                      <div class="card">
+                        <div class="card-body">
+                          <h1>Sem exames para exibir</h1>
+                        </div>
+                      </div>
+                    </div>
+                    }
+                  </div>
+                </div>
+                }
+              </div>
+            </div>
+            } @empty {
+            <div class="m-auto mt-4">
+              <div class="card">
+                <div class="card-body">
+                  <h1>Sem atendimento para exibir</h1>
+                </div>
+              </div>
+            </div>
+            }
+          </div>
+
+          } @else {
+          <div class="m-auto mt-4">
+            <div *ngIf="isLoading" class="loading-indicator">
+              <!-- Pode ser um spinner, barra de progresso, ou mensagem -->
+              <mat-spinner></mat-spinner>
+              <!-- Se estiver usando Angular Material -->
+              <h3>{{textLoading}}</h3>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,284 @@
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { calcularDiferencaHora } from '../../utils/time/time-utils';
+import { Monitor } from '../../model/Monitor';
+import { MonitorService } from '../../services/monitor.service';
+import Swal from 'sweetalert2';
+import { TempoMedioService } from '../../services/tempoMedio.service';
+import { ConfiguracaoService } from '../../services/configuracao.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+@Component({
+  selector: 'app-monitor',
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatTooltipModule,
+    MatIconModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatProgressSpinnerModule,
+  ],
+  templateUrl: './monitor.component.html',
+  styleUrl: './monitor.component.css',
+})
+export class MonitorComponent implements OnInit {
+  title = 'Monitor de Emergência';
+
+  private intervalIdHora: any;
+  private intervalIdAtualizacao: any;
+  private intervalIdSlide: any;
+  private intervalIdTempoMedio: any;
+
+  private reload: number = 300000;
+  private tempoRefreshTela: number = 10000;
+  private tempoMaximoVisita: number = 0;
+  private tempoMedicao: number = 300000;
+
+  private currentPage = 0;
+  private totalPages = 0;
+  private pageSize: number = 6;
+
+  private monitorService = inject(MonitorService);
+  private tempoMedioService = inject(TempoMedioService);
+  private configuracaoService = inject(ConfiguracaoService);
+  private route = inject(ActivatedRoute);
+  private itemId = this.route.snapshot.paramMap.get('id');
+
+  textLoading: string = '';
+  decorrido: string = '';
+  dataHoraFormatada: string = '';
+  isLoading: boolean = true;
+
+  configuracao: any;
+  monitoramento: Monitor[] = [];
+  tempoMedio = {
+    tempoMedio: '',
+    baseCalculo: '',
+  };
+
+  constructor() { }
+
+  ngOnInit(): void {
+    this.onDestroy();
+    this.getMonitoramento();
+    this.getTempoMedio();
+    this.atualizarDataHora();
+
+    this.intervalIdHora = setInterval(() => {
+      this.atualizarDataHora();
+      this.monitoramento.forEach((monitor) => {
+        monitor.decorrido = calcularDiferencaHora(monitor.dtCadastro);
+      });
+    }, 1000);
+  }
+
+ onDestroy(): void {
+    clearInterval(this.intervalIdHora);
+    clearInterval(this.intervalIdAtualizacao);
+    clearInterval(this.intervalIdSlide);
+    clearInterval(this.intervalIdTempoMedio);
+  }
+
+  //Serviço retorna os dados de monitoramento.
+  getMonitoramento(): void {
+    try {
+      this.configuracaoService
+        .getConfiguracaoById(this.itemId)
+        .subscribe((response: any) => {
+          this.configuracao = response;
+
+          // Atualiza os valores dos intervalos com os dados da API, e converte para milissegundos devido o setInterval
+          this.reload = (this.configuracao.tempoReload || 5) * 60000; //Unidade Minutos - Aguarndando implementação
+          this.tempoRefreshTela = (this.configuracao.tempoRefreshTela || 10) * 1000; //Unidade Segundos
+          this.tempoMaximoVisita = (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
+          this.tempoMedicao = (this.configuracao.tempoMedicao || 8) * 60000; //Unidade Minutos
+          this.pageSize = this.configuracao.pageSize || 6; //Limite de cards (atendimentos) por slide. Aguarndando implementação
+
+          // Incializa os setInterval
+          this.initSetInterval();
+
+          //Validação e carregamento dos dados de monitoramento
+          if (
+            this.configuracao.exames.length > 0 ||
+            this.configuracao.postos.length > 0
+          ) {
+            this.textLoading = 'Carregando slides...'; //Defini o texto para o pré carregando
+            this.monitorService
+              .getMonitoramentoById(this.itemId)
+              .subscribe((response: any) => {
+                if (response) {
+                  this.monitoramento = response;
+                  this.totalPages = Math.ceil(
+                    this.monitoramento.length / this.pageSize
+                  );
+
+                  this.currentPage = 0;
+                  Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Carregado com sucesso!',
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                } else {
+                  this.textLoading = 'Sem exames em análise no momento!';
+                }
+              });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'O Perfil, não possui exame ou posto cadastrado! ',
+              showConfirmButton: false,
+              footer:
+                '<a class="btn m-3" href="/configuracao"> <i class="bi bi-gear"></i> CONFIGURACAO</a> <a class="btn m-3" style="color:#dc3c46;" href="/"> <i class="bi bi-box-arrow-right"></i> SAIR</a>',
+            });
+          }
+        });
+    } catch (error) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        text: 'Ocorreu um erro no caregamento das informações! Atualize o navegador ou tente mais tarde.',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  }
+
+  initSetInterval(): void {   
+
+    this.intervalIdAtualizacao = setInterval(() => {
+      this.getMonitoramento();
+    }, this.reload);
+
+    this.intervalIdTempoMedio = setInterval(() => {
+      this.getTempoMedio();
+    }, this.tempoMedicao);
+
+    this.intervalIdSlide = setInterval(() => {
+      this.nextSlide();
+    }, this.tempoRefreshTela);
+  }
+
+  //Serviço retorna o cálculo de Tempo Médio
+  getTempoMedio(): void {
+    this.tempoMedioService
+      .getTempoMedioById(this.itemId)
+      .subscribe((response: any) => {
+        const tempoMedioMinutos = parseInt(response.tempoMedio, 10);
+        const horas = Math.floor(tempoMedioMinutos / 60);
+        const minutos = tempoMedioMinutos % 60;
+
+        if (tempoMedioMinutos > 0) {
+          this.tempoMedio.tempoMedio =
+            horas > 0 ? `${horas}h ${minutos}min` : `${minutos}min`;
+        } else {
+          this.tempoMedio.tempoMedio = '';
+        }
+        this.tempoMedio.baseCalculo = response.baseCalculo;
+      });
+  }
+
+  //Serviço para popular o slide
+  get slides(): Monitor[][] {
+    // Verifica se monitoramento está vazio (caso 204 No Content)
+    if (!this.monitoramento || this.monitoramento.length === 0) {
+      return []; // Retorna array vazio ou pode tratar de outra forma se necessário
+    }
+
+    const result: Monitor[][] = [];
+    //O for faz a verficação em todo o array e o fraciona com o slice
+    for (let i = 0; i < this.monitoramento.length; i += this.pageSize) {
+      result.push(this.monitoramento.slice(i, i + this.pageSize));
+    }
+    //O forEach corre todos os status de cada atendimento e faz a comparação com a função every
+    this.monitoramento.forEach((statusVisita) => {
+      //Atendimento Liberado: Todos os exames LB
+      const LB = statusVisita.exames.every((exame) => exame.status === 'LB');
+
+      //Atendimento Pronto: Todos os exames PT/LB, e com pelo menos 1 PT
+      const PT =
+        statusVisita.exames.some((exame) => exame.status === 'PT') &&
+        statusVisita.exames.every(
+          (exame) => exame.status === 'PT' || exame.status === 'LB'
+        );
+      //Atendimento Solicitado: pelo menos 1 exame sem resultado SL - mesmo q alguns resultados prontos ou liberados
+      const SL = statusVisita.exames.some((exame) => exame.status === 'SL');
+
+      if (LB) {
+        statusVisita.situacao = 'Liberado';
+      } else if (PT) {
+        statusVisita.situacao = 'Pronto';
+      } else if (SL) {
+        statusVisita.situacao = 'Solicitado';
+      }
+    });
+    return result;
+  }
+
+  //Função para autormatizar a transição do slide
+  nextSlide(): void {
+    if (this.totalPages === 0) return;
+    this.currentPage = (this.currentPage + 1) % this.totalPages;
+  }
+
+  //Funão para transformar o slide
+  getTransform(): string {
+    return `translateX(-${this.currentPage * 100}%)`;
+  }
+
+  //Função para capturar e gerar o relégio da Toolbar
+  atualizarDataHora(): void {
+    const agora = new Date();
+
+    const dia = agora.getDate();
+    const mes = agora.toLocaleString('pt-BR', { month: 'long' }); // "abril"
+    const ano = agora.getFullYear();
+
+    const horas = this.pad(agora.getHours());
+    const minutos = this.pad(agora.getMinutes());
+    const segundos = this.pad(agora.getSeconds());
+
+    this.dataHoraFormatada = `Hoje, ${dia} de ${mes} de ${ano} às ${horas}h ${minutos}min ${segundos}s`;
+  }
+
+  //Função do TypeScript para ajustar a hora que está como int, para exibir 01h ao invês de 1h.
+  pad(valor: number): string {
+    return valor < 10 ? '0' + valor : valor.toString();
+  }
+
+  //Função para gerar legenda para a response booleana de status
+  status(x: any) {
+    if (x === 'Pronto') {
+      return 'Pronto';
+    } else if (x === 'Liberado') {
+      return 'Liberado';
+    } else if (x === 'Solicitado') {
+      return 'Solicitado';
+    } else {
+      return 'Pendente';
+    }
+  }
+
+  //Função para gerar legenda para a response booleana de status
+  statusExame(x: any) {
+    if (x === 'EA') {
+      return 'EmAnalise';
+    } else if (x === 'LB') {
+      return 'ExameLiberado';
+    } else if (x === 'SL') {
+      return 'ExameSolicitado';
+    } else if (x === 'PT') {
+      return 'ExameEmAnalise';
+    } else {
+      return 'Não definido';
+    }
+  }
+}

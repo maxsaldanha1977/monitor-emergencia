@@ -1,0 +1,69 @@
+<div class="background-image">
+  <mat-toolbar>
+    <img src="assets/img/logo_bioslab.png" alt="Logo" class="img-fluid mt-3" />
+    <span class="example-spacer"></span>
+    <span class="h1 text-danger">Monitor de Emergência</span>
+    <span class="example-spacer"></span>
+    <a
+      class="mx-2"
+      [routerLink]="['configuracao']"
+      matTooltip="Clique para acessar as configurações."
+      matTooltipPosition="right"
+    >
+      <i class="bi bi-gear fa-2x text-dark"></i>
+    </a>
+  </mat-toolbar>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-3 mx-auto mt-5">
+        <img
+          src="assets/img/logo-karyon.jpeg"
+          alt="Logo"
+          class="profile"
+          width="400px"
+          height="400px"
+        />
+      </div>
+      <div class="col-4 mx-auto mt-5"></div>
+      <div class="col-5 mx-auto mt-5">
+        <div class="card" style="width: 400px; height: 450px">
+          <div class="card-title text-center">
+            <h3 class="mt-5">Perfil</h3>
+          </div>
+          <div class="card-body mt-5">
+            <span class="mt-5">Selecione</span>
+            <div class="border rounded">
+              <select
+              class="form-select px-2"
+              [(ngModel)]="id"
+              aria-label="Default select example"
+            >
+        
+              @for (item of configs | orderBy: 'idConfig'; track item.idConfig )
+              {              
+              <option value="{{ item.idConfig }}">
+                Perfil: {{ item.idConfig }} - {{ item.descricao }}
+              </option>
+              } @empty {
+              <option value="0">Nenhum perfil encontrado</option>
+              }
+            </select>
+            </div>
+           
+          </div>
+          <div class="card-body text-center">
+            <button
+              type="button"
+              class="btn"
+              [routerLink]="['monitor', id]"
+              [disabled]="!id || id === '0'"
+            >
+              Acessar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

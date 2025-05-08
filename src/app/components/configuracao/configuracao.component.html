@@ -1,0 +1,150 @@
+<div class="container-fluid">
+  <div
+    class="card card-header"
+    style="background-image: linear-gradient(to left, #d8d8d6, #616161)"
+  >
+    <div class="row">
+      <div class="col-10">
+        <h3 class="card-title uppercase bold text-white">
+          {{title}}
+        </h3>
+      </div>
+      <div class="col-2 text-end">
+        <span class="example-spacer"></span>
+
+        <a class="mx-2"
+          [routerLink]="['/criar']"
+          matTooltip="Clique para cadastrar um novo perfil."
+          matTooltipPosition="right"
+        >
+          <i class="bi bi-plus-circle fa-2x text-white"></i>
+        </a>
+        <a class="mx-2"
+          [routerLink]="['/']"
+          matTooltip="Clique para sair."
+          matTooltipPosition="right"
+        >
+          <i class="bi bi-box-arrow-right fa-2x text-white"></i>
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6"></div>
+      <div class="col-6 float-end">
+        <input
+          class="form-control"
+          id="search"
+          matInput
+          type="text"
+          [(ngModel)]="filter"
+          [ngModelOptions]="{ standalone: true }"
+          placeholder="Pesquisar perfil..."
+          style="background-image: none"
+        />
+    </div>
+  </div>
+  </div>
+
+  <div class="row my-3">    
+    <mat-accordion>
+      @for(item of configuracao | orderBy: 'idConfig' | customFilter : filter; track item.idConfig){
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            ID:
+            <h4 class="card-title">
+              <span class="mx-2">{{ item.idConfig }}</span>
+            </h4>
+          </mat-panel-title>
+          <mat-panel-description>
+        
+            <h4 class="card-title">
+              <span class="mx-2"> {{ item.descricao }}</span>
+            </h4>
+          </mat-panel-description>
+          <button 
+            [routerLink]="['/editar',item.idConfig]"
+            mat-icon-button
+            aria-label="Navigate to create page"
+          >
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button class="mx-4"
+          (click)="deleteConfiguracao(item.idConfig)"
+            mat-icon-button
+            aria-label="Example icon button with a vertical three dot icon"
+          >
+            <i class="bi bi-trash3 text-danger"></i>
+          </button>
+        </mat-expansion-panel-header>
+        
+        <p class="card-category align-start">Configurações</p>
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-2">
+                <p class="card-category">Disponibilidade</p>
+                <h3 class="card-title">{{ item.tempoDisponibilidade }} min</h3>
+              </div>
+              <div class="col-2">
+                <p class="card-category">Medicão</p>
+                <h3 class="card-title">{{ item.tempoMedicao }} min</h3>
+              </div>
+              <div class="col-2">
+                <p class="card-category">Transição do slide</p>
+                <h3 class="card-title">{{ item.tempoRefreshTela }} seg</h3>
+              </div>
+              <div class="col-2">
+                <p class="card-category">Visita Máxima</p>
+                <h3 class="card-title">{{ item.tempoMaximoVisita }}  min</h3>
+              </div>
+              <div class="col-2">
+                <p class="card-category">Exibir Exames pendentes</p>
+                <span class="{{ status(item.exibirExamePendente) }}">
+                  {{ status(item.exibirExamePendente) }}
+                </span>
+              </div>
+              <div class="col-2">
+                <p class="card-category">Exibir Registro Posto</p>
+                <span class="{{ status(item.exibirRegistroAtendimento) }}">
+                  {{ status(item.exibirRegistroAtendimento) }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        @if(item.exames.length > 0){
+        <p class="card-category align-start">Exames</p>
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              @for(exame of item.exames; track exame.mne){
+              <div class="col-1">{{ exame.mne }}</div>
+              } 
+            </div>
+          </div>
+        </div>
+      }
+        @if(item.postos.length > 0){
+          <p class="card-category align-start">Postos</p>   
+          <div class="card">
+            <div class="card-body">      
+              <div class="row">                
+                @for(posto of item.postos; track posto.codPosto + '-' + $index){                 
+                <div class="col-3">
+                  <p class="card-category"> {{ posto.codPosto }}</p>
+                  <span class="card-title"><b>Local de Internação</b> : {{local(posto.codLocalInternacao)}}</span>              
+                   </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+        
+      </mat-expansion-panel>
+      }@empty {
+      <h3>Sem Perfil de Configuração para exibir</h3>
+      }
+    </mat-accordion>
+  </div>
+</div>
