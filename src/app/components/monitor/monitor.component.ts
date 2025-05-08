@@ -27,7 +27,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.css',
 })
-export class MonitorComponent implements OnInit {
+export class MonitorComponent implements OnInit, OnDestroy {
   title = 'Monitor de Emergência';
 
   private intervalIdHora: any;
@@ -62,10 +62,9 @@ export class MonitorComponent implements OnInit {
     baseCalculo: '',
   };
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
-    this.onDestroy();
     this.getMonitoramento();
     this.getTempoMedio();
     this.atualizarDataHora();
@@ -78,7 +77,7 @@ export class MonitorComponent implements OnInit {
     }, 1000);
   }
 
- onDestroy(): void {
+  ngOnDestroy(): void {
     clearInterval(this.intervalIdHora);
     clearInterval(this.intervalIdAtualizacao);
     clearInterval(this.intervalIdSlide);
@@ -95,8 +94,10 @@ export class MonitorComponent implements OnInit {
 
           // Atualiza os valores dos intervalos com os dados da API, e converte para milissegundos devido o setInterval
           this.reload = (this.configuracao.tempoReload || 5) * 60000; //Unidade Minutos - Aguarndando implementação
-          this.tempoRefreshTela = (this.configuracao.tempoRefreshTela || 10) * 1000; //Unidade Segundos
-          this.tempoMaximoVisita = (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
+          this.tempoRefreshTela =
+            (this.configuracao.tempoRefreshTela || 10) * 1000; //Unidade Segundos
+          this.tempoMaximoVisita =
+            (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
           this.tempoMedicao = (this.configuracao.tempoMedicao || 8) * 60000; //Unidade Minutos
           this.pageSize = this.configuracao.pageSize || 6; //Limite de cards (atendimentos) por slide. Aguarndando implementação
 
@@ -129,6 +130,7 @@ export class MonitorComponent implements OnInit {
                 } else {
                   this.textLoading = 'Sem exames em análise no momento!';
                 }
+                console.log('getMonitoramentoById')
               });
           } else {
             Swal.fire({
@@ -152,8 +154,7 @@ export class MonitorComponent implements OnInit {
     }
   }
 
-  initSetInterval(): void {   
-
+  initSetInterval(): void {
     this.intervalIdAtualizacao = setInterval(() => {
       this.getMonitoramento();
     }, this.reload);
@@ -175,7 +176,7 @@ export class MonitorComponent implements OnInit {
         const tempoMedioMinutos = parseInt(response.tempoMedio, 10);
         const horas = Math.floor(tempoMedioMinutos / 60);
         const minutos = tempoMedioMinutos % 60;
-
+        console.log('getTEmpoMedio');
         if (tempoMedioMinutos > 0) {
           this.tempoMedio.tempoMedio =
             horas > 0 ? `${horas}h ${minutos}min` : `${minutos}min`;
