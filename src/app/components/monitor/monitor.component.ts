@@ -46,6 +46,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   private tempoMedioService = inject(TempoMedioService);
   private configuracaoService = inject(ConfiguracaoService);
   private route = inject(ActivatedRoute);
+  
   private itemId = this.route.snapshot.paramMap.get('id');
 
   textLoading: string = '';

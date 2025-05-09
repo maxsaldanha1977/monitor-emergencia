@@ -1,4 +1,11 @@
-import { Component, Inject, inject, OnDestroy, OnInit, VERSION } from '@angular/core';
+import {
+  Component,
+  Inject,
+  inject,
+  OnDestroy,
+  OnInit,
+  VERSION,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CommonModule } from '@angular/common';
@@ -11,6 +18,8 @@ import { Configuracao } from '../../model/Configuracao';
 import { MatSelectModule } from '@angular/material/select';
 import { ConfiguracaoService } from '../../services/configuracao.service';
 import { OrderModule } from 'ngx-order-pipe';
+import { count, delay, retry } from 'rxjs';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-login',
   imports: [
@@ -22,37 +31,55 @@ import { OrderModule } from 'ngx-order-pipe';
     MatButtonModule,
     FormsModule,
     MatSelectModule,
-    OrderModule    
-],
+    OrderModule,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit, OnDestroy {
-
   private intervalId: any;
   private serviceConfig = inject(ConfiguracaoService);
   ano: any = new Date().getFullYear();
 
-  order: string = 'idConfig'; //identificação para ordenação da listagem   
+  order: string = 'idConfig'; //identificação para ordenação da listagem
   disableSelect = new FormControl(false); // Variável para desabilitar o botão de  acessar;
   configs: Configuracao[] = []; // Variável para armazenar as configurações
   dataHoraFormatada: string = ''; // Variável para armazenar a data e hora formatada
   id: any; //Incializador do id selecionado no select
 
-  constructor( ) { }
+  constructor() {}
 
   ngOnInit(): void {
-    this.getConfiguracao();   
+    this.getConfiguracao();
   }
 
   getConfiguracao() {
-    this.serviceConfig.getAllConfiguracao().subscribe((res: any) => {
-      this.configs = res;
-    });
+    this.serviceConfig
+      .getAllConfiguracao()
+      .pipe(
+        retry({
+          count: 3,
+          delay: 1000,
+        })
+      )
+      .subscribe({
+        next: (response: any) => {
+          this.configs = response;
+            Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Perfil carregado com sucesso!',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        },
+        error: (error) => {
+          console.error('Erro ao carregar os perfis:', error);
+        },
+      });
   }
 
   ngOnDestroy(): void {
     clearInterval(this.intervalId);
   }
-  
 }
