@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import { TempoMedioService } from '../../services/tempoMedio.service';
 import { ConfiguracaoService } from '../../services/configuracao.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { catchError } from 'rxjs';
 
 @Component({
   selector: 'app-monitor',
@@ -34,11 +35,6 @@ export class MonitorComponent implements OnInit, OnDestroy {
   private intervalIdAtualizacao: any;
   private intervalIdSlide: any;
   private intervalIdTempoMedio: any;
-
-  private reload: number = 300000;
-  private tempoRefreshTela: number = 10000;
-  private tempoMaximoVisita: number = 0;
-  private tempoMedicao: number = 300000;
 
   private currentPage = 0;
   private totalPages = 0;
@@ -65,8 +61,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   constructor() {}
 
   ngOnInit(): void {
-    this.getMonitoramento();
-    this.atualizarDataHora();
+    this.initSetInterval();
   }
 
   ngOnDestroy(): void {
@@ -76,56 +71,36 @@ export class MonitorComponent implements OnInit, OnDestroy {
     clearInterval(this.intervalIdTempoMedio);
   }
 
-  //Serviço retorna os dados de monitoramento.
-  getMonitoramento(): void {
+  initSetInterval(): void {
     try {
       this.configuracaoService
         .getConfiguracaoById(this.itemId)
         .subscribe((response: any) => {
           this.configuracao = response;
-
           // Atualiza os valores dos intervalos com os dados da API, e converte para milissegundos devido o setInterval
-          this.reload = (this.configuracao.tempoReload || 5) * 60000; //Unidade Minutos - Aguarndando implementação
-          this.tempoRefreshTela =
-            (this.configuracao.tempoRefreshTela || 10) * 1000; //Unidade Segundos
-          this.tempoMaximoVisita =
-            (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
-          this.tempoMedicao = (this.configuracao.tempoMedicao || 8) * 60000; //Unidade Minutos
-          this.pageSize = this.configuracao.pageSize || 6; //Limite de cards (atendimentos) por slide. Aguarndando implementação
+          const reload = (this.configuracao.tempoReload || 5) * 60000; //Unidade Minutos - Aguarndando implementação
+          const tempoRefreshTela = (this.configuracao.tempoRefreshTela || 10) * 1000; //Unidade Segundos
+          const tempoMaximoVisita = (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
+          const tempoMedicao = (this.configuracao.tempoMedicao || 8) * 60000; //Unidade Minutos
+          this.pageSize = this.configuracao.pageSize || 6; //Unidade Minutos
 
-          // Incializa os setInterval
-          this.initSetInterval();
+          this.intervalIdTempoMedio = setInterval(() => {
+            this.getTempoMedio();
+          }, tempoMedicao);
 
-          //Validação e carregamento dos dados de monitoramento
+          this.intervalIdSlide = setInterval(() => {
+            this.nextSlide();
+          }, tempoRefreshTela);
+
+          this.intervalIdAtualizacao = setInterval(() => {
+            this.getMonitoramento();
+          }, reload);
           if (
             this.configuracao.exames.length > 0 ||
             this.configuracao.postos.length > 0
           ) {
-            this.textLoading = 'Carregando slides...'; //Defini o texto para o pré carregando
-            this.monitorService
-              .getMonitoramentoById(this.itemId)
-              .subscribe((response: any) => {
-                if (response) {
-                  this.monitoramento = response;
-                  this.totalPages = Math.ceil(
-                    this.monitoramento.length / this.pageSize
-                  );
-
-                  this.currentPage = 0;
-                  Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Carregado com sucesso!',
-                    showConfirmButton: false,
-                    timer: 1500,
-                  });
-                } else {
-                  this.textLoading = 'Sem exames em análise no momento!';
-                }
-
-                this.getTempoMedio();
-                console.log('getMonitoramento from Monitor');
-              });
+            this.getTempoMedio();
+            this.getMonitoramento();
           } else {
             Swal.fire({
               icon: 'error',
@@ -136,7 +111,15 @@ export class MonitorComponent implements OnInit, OnDestroy {
                 '<a class="btn m-3" href="/configuracao"> <i class="bi bi-gear"></i> CONFIGURACAO</a> <a class="btn m-3" style="color:#dc3c46;" href="/"> <i class="bi bi-box-arrow-right"></i> SAIR</a>',
             });
           }
+          console.log('ConfiguracaoService in setInterval');
         });
+
+      this.intervalIdHora = setInterval(() => {
+        this.atualizarDataHora();
+        this.monitoramento.forEach((monitor) => {
+          monitor.decorrido = calcularDiferencaHora(monitor.dtCadastro);
+        });
+      }, 1000);
     } catch (error) {
       Swal.fire({
         position: 'top-end',
@@ -148,25 +131,43 @@ export class MonitorComponent implements OnInit, OnDestroy {
     }
   }
 
-  initSetInterval(): void {
-    this.intervalIdAtualizacao = setInterval(() => {
-      this.getMonitoramento();
-    }, this.reload);
+  //Serviço retorna os dados de monitoramento.
+  getMonitoramento(): void {
+    try {
+      this.textLoading = 'Carregando slides...'; //Defini o texto para o pré carregando
+      this.monitorService
+        .getMonitoramentoById(this.itemId)
+        .subscribe((response: any) => {
+          if (response) {
+            this.monitoramento = response;
+            this.totalPages = Math.ceil(
+              this.monitoramento.length / this.pageSize
+            );
+            this.currentPage = 0;
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Carregado com sucesso!',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          } else {
+            this.textLoading = 'Sem exames em análise no momento!';
+          }
 
-    this.intervalIdTempoMedio = setInterval(() => {
-      this.getTempoMedio();
-    }, this.tempoMedicao);
-
-    this.intervalIdSlide = setInterval(() => {
-      this.nextSlide();
-    }, this.tempoRefreshTela);
-
-    this.intervalIdHora = setInterval(() => {
-      this.atualizarDataHora();
-      this.monitoramento.forEach((monitor) => {
-        monitor.decorrido = calcularDiferencaHora(monitor.dtCadastro);
+          console.log('getMonitoramento from Monitor');
+        });
+      console.log('GetMonitoramento');
+    } catch (error) {
+      this.textLoading = 'Erro no carregamento ...'; //Defini o texto para o pré carregando
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        text: 'Ocorreu um erro no caregamento das informações! Atualize o navegador ou tente mais tarde.',
+        showConfirmButton: false,
+        timer: 1500,
       });
-    }, 1000);
+    }
   }
 
   //Serviço retorna o cálculo de Tempo Médio
@@ -177,7 +178,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
         const tempoMedioMinutos = parseInt(response.tempoMedio, 10);
         const horas = Math.floor(tempoMedioMinutos / 60);
         const minutos = tempoMedioMinutos % 60;
-        console.log('getTempoMedio from Monitor');
+
         if (tempoMedioMinutos > 0) {
           this.tempoMedio.tempoMedio =
             horas > 0 ? `${horas}h ${minutos}min` : `${minutos}min`;
@@ -185,6 +186,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
           this.tempoMedio.tempoMedio = '';
         }
         this.tempoMedio.baseCalculo = response.baseCalculo;
+        console.log('getTempoMedio');
       });
   }
 
