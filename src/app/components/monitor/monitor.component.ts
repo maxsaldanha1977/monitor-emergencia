@@ -157,7 +157,6 @@ export class MonitorComponent implements OnInit, OnDestroy {
 
           console.log('getMonitoramento from Monitor');
         });
-      console.log('GetMonitoramento');
     } catch (error) {
       this.textLoading = 'Erro no carregamento ...'; //Defini o texto para o pré carregando
       Swal.fire({
