@@ -31,8 +31,9 @@
   }
 
 .center-vertical {
-  margin-top: 20%;
+  margin-top: 18%;
 }
+
   .profile {
     border-radius: 50%;
   }
@@ -118,6 +119,9 @@
 }
 @media (min-width: 1400px) and (max-width: 2000px) {
   .main{
-    margin-top: 8%;
+    margin-top: 7%;
   }
+  .center-vertical {
+  margin-top: 15%;
+}
 }

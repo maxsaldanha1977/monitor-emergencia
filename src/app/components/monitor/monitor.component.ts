@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 import { TempoMedioService } from '../../services/tempoMedio.service';
 import { ConfiguracaoService } from '../../services/configuracao.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { catchError } from 'rxjs';
+import { catchError, count, delay, retry } from 'rxjs';
 
 @Component({
   selector: 'app-monitor',
@@ -39,6 +39,8 @@ export class MonitorComponent implements OnInit, OnDestroy {
   private currentPage = 0;
   private totalPages = 0;
   private pageSize: number = 6;
+
+  private reload: number = 3;
 
   private monitorService = inject(MonitorService);
   private tempoMedioService = inject(TempoMedioService);
@@ -72,15 +74,24 @@ export class MonitorComponent implements OnInit, OnDestroy {
   }
 
   initSetInterval(): void {
-    try {
-      this.configuracaoService
-        .getConfiguracaoById(this.itemId)
-        .subscribe((response: any) => {
+    this.configuracaoService
+      .getConfiguracaoById(this.itemId)
+      .pipe(
+        retry({
+          count: 3,
+          delay: 1000,
+        })
+      )
+      .subscribe({
+        next: (response: any) => {
           this.configuracao = response;
+
           // Atualiza os valores dos intervalos com os dados da API, e converte para milissegundos devido o setInterval
-          const reload = (this.configuracao.tempoReload || 5) * 60000; //Unidade Minutos - Aguarndando implementação
-          const tempoRefreshTela = (this.configuracao.tempoRefreshTela || 10) * 1000; //Unidade Segundos
-          const tempoMaximoVisita = (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
+          this.reload = (this.configuracao.tempoReload || 3) * 60000; //Unidade Minutos - Aguarndando implementação
+          const tempoRefreshTela =
+            (this.configuracao.tempoRefreshTela || 10) * 1000; //Unidade Segundos
+          const tempoMaximoVisita =
+            (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
           const tempoMedicao = (this.configuracao.tempoMedicao || 8) * 60000; //Unidade Minutos
           this.pageSize = this.configuracao.pageSize || 6; //Unidade Minutos
 
@@ -94,7 +105,9 @@ export class MonitorComponent implements OnInit, OnDestroy {
 
           this.intervalIdAtualizacao = setInterval(() => {
             this.getMonitoramento();
-          }, reload);
+          }, this.reload);
+
+          //Valida a configuração de exames e postos se cadastrados.
           if (
             this.configuracao.exames.length > 0 ||
             this.configuracao.postos.length > 0
@@ -111,33 +124,39 @@ export class MonitorComponent implements OnInit, OnDestroy {
                 '<a class="btn m-3" href="/configuracao"> <i class="bi bi-gear"></i> CONFIGURACAO</a> <a class="btn m-3" style="color:#dc3c46;" href="/"> <i class="bi bi-box-arrow-right"></i> SAIR</a>',
             });
           }
+          this.intervalIdHora = setInterval(() => {
+            this.atualizarDataHora();
+            this.monitoramento.forEach((monitor) => {
+              monitor.decorrido = calcularDiferencaHora(monitor.dtCadastro);
+            });
+          }, 1000);
           console.log('ConfiguracaoService in setInterval');
-        });
-
-      this.intervalIdHora = setInterval(() => {
-        this.atualizarDataHora();
-        this.monitoramento.forEach((monitor) => {
-          monitor.decorrido = calcularDiferencaHora(monitor.dtCadastro);
-        });
-      }, 1000);
-    } catch (error) {
-      Swal.fire({
-        position: 'top-end',
-        icon: 'error',
-        text: 'Ocorreu um erro no caregamento das informações! Atualize o navegador ou tente mais tarde.',
-        showConfirmButton: false,
-        timer: 1500,
+        },
+        error: (error) => {
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            text: 'Ocorreu um erro no caregamento das informações! Atualize o navegador ou tente mais tarde.',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        },
       });
-    }
   }
 
   //Serviço retorna os dados de monitoramento.
   getMonitoramento(): void {
-    try {
-      this.textLoading = 'Carregando slides...'; //Defini o texto para o pré carregando
-      this.monitorService
-        .getMonitoramentoById(this.itemId)
-        .subscribe((response: any) => {
+    this.textLoading = 'Carregando slides...'; //Defini o texto para o pré carregando
+    this.monitorService
+      .getMonitoramentoById(this.itemId)
+      .pipe(
+        retry({
+          count: 3,
+          delay: 3000,
+        })
+      )
+      .subscribe({
+        next: (response: any) => {
           if (response) {
             this.monitoramento = response;
             this.totalPages = Math.ceil(
@@ -156,17 +175,19 @@ export class MonitorComponent implements OnInit, OnDestroy {
           }
 
           console.log('getMonitoramento from Monitor');
-        });
-    } catch (error) {
-      this.textLoading = 'Erro no carregamento ...'; //Defini o texto para o pré carregando
-      Swal.fire({
-        position: 'top-end',
-        icon: 'error',
-        text: 'Ocorreu um erro no caregamento das informações! Atualize o navegador ou tente mais tarde.',
-        showConfirmButton: false,
-        timer: 1500,
+        },
+        error: (error) => {
+          this.textLoading = 'Erro no carregamento ...'; //Defini o texto para o pré carregando
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            text: 'Ocorreu um erro no caregamento das informações! Atualize o navegador ou tente mais tarde.',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          console.error('Erro ao carregar monitoramento:', error);
+        },
       });
-    }
   }
 
   //Serviço retorna o cálculo de Tempo Médio
