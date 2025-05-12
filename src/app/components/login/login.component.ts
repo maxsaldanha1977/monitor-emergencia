@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             Swal.fire({
             position: 'top-end',
             icon: 'success',
-            title: 'Perfil carregado com sucesso!',
+            title: 'Perfil de Configuração, carregado com sucesso!',
             showConfirmButton: false,
             timer: 1500,
           });
