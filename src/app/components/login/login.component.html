@@ -1,16 +1,23 @@
 <div class="background-image">
-  <mat-toolbar >
-    <img class="none profile"
+  <mat-toolbar>
+    <img
+      class="none profile"
       src="assets/img/logo-karyon.jpeg"
       alt="Logo"
       width="100px"
       height="100px"
     />
-  
-  <img class="img-tam m-3"src="assets/img/logo_bioslab.png" alt="Logo"  /> 
-   
-  <span class="example-spacer"></span>
-  <img class="m-3 rounded" src="assets/img/ic-monitor.svg" alt="Logo" height="50px" width="50px" /> 
+
+    <img class="img-tam m-3" src="assets/img/logo_bioslab.png" alt="Logo" />
+
+    <span class="example-spacer"></span>
+    <img
+      class="m-3 rounded"
+      src="assets/img/ic-monitor.svg"
+      alt="Logo"
+      height="50px"
+      width="50px"
+    />
     <span class="fs-1 text-danger">Monitor de Emergência</span>
     <span class="example-spacer"></span>
     <a
@@ -23,33 +30,34 @@
     </a>
   </mat-toolbar>
 
-  <div class="container main ">
-    <div class="row ">
+  <div class="container main">
+    <div class="row">
       <div class="col-6 col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <div class="card-title text-center center-vertical">
           <span class="fs-2">Perfil de Configuração</span>
         </div>
-      </div>   
-      <div class="col-6 col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 align-center">
-        <div class="card">          
+      </div>
+      <div
+        class="col-6 col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 align-center"
+      >
+        <div class="card">
           <div class="card-body mt-1">
             <span class="mt-5">Selecione</span>
             <div class="border rounded">
               <select
-              class="form-select px-2"
-              [(ngModel)]="id"
-              aria-label="Default select example"
-            >
-        
-              @for (item of configs | orderBy: 'idConfig'; track item.idConfig )
-              {              
-              <option value="{{ item.idConfig }}">
-                Perfil: {{ item.idConfig }} - {{ item.descricao }}
-              </option>
-              } @empty {
-              <option value="0">Nenhum perfil encontrado</option>
-              }
-            </select>
+                class="form-select px-2"
+                [(ngModel)]="id"
+                aria-label="Default select example"
+              >
+                @for (item of configs | orderBy: 'idConfig'; track item.idConfig
+                ) {
+                <option value="{{ item.idConfig }}">
+                  Perfil: {{ item.idConfig }} - {{ item.descricao }}
+                </option>
+                } @empty {
+                <option value="0">Nenhum perfil encontrado</option>
+                }
+              </select>
             </div>
             <div class="text-center mt-4">
               <button
@@ -62,43 +70,48 @@
               </button>
             </div>
           </div>
-          
         </div>
       </div>
     </div>
-   
   </div>
   <footer class="fixed-bottom">
     <div class="row user-select-none">
-      <div class="col-3 col-md-1">
-      
-      </div>
-      <div class="col-6  col-md-10">   
-        <div class="row ">
-          <div class="col-12 mt-5">
-            <div class="text-white" abbr>Em caso de dúvidas, <!-- acesse a <a class="text-dark" href="http://www.laudoonline.com.br/ajuda/index.htm" target="_blank">Central de ajuda do Laudo online</a>
-              ou --> entre em contato com o nosso <strong>Setor de Suporte</strong>.
+      <div class="col-3 col-md-1"></div>
+      <div class="col-6 col-md-10">
+        <div class="row">
+          <div
+            class="col-12 mt-5"
+          >
+            <div class="text-white" abbr>
+              Em caso de dúvidas,
+              <!-- acesse a <a class="text-dark" href="http://www.laudoonline.com.br/ajuda/index.htm" target="_blank">Central de ajuda do Laudo online</a>
+              ou -->
+              entre em contato com o nosso <strong>Setor de Suporte</strong>.
+            </div>
+          </div>        
+          <div class="col-6 col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12">
+            <div class="text-white">
+              Atendimento das 8h às 17h, de segunda à sexta.
+            </div>
           </div>
-          </div>
-          <div class="col-12">
-            <div class="text-white">Atendimento das 8h às 17h, de segunda à sexta.
-              <span class="text-white">
-                <i class="bi bi-telephone"></i> (21) 3622-6400
-              </span> |
+          <div class="col-6 col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12">
             <span class="text-white">
-              <i class="bi bi-whatsapp"></i> (21) 99311-9141
+              Contatos: 
+              <i class="bi bi-telephone"></i> (21) 3622-6400 | <i class="bi bi-whatsapp"></i> (21) 99311-9141
             </span>
-        </div> 
+          
           </div>
           <div class="col-12">
-            <div class="text-center text-white"> <small> Copyright © {{ano}} Monitor de Emergência. Todos os direitos reservados.</small></div> 
+            <div class="text-center text-white">
+              <small>
+                Copyright © {{ ano }} Monitor de Emergência. Todos os direitos
+                reservados.</small
+              >
+            </div>
           </div>
         </div>
-</div>    
-     <div class="col-3 col-md-1">
-        
       </div>
+      <div class="col-3 col-md-1"></div>
     </div>
-   
   </footer>
 </div>
