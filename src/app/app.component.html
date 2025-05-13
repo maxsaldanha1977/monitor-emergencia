@@ -1,3 +1,20 @@
-<app-server-status></app-server-status>
-<router-outlet></router-outlet>
+<div *ngIf="!isMobile">
+  <app-server-status></app-server-status>
+  <router-outlet></router-outlet>
+</div>
 
+<div *ngIf="isMobile" class="block-message">
+  <div class="container-fluid">
+    <div class="card center-vertical">
+      <div class="card-body user-select-none">
+        <div class="alert alert-danger" role="alert">
+          <h2 class="text-center text-white">Acesso restrito</h2>
+        </div>
+
+        <p class="mt-5">
+          Este conteúdo não está disponível em telas pequenas (Celulares).
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

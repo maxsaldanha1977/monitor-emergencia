@@ -5,21 +5,23 @@
   >
     <div class="row">
       <div class="col-10">
-        <h3 class="card-title uppercase bold text-white">
-          {{title}}
+        <h3 class="card-title uppercase bold text-white user-select-none">
+          {{ title }}
         </h3>
       </div>
       <div class="col-2 text-end">
         <span class="example-spacer"></span>
 
-        <a class="mx-2"
+        <a
+          class="mx-2"
           [routerLink]="['/criar']"
           matTooltip="Clique para cadastrar um novo perfil."
           matTooltipPosition="right"
         >
           <i class="bi bi-plus-circle fa-2x text-white"></i>
         </a>
-        <a class="mx-2"
+        <a
+          class="mx-2"
           [routerLink]="['/']"
           matTooltip="Clique para sair."
           matTooltipPosition="right"
@@ -41,13 +43,14 @@
           placeholder="Pesquisar perfil..."
           style="background-image: none"
         />
+      </div>
     </div>
   </div>
-  </div>
 
-  <div class="row my-3">    
+  <div class="row my-3 user-select-none">
     <mat-accordion>
-      @for(item of configuracao | orderBy: 'idConfig' | customFilter : filter; track item.idConfig){
+      @for(item of configuracao | orderBy: 'idConfig' | customFilter : filter;
+      track item.idConfig){
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -57,27 +60,27 @@
             </h4>
           </mat-panel-title>
           <mat-panel-description>
-        
             <h4 class="card-title">
               <span class="mx-2"> {{ item.descricao }}</span>
             </h4>
           </mat-panel-description>
-          <button 
-            [routerLink]="['/editar',item.idConfig]"
+          <button
+            [routerLink]="['/editar', item.idConfig]"
             mat-icon-button
             aria-label="Navigate to create page"
           >
             <i class="bi bi-pencil-square"></i>
           </button>
-          <button class="mx-4"
-          (click)="deleteConfiguracao(item.idConfig)"
+          <button
+            class="mx-4"
+            (click)="deleteConfiguracao(item.idConfig)"
             mat-icon-button
             aria-label="Example icon button with a vertical three dot icon"
           >
             <i class="bi bi-trash3 text-danger"></i>
           </button>
         </mat-expansion-panel-header>
-        
+
         <p class="card-category align-start">Configurações</p>
         <div class="card">
           <div class="card-body">
@@ -96,7 +99,7 @@
               </div>
               <div class="col-2">
                 <p class="card-category">Visita Máxima</p>
-                <h3 class="card-title">{{ item.tempoMaximoVisita }}  min</h3>
+                <h3 class="card-title">{{ item.tempoMaximoVisita }} min</h3>
               </div>
               <div class="col-2">
                 <p class="card-category">Exibir Exames pendentes</p>
@@ -120,30 +123,35 @@
             <div class="row">
               @for(exame of item.exames; track exame.mne){
               <div class="col-1">{{ exame.mne }}</div>
-              } 
+              }
             </div>
           </div>
         </div>
-      }
-        @if(item.postos.length > 0){
-          <p class="card-category align-start">Postos</p>   
-          <div class="card">
-            <div class="card-body">      
-              <div class="row">                
-                @for(posto of item.postos; track posto.codPosto + '-' + $index){                 
-                <div class="col-3">
-                  <p class="card-category"> {{ posto.codPosto }}</p>
-                  <span class="card-title"><b>Local de Internação</b> : {{local(posto.codLocalInternacao)}}</span>              
-                   </div>
-                }
+        } @if(item.postos.length > 0){
+        <p class="card-category align-start">Postos</p>
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              @for(posto of item.postos; track posto.codPosto + '-' + $index){
+              <div class="col-3">
+                <p class="card-category">{{ posto.codPosto }}</p>
+                <span class="card-title"
+                  ><b>Local de Internação</b> :
+                  {{ local(posto.codLocalInternacao) }}</span
+                >
               </div>
+              }
             </div>
           </div>
+        </div>
         }
-        
       </mat-expansion-panel>
       }@empty {
-      <h3>Sem Perfil de Configuração para exibir</h3>
+      <div class="m-auto mt-4">
+        <div class="loading-indicator">
+          <h3 class="text-center">Sem Perfil de Configuração para exiibir</h3>
+        </div>
+      </div>
       }
     </mat-accordion>
   </div>

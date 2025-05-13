@@ -61,10 +61,14 @@ export class MonitorComponent implements OnInit, OnDestroy {
     baseCalculo: '',
   };
 
-  constructor() {}
+  constructor() {
+    
+  }
+
 
   ngOnInit(): void {
     this.initSetInterval();
+     this.tam(); 
   }
 
   ngOnDestroy(): void {
@@ -73,6 +77,10 @@ export class MonitorComponent implements OnInit, OnDestroy {
     clearInterval(this.intervalIdSlide);
     clearInterval(this.intervalIdTempoMedio);
   }
+tam(): void{
+  const larguraTela = window.innerWidth;
+console.log("A largura da tela é: " + larguraTela + " pixels");
+}
 
   initSetInterval(): void {
     this.configuracaoService

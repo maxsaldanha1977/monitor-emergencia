@@ -22,7 +22,7 @@ footer {
 
 mat-toolbar {
   background-color: transparent;
-  height: 150px;
+  height: 100px;
 }
 
 .align-center {
@@ -168,15 +168,15 @@ mat-toolbar {
 }
 }
 
-@media (min-width: 1200px) and (max-width: 1399px) {
+@media (min-width: 992px) and (max-width: 1399px) {
   .main {
-    margin-top: 1%;
+    margin-top: 5%;
   }
 }
 
-@media (min-width: 1400px) and (max-width: 2000px) {
+@media (min-width: 1400px) {
   .main {
-    margin-top: 7%;
+    margin-top: 10%;
   }
 
   .center-vertical {

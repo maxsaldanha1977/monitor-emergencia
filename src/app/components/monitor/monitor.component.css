@@ -17,8 +17,6 @@ mat-toolbar {
     width: 100%;
 }
 
-
-
 span.ExameLiberado {
     color: green;
     font-weight: bold;
@@ -61,37 +59,15 @@ span.Ativo {
     text-transform: uppercase;
 }
 
-.display-1 {
-    font-size: 2.5rem;
-}
-
-.display-2 {
-    font-size: 2rem;
-}
-
-.display-3 {
-    font-size: 1.5rem;
-}
-
-.display-4 {
-    font-size: 1rem;
-}
-
-.display-5 {
-    font-size: 0.5rem;
-}
-
 
 span.Liberado {
     color: rgb(5, 100, 18);
-    font-size: 1.3rem;
     font-weight: bold;
     text-transform: uppercase;
 }
 
 span.Pronto {
     color: rgb(189, 189, 13);
-    font-size: 1.3rem;
     font-weight: bold;
     text-transform: uppercase;
 }
@@ -99,7 +75,6 @@ span.Pronto {
 
 span.Solicitado {
     color: rgb(119, 117, 117);
-    font-size: 1.3rem;
     font-weight: bold;
     text-transform: uppercase;
 }
@@ -112,7 +87,6 @@ span.Solicitado {
     padding: 20px auto;
     gap: 10px;
 }
-
 
 
 .red {
@@ -145,25 +119,84 @@ mat-spinner {
     margin: 20px auto;
 }
 
-@media (min-width: 1400px) and (max-width: 2000px) {
-    .display-1 {
-        font-size: 4rem;
+@media (min-width: 768px) and (max-width: 1024px) {
+    .none {
+        display: none;
     }
 
-    .display-2 {
-        font-size: 3rem;
+    .center-vertical {
+        margin-top: 1%;
     }
 
-    .display-3 {
+    .img-tam {
+        width: 180px;
+        height: 80px;
+    }
+
+    .text-sz-3 {
+        font-size: 1.5rem;
+    }
+
+}
+
+@media (min-width: 1025px) and (max-width: 1200px) {
+
+    .text-sz-3 {
+        font-size: 1.5rem;
+    }
+}
+
+/*Breakpoint para TV*/
+@media (min-width: 1201px) and (max-width: 1399px) {
+    /*Titulo principal*/
+    .text-sz-1 {
+        font-size: 2.2rem;
+    }
+ /*Label nome*/
+    .text-sz-3 {
+        font-size: 1.7rem;
+    }
+ /*Label status*/
+    .text-sz-4 {
+        font-size: 1.6rem;
+    }
+}
+
+@media (min-width: 1400px) and (max-width: 1599px) {
+  /*Titulo principal*/
+    .text-sz-1 {
+        font-size: 2.2rem;
+    }
+  /*Label data e tempo médio*/
+    .text-sz-2 {
+        font-size: 1.7rem;
+    }
+ /*Label nome*/
+    .text-sz-3 {
+        font-size: 1.8rem;
+    }
+ /*Label status*/
+    .text-sz-4 {
+        font-size: 1.6rem;
+    }
+}
+
+
+@media (min-width: 1600px) {
+
+    .text-sz-1 {
+        font-size: 3.2rem;
+    }
+
+    .text-sz-2 {
+        font-size: 2.3rem;
+    }
+
+    .text-sz-3 {
+        font-size: 2.45rem;
+    }
+
+    .text-sz-4 {
         font-size: 2rem;
     }
-
-    .display-4 {
-        font-size: 1rem;
-    }
-
-    .display-5 {
-        font-size: 0.5rem;
-    }
-
 }
