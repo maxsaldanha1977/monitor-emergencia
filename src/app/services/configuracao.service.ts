@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Configuracao } from '../model/Configuracao';
 import { ConfiguracaoPost } from '../model/ConfiguracaoPost';
+import { ConfiguracaoUpdate } from '../model/ConfiguracaoUpdate';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +26,8 @@ export class ConfiguracaoService {
     return this.http.post<ConfiguracaoPost>(`${this.api}/configs/`, body);
   }
 
-  putConfiguracao(id: any, body: Configuracao): Observable<Configuracao> {
-    return this.http.put<Configuracao>(`${this.api}/configs/${id}`, body);
+  putConfiguracao(id: any, body: ConfiguracaoUpdate): Observable<ConfiguracaoUpdate> {
+    return this.http.put<ConfiguracaoUpdate>(`${this.api}/configs/${id}`, body);
   }
 
   deleteConfiguracao(id: any): Observable<void> {
