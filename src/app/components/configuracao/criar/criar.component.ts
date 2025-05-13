@@ -84,7 +84,7 @@ export class CriarComponent implements OnInit {
       tempoDisponibilidade: ['30', Validators.required],
       tempoMedicao: ['5', Validators.required],
       tempoRefreshTela: ['10', Validators.required],
-      tempoMaximoVisita: ['30', Validators.required],
+      tempoMaximoVisita: ['30'],
       exibirExamePendente: ['true', Validators.required],
       exibirRegistroAtendimento: ['true', Validators.required],
       // Removemos os FormArrays pois agora vamos gerenciar as seleções separadamente
