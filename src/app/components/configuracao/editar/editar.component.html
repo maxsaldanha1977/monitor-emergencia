@@ -250,10 +250,21 @@
                     </div>
                     <div class="col-4 text-end">
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox"
-           [id]="'todos-locais-' + posto.codPosto"
-           [checked]="isTodosLocaisSelecionados(getPostoSelecionado(posto.codPosto))"
-           (change)="toggleTodosLocais(getPostoSelecionado(posto.codPosto))">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          [id]="'todos-locais-' + posto.codPosto"
+                          [checked]="
+                            isTodosLocaisSelecionados(
+                              getPostoSelecionado(posto.codPosto)
+                            )
+                          "
+                          (change)="
+                            toggleTodosLocais(
+                              getPostoSelecionado(posto.codPosto)
+                            )
+                          "
+                        />
                         <label
                           class="form-check-label fw-bold"
                           [for]="'todos-' + posto.codPosto"
@@ -269,10 +280,23 @@
                         class="col-3"
                       >
                         <div class="form-check">
-                         <input class="form-check-input" type="checkbox"
-             [id]="'local-' + local.codLocalInternacao"
-             [checked]="isLocalSelecionadoParaPosto(getPostoSelecionado(posto.codPosto), local)"
-             (change)="toggleLocalParaPosto(getPostoSelecionado(posto.codPosto), local)">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            [id]="'local-' + local.codLocalInternacao"
+                            [checked]="
+                              isLocalSelecionadoParaPosto(
+                                getPostoSelecionado(posto.codPosto),
+                                local
+                              )
+                            "
+                            (change)="
+                              toggleLocalParaPosto(
+                                getPostoSelecionado(posto.codPosto),
+                                local
+                              )
+                            "
+                          />
                           <label
                             class="form-check-label"
                             [for]="
@@ -326,10 +350,13 @@
                 "
               >
                 <div class="form-check">
-                   <input class="form-check-input" type="checkbox" 
-                 [id]="'exame-' + exame.mne"
-                 [checked]="isExameSelecionado(exame)"
-                 (change)="toggleExameSelecionado(exame)">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    [id]="'exame-' + exame.mne"
+                    [checked]="isExameSelecionado(exame)"
+                    (change)="toggleExameSelecionado(exame)"
+                  />
                   <label class="form-check-label" for="exame-{{ exame.mne }}">
                     <strong>{{ exame.mne }}</strong> - {{ exame.nome }}
                   </label>

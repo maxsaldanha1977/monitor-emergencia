@@ -180,47 +180,28 @@ export class EditarComponent implements OnInit {
 
 processarPostosSelecionados(configuracaoExistente: any): void {
   if (configuracaoExistente.postos && configuracaoExistente.postos.length > 0) {
-    // Objeto temporário para agrupar locais por posto
     const postosAgrupados: {[codPosto: string]: PostoPost} = {};
 
-    // Processa cada item do array de postos
     configuracaoExistente.postos.forEach((postoItem: any) => {
       const codPosto = postoItem.codPosto;
       
-      // Se o posto ainda não foi processado, cria uma nova entrada
       if (!postosAgrupados[codPosto]) {
         postosAgrupados[codPosto] = {
           codPosto: codPosto,
           situacao: postoItem.situacao || 'T',
-          codLocalInternacao: '',
+          codLocalInternacao: postoItem.codLocalInternacao || '',
           locaisSelecionados: []
         };
       }
       
-      // Adiciona o local aos selecionados (se houver codLocalInternacao)
+      // Se codLocalInternacao estiver vazio, mantém array vazio (todos selecionados)
       if (postoItem.codLocalInternacao) {
         postosAgrupados[codPosto].locaisSelecionados?.push(postoItem.codLocalInternacao);
       }
     });
 
-    // Converte o objeto agrupado de volta para array
-    this.postosSelecionados = Object.values(postosAgrupados).map(posto => {
-      // Se não há locais selecionados específicos, mantém o array vazio (todos selecionados)
-      if (posto.locaisSelecionados && posto.locaisSelecionados.length === 0) {
-        return {
-          ...posto,
-          codLocalInternacao: ''
-        };
-      }
-      
-      // Se há locais selecionados, define o primeiro como codLocalInternacao
-      return {
-        ...posto,
-        codLocalInternacao: posto.locaisSelecionados?.[0] || ''
-      };
-    });
+    this.postosSelecionados = Object.values(postosAgrupados);
   } else {
-    // Se não houver postos definidos, seleciona todos os postos disponíveis
     this.postosSelecionados = this.postosDisponiveis.map(posto => ({
       codPosto: posto.codPosto,
       situacao: 'T',
@@ -288,49 +269,61 @@ processarPostosSelecionados(configuracaoExistente: any): void {
     }
   }
 
-  toggleLocalParaPosto(posto: PostoPost, local: LocalInternacao): void {
-    const postoIndex = this.postosSelecionados.findIndex(
-      (p) => p.codPosto === posto.codPosto
-    );
+toggleLocalParaPosto(posto: PostoPost, local: LocalInternacao): void {
+  const postoIndex = this.postosSelecionados.findIndex(
+    p => p.codPosto === posto.codPosto
+  );
 
-    if (postoIndex !== -1) {
-      // Inicializa o array se não existir
-      if (!this.postosSelecionados[postoIndex].locaisSelecionados) {
-        this.postosSelecionados[postoIndex].locaisSelecionados = [];
-      }
+  if (postoIndex === -1) return;
 
-      const locais =
-        this.postosSelecionados[postoIndex].locaisSelecionados || [];
-      const localIndex = locais.indexOf(local.codLocalInternacao);
-
-      if (localIndex === -1) {
-        locais.push(local.codLocalInternacao);
-      } else {
-        locais.splice(localIndex, 1);
-      }
-
-      // Atualiza o local principal (pode ser o primeiro selecionado ou vazio)
-      this.postosSelecionados[postoIndex].codLocalInternacao =
-        locais.length > 0 ? locais[0] : '';
-    }
-  }
-
-  toggleTodosLocais(posto: PostoPost): void {
-    const postoIndex = this.postosSelecionados.findIndex(
-      (p) => p.codPosto === posto.codPosto
-    );
-    if (postoIndex === -1) return;
-
-    if (this.isTodosLocaisSelecionados(posto)) {
+  // Se estava no estado "todos selecionados" (codLocalInternacao vazio)
+  if (this.postosSelecionados[postoIndex].codLocalInternacao === '') {
+    // Muda para estado de seleção específica, com todos exceto o clicado selecionados
+    const todosLocais = this.getLocaisDoPosto(posto.codPosto);
+    this.postosSelecionados[postoIndex].locaisSelecionados = 
+      todosLocais
+        .map(l => l.codLocalInternacao)
+        .filter(cod => cod !== local.codLocalInternacao);
+    this.postosSelecionados[postoIndex].codLocalInternacao = 
+      this.postosSelecionados[postoIndex].locaisSelecionados[0] || '';
+  } else {
+    // Estado normal de seleção específica
+    if (!this.postosSelecionados[postoIndex].locaisSelecionados) {
       this.postosSelecionados[postoIndex].locaisSelecionados = [];
-      this.postosSelecionados[postoIndex].codLocalInternacao = '';
-    } else {
-      const locaisDoPosto = this.getLocaisDoPosto(posto.codPosto);
-      this.postosSelecionados[postoIndex].locaisSelecionados =
-        locaisDoPosto.map((l) => l.codLocalInternacao);
-      this.postosSelecionados[postoIndex].codLocalInternacao = '';
     }
+
+    const locais = this.postosSelecionados[postoIndex].locaisSelecionados;
+    const localIndex = locais.indexOf(local.codLocalInternacao);
+
+    if (localIndex === -1) {
+      locais.push(local.codLocalInternacao);
+    } else {
+      locais.splice(localIndex, 1);
+    }
+
+    this.postosSelecionados[postoIndex].codLocalInternacao = 
+      locais.length > 0 ? locais[0] : '';
   }
+}
+
+toggleTodosLocais(posto: PostoPost): void {
+  const postoIndex = this.postosSelecionados.findIndex(
+    (p) => p.codPosto === posto.codPosto
+  );
+  if (postoIndex === -1) return;
+
+  if (this.isTodosLocaisSelecionados(posto)) {
+    // Desmarca todos - define array vazio
+    this.postosSelecionados[postoIndex].locaisSelecionados = [];
+    this.postosSelecionados[postoIndex].codLocalInternacao = '';
+  } else {
+    // Marca todos - define array com todos os locais
+    const locaisDoPosto = this.getLocaisDoPosto(posto.codPosto);
+    this.postosSelecionados[postoIndex].locaisSelecionados =
+      locaisDoPosto.map((l) => l.codLocalInternacao);
+    this.postosSelecionados[postoIndex].codLocalInternacao = '';
+  }
+}
 
   getPostoSelecionado(codPosto: string): PostoPost {
     return (
@@ -347,14 +340,21 @@ processarPostosSelecionados(configuracaoExistente: any): void {
     return posto ? posto.locaisDisponiveis : [];
   }
 
-  isLocalSelecionadoParaPosto(posto: PostoPost, local: LocalInternacao): boolean {
-    const postoSelecionado = this.postosSelecionados.find(
-      (p) => p.codPosto === posto.codPosto
-    );
-    return (
-      postoSelecionado?.locaisSelecionados?.includes(local.codLocalInternacao) || false
-    );
+isLocalSelecionadoParaPosto(posto: PostoPost, local: LocalInternacao): boolean {
+  const postoSelecionado = this.postosSelecionados.find(
+    p => p.codPosto === posto.codPosto
+  );
+  
+  if (!postoSelecionado) return false;
+  
+  // Se codLocalInternacao estiver vazio, considera todos selecionados
+  if (postoSelecionado.codLocalInternacao === '') {
+    return true;
   }
+  
+  // Caso contrário, verifica se o local está na lista de selecionados
+  return postoSelecionado.locaisSelecionados?.includes(local.codLocalInternacao) ?? false;
+}
 
   isExameSelecionado(exame: Exame): boolean {
     return this.examesSelecionados.some((e) => e.mne === exame.mne);
@@ -364,18 +364,20 @@ processarPostosSelecionados(configuracaoExistente: any): void {
     return this.postosSelecionados.some((p) => p.codPosto === posto.codPosto);
   }
 
-  isTodosLocaisSelecionados(posto: PostoPost): boolean {
-    const locaisDoPosto = this.getLocaisDoPosto(posto.codPosto);
-    const postoSelecionado = this.postosSelecionados.find(
-      (p) => p.codPosto === posto.codPosto
-    );
+isTodosLocaisSelecionados(posto: PostoPost): boolean {
+  const postoSelecionado = this.postosSelecionados.find(p => p.codPosto === posto.codPosto);
+  if (!postoSelecionado) return false;
 
-    if (!postoSelecionado?.locaisSelecionados) return false;
-
-    return locaisDoPosto.every((local) =>
-      postoSelecionado.locaisSelecionados?.includes(local.codLocalInternacao)
-    );
+  // Se codLocalInternacao estiver vazio, considera todos selecionados
+  if (postoSelecionado.codLocalInternacao === '') {
+    return true;
   }
+
+  const locaisDoPosto = this.getLocaisDoPosto(posto.codPosto);
+  return locaisDoPosto.every(local => 
+    postoSelecionado.locaisSelecionados?.includes(local.codLocalInternacao)
+  );
+}
 
   filtrarLocaisPorPosto(posto: Posto): LocalInternacao[] {
     return this.locaisInternacaoDisponiveis.filter(
@@ -401,6 +403,7 @@ processarPostosSelecionados(configuracaoExistente: any): void {
       this.configuracaoForm.valid &&
       this.examesSelecionados.length > 0 &&
       this.postosSelecionados.length > 0
+       
     ) {
         const postosParaEnviar = this.postosSelecionados.flatMap((posto) => {
         // Caso "Selecionar todos" esteja marcado (sem locais específicos)
@@ -416,7 +419,6 @@ processarPostosSelecionados(configuracaoExistente: any): void {
             },
           ];
         }
-
         // Caso tenha locais específicos selecionados
         return (
           posto.locaisSelecionados?.map((localCod) => ({

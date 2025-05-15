@@ -133,10 +133,10 @@
           <div class="card-body">
             <div class="row">
               @for(posto of item.postos; track posto.codPosto + '-' + $index){
-              <div class="col-3">
-                <p class="card-category">{{ posto.codPosto }}</p>
+              <div class="col-2">
+                <span class="card-category"><strong>{{ posto.codPosto }}</strong></span>
                 <span class="card-title"
-                  ><b>Local de Internação</b> :
+                  > :
                   {{ local(posto.codLocalInternacao) }}</span
                 >
               </div>
