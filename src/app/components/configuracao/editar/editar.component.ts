@@ -51,7 +51,7 @@ interface PostoComLocais extends Posto {
     CharacterCounterDirective,
     CustomFilterPipePipe,
     OrderModule,
-    FilterPipeModule
+    FilterPipeModule,
   ],
   templateUrl: './editar.component.html',
   styleUrl: './editar.component.css',
@@ -99,18 +99,18 @@ export class EditarComponent implements OnInit {
   carregarDados(): void {
     this.carregando = true;
     const itemId = this.route.snapshot.paramMap.get('id');
-    
+
     // Primeiro carrega todos os dados disponíveis
     this.carregarDadosDisponiveis().then(() => {
       if (itemId) {
         this.carregarConfiguracaoExistente(itemId);
       } else {
         // Modo criação - seleciona todos os postos por padrão
-        this.postosSelecionados = this.postosDisponiveis.map(posto => ({
+        this.postosSelecionados = this.postosDisponiveis.map((posto) => ({
           codPosto: posto.codPosto,
           situacao: 'T',
           codLocalInternacao: '',
-          locaisSelecionados: []
+          locaisSelecionados: [],
         }));
         this.carregando = false;
       }
@@ -123,7 +123,7 @@ export class EditarComponent implements OnInit {
       this.lolcalInternacaoService.getAllLocalInternacao().subscribe({
         next: (locais) => {
           this.locaisInternacaoDisponiveis = locais;
-          
+
           // Depois carrega os postos
           this.postosService.getAllPostos().subscribe({
             next: (postos) => {
@@ -133,25 +133,25 @@ export class EditarComponent implements OnInit {
                   locaisDisponiveis: this.filtrarLocaisPorPosto(posto),
                 }))
                 .filter((posto) => posto.locaisDisponiveis.length > 0);
-              
+
               resolve();
             },
             error: (error) => {
               console.error('Erro ao carregar postos', error);
               resolve();
-            }
+            },
           });
         },
         error: (error) => {
           console.error('Erro ao carregar locais de internação', error);
           resolve();
-        }
+        },
       });
 
       // Carrega exames disponíveis em paralelo
       this.examesService.getAllExames().subscribe({
         next: (exames) => (this.examesDisponiveis = exames),
-        error: (error) => console.error('Erro ao carregar exames', error)
+        error: (error) => console.error('Erro ao carregar exames', error),
       });
     });
   }
@@ -161,57 +161,122 @@ export class EditarComponent implements OnInit {
       next: (configuracaoExistente) => {
         // Preenche o formulário com os dados básicos
         this.configuracaoForm.patchValue(configuracaoExistente);
-        
+
         // Preenche os exames selecionados
-        this.examesSelecionados = configuracaoExistente.exames ? [...configuracaoExistente.exames] : [];
-        
+        this.examesSelecionados = configuracaoExistente.exames
+          ? [...configuracaoExistente.exames]
+          : [];
+
         // Trata os postos selecionados
         this.processarPostosSelecionados(configuracaoExistente);
-        
+
         this.carregando = false;
         this.changeDetectorRef.detectChanges();
       },
       error: (error) => {
         console.error('Erro ao carregar configuração existente', error);
         this.carregando = false;
-      }
+      },
     });
   }
 
-processarPostosSelecionados(configuracaoExistente: any): void {
-  if (configuracaoExistente.postos && configuracaoExistente.postos.length > 0) {
-    const postosAgrupados: {[codPosto: string]: PostoPost} = {};
+  processarPostosSelecionados(configuracaoExistente: any): void {
+    if (
+      configuracaoExistente.postos &&
+      configuracaoExistente.postos.length > 0
+    ) {
+      const postosAgrupados: { [codPosto: string]: PostoPost } = {};
 
-    configuracaoExistente.postos.forEach((postoItem: any) => {
-      const codPosto = postoItem.codPosto;
-      
-      if (!postosAgrupados[codPosto]) {
-        postosAgrupados[codPosto] = {
-          codPosto: codPosto,
-          situacao: postoItem.situacao || 'T',
-          codLocalInternacao: postoItem.codLocalInternacao || '',
-          locaisSelecionados: []
-        };
-      }
-      
-      // Se codLocalInternacao estiver vazio, mantém array vazio (todos selecionados)
-      if (postoItem.codLocalInternacao) {
-        postosAgrupados[codPosto].locaisSelecionados?.push(postoItem.codLocalInternacao);
-      }
-    });
+      configuracaoExistente.postos.forEach((postoItem: any) => {
+        const codPosto = postoItem.codPosto;
 
-    this.postosSelecionados = Object.values(postosAgrupados);
-  } else {
-    this.postosSelecionados = this.postosDisponiveis.map(posto => ({
-      codPosto: posto.codPosto,
-      situacao: 'T',
-      codLocalInternacao: '',
-      locaisSelecionados: []
-    }));
+        if (!postosAgrupados[codPosto]) {
+          postosAgrupados[codPosto] = {
+            codPosto: codPosto,
+            situacao: postoItem.situacao || 'T',
+            codLocalInternacao: postoItem.codLocalInternacao || '',
+            locaisSelecionados: [],
+          };
+        }
+
+        // Se codLocalInternacao estiver vazio, mantém array vazio (todos selecionados)
+        if (postoItem.codLocalInternacao) {
+          postosAgrupados[codPosto].locaisSelecionados?.push(
+            postoItem.codLocalInternacao
+          );
+        }
+      });
+
+      this.postosSelecionados = Object.values(postosAgrupados);
+    } else {
+      this.postosSelecionados = this.postosDisponiveis.map((posto) => ({
+        codPosto: posto.codPosto,
+        situacao: 'T',
+        codLocalInternacao: '',
+        locaisSelecionados: [],
+      }));
+    }
   }
-}
 
-   toggleLocaisSelecionado(posto: Posto, local: LocalInternacao): void {
+  //POSTO
+  getPostoSelecionado(codPosto: string): PostoPost {
+    return (
+      this.postosSelecionados.find((p) => p.codPosto === codPosto) || {
+        codPosto: codPosto,
+        situacao: 'T',
+        codLocalInternacao: '',
+      }
+    );
+  }
+
+  togglePostoSelecionado(posto: PostoComLocais): void {
+    const index = this.postosSelecionados.findIndex(
+      (p) => p.codPosto === posto.codPosto
+    );
+
+    if (index === -1) {
+      this.postosSelecionados.push({
+        codPosto: posto.codPosto,
+        situacao: 'T',
+        codLocalInternacao: '',
+        locaisSelecionados: [],
+      });
+    } else {
+      this.postosSelecionados.splice(index, 1);
+    }
+  }
+
+  isPostoSelecionado(posto: Posto): boolean {
+    return this.postosSelecionados.some((p) => p.codPosto === posto.codPosto);
+  }
+
+  deveExibirPosto(posto: PostoComLocais): boolean {
+    return posto.locaisDisponiveis && posto.locaisDisponiveis.length > 0;
+  }
+
+  //EXAME
+  toggleExameSelecionado(exame: ExamePost): void {
+    const index = this.examesSelecionados.findIndex((p) => p.mne === exame.mne);
+
+    if (index === -1) {
+      this.examesSelecionados.push({ mne: exame.mne });
+    } else {
+      this.examesSelecionados.splice(index, 1);
+    }
+  }
+
+  isExameSelecionado(exame: Exame): boolean {
+    return this.examesSelecionados.some((e) => e.mne === exame.mne);
+  }
+
+  //LOCAL DE INTERNAÇÃO
+
+  getLocaisDoPosto(codPosto: string): LocalInternacao[] {
+    const posto = this.postosDisponiveis.find((p) => p.codPosto === codPosto);
+    return posto ? posto.locaisDisponiveis : [];
+  }
+
+  toggleLocaisSelecionado(posto: Posto, local: LocalInternacao): void {
     // Filtra os locais de internação disponíveis apenas para o posto selecionado
     const locaisDoPosto = this.locaisInternacaoDisponiveis.filter(
       (l) => l.codPosto === posto.codPosto
@@ -242,151 +307,98 @@ processarPostosSelecionados(configuracaoExistente: any): void {
     }
   }
 
-  toggleExameSelecionado(exame: ExamePost): void {
-    const index = this.examesSelecionados.findIndex((p) => p.mne === exame.mne);
+  toggleTodosLocais(posto: PostoPost): void {
+    const postoIndex = this.postosSelecionados.findIndex(
+      (p) => p.codPosto === posto.codPosto
+    );
+    if (postoIndex === -1) return;
 
-    if (index === -1) {
-      this.examesSelecionados.push({ mne: exame.mne });
+    if (this.isTodosLocaisSelecionados(posto)) {
+      // Desmarca todos - define array vazio
+      this.postosSelecionados[postoIndex].locaisSelecionados = [];
+      this.postosSelecionados[postoIndex].codLocalInternacao = '';
     } else {
-      this.examesSelecionados.splice(index, 1);
+      // Marca todos - define array com todos os locais
+      const locaisDoPosto = this.getLocaisDoPosto(posto.codPosto);
+      this.postosSelecionados[postoIndex].locaisSelecionados =
+        locaisDoPosto.map((l) => l.codLocalInternacao);
+      this.postosSelecionados[postoIndex].codLocalInternacao = '';
     }
   }
 
-  togglePostoSelecionado(posto: PostoComLocais): void {
-    const index = this.postosSelecionados.findIndex(
+  isLocalSelecionadoParaPosto(
+    posto: PostoPost,
+    local: LocalInternacao
+  ): boolean {
+    const postoSelecionado = this.postosSelecionados.find(
       (p) => p.codPosto === posto.codPosto
     );
 
-    if (index === -1) {
-      this.postosSelecionados.push({
-        codPosto: posto.codPosto,
-        situacao: 'T',
-        codLocalInternacao: '',
-        locaisSelecionados: []
-      });
-    } else {
-      this.postosSelecionados.splice(index, 1);
-    }
-  }
+    if (!postoSelecionado) return false;
 
-toggleLocalParaPosto(posto: PostoPost, local: LocalInternacao): void {
-  const postoIndex = this.postosSelecionados.findIndex(
-    p => p.codPosto === posto.codPosto
-  );
-
-  if (postoIndex === -1) return;
-
-  // Se estava no estado "todos selecionados" (codLocalInternacao vazio)
-  if (this.postosSelecionados[postoIndex].codLocalInternacao === '') {
-    // Muda para estado de seleção específica, com todos exceto o clicado selecionados
-    const todosLocais = this.getLocaisDoPosto(posto.codPosto);
-    this.postosSelecionados[postoIndex].locaisSelecionados = 
-      todosLocais
-        .map(l => l.codLocalInternacao)
-        .filter(cod => cod !== local.codLocalInternacao);
-    this.postosSelecionados[postoIndex].codLocalInternacao = 
-      this.postosSelecionados[postoIndex].locaisSelecionados[0] || '';
-  } else {
-    // Estado normal de seleção específica
-    if (!this.postosSelecionados[postoIndex].locaisSelecionados) {
-      this.postosSelecionados[postoIndex].locaisSelecionados = [];
+    // Se codLocalInternacao estiver vazio, considera todos selecionados
+    if (postoSelecionado.codLocalInternacao === '') {
+      return true;
     }
 
-    const locais = this.postosSelecionados[postoIndex].locaisSelecionados;
-    const localIndex = locais.indexOf(local.codLocalInternacao);
-
-    if (localIndex === -1) {
-      locais.push(local.codLocalInternacao);
-    } else {
-      locais.splice(localIndex, 1);
-    }
-
-    this.postosSelecionados[postoIndex].codLocalInternacao = 
-      locais.length > 0 ? locais[0] : '';
-  }
-}
-
-toggleTodosLocais(posto: PostoPost): void {
-  const postoIndex = this.postosSelecionados.findIndex(
-    (p) => p.codPosto === posto.codPosto
-  );
-  if (postoIndex === -1) return;
-
-  if (this.isTodosLocaisSelecionados(posto)) {
-    // Desmarca todos - define array vazio
-    this.postosSelecionados[postoIndex].locaisSelecionados = [];
-    this.postosSelecionados[postoIndex].codLocalInternacao = '';
-  } else {
-    // Marca todos - define array com todos os locais
-    const locaisDoPosto = this.getLocaisDoPosto(posto.codPosto);
-    this.postosSelecionados[postoIndex].locaisSelecionados =
-      locaisDoPosto.map((l) => l.codLocalInternacao);
-    this.postosSelecionados[postoIndex].codLocalInternacao = '';
-  }
-}
-
-  getPostoSelecionado(codPosto: string): PostoPost {
+    // Caso contrário, verifica se o local está na lista de selecionados
     return (
-      this.postosSelecionados.find((p) => p.codPosto === codPosto) || {
-        codPosto: codPosto,
-        situacao: 'T',
-        codLocalInternacao: '',
+      postoSelecionado.locaisSelecionados?.includes(local.codLocalInternacao) ??
+      false
+    );
+  }
+
+  isTodosLocaisSelecionados(posto: PostoPost): boolean {
+    const postoSelecionado = this.postosSelecionados.find(
+      (p) => p.codPosto === posto.codPosto
+    );
+    if (!postoSelecionado) return false;
+
+    // Se codLocalInternacao estiver vazio, considera todos selecionados
+    if (postoSelecionado.codLocalInternacao === '') {
+      return true;
+    }
+
+    const locaisDoPosto = this.getLocaisDoPosto(posto.codPosto);
+    return locaisDoPosto.every((local) =>
+      postoSelecionado.locaisSelecionados?.includes(local.codLocalInternacao)
+    );
+  }
+
+  toggleLocalParaPosto(posto: PostoPost, local: LocalInternacao): void {
+    const postoIndex = this.postosSelecionados.findIndex(
+      (p) => p.codPosto === posto.codPosto
+    );
+
+    if (postoIndex === -1) return;
+
+    // Se estava no estado "todos selecionados" (codLocalInternacao vazio)
+    if (this.postosSelecionados[postoIndex].codLocalInternacao === '') {
+      // Muda para estado de seleção específica, com todos exceto o clicado selecionados
+      const todosLocais = this.getLocaisDoPosto(posto.codPosto);
+      this.postosSelecionados[postoIndex].locaisSelecionados = todosLocais
+        .map((l) => l.codLocalInternacao)
+        .filter((cod) => cod !== local.codLocalInternacao);
+      this.postosSelecionados[postoIndex].codLocalInternacao =
+        this.postosSelecionados[postoIndex].locaisSelecionados[0] || '';
+    } else {
+      // Estado normal de seleção específica
+      if (!this.postosSelecionados[postoIndex].locaisSelecionados) {
+        this.postosSelecionados[postoIndex].locaisSelecionados = [];
       }
-    );
-  }
 
-  getLocaisDoPosto(codPosto: string): LocalInternacao[] {
-    const posto = this.postosDisponiveis.find((p) => p.codPosto === codPosto);
-    return posto ? posto.locaisDisponiveis : [];
-  }
+      const locais = this.postosSelecionados[postoIndex].locaisSelecionados;
+      const localIndex = locais.indexOf(local.codLocalInternacao);
 
-isLocalSelecionadoParaPosto(posto: PostoPost, local: LocalInternacao): boolean {
-  const postoSelecionado = this.postosSelecionados.find(
-    p => p.codPosto === posto.codPosto
-  );
-  
-  if (!postoSelecionado) return false;
-  
-  // Se codLocalInternacao estiver vazio, considera todos selecionados
-  if (postoSelecionado.codLocalInternacao === '') {
-    return true;
-  }
-  
-  // Caso contrário, verifica se o local está na lista de selecionados
-  return postoSelecionado.locaisSelecionados?.includes(local.codLocalInternacao) ?? false;
-}
+      if (localIndex === -1) {
+        locais.push(local.codLocalInternacao);
+      } else {
+        locais.splice(localIndex, 1);
+      }
 
-  isExameSelecionado(exame: Exame): boolean {
-    return this.examesSelecionados.some((e) => e.mne === exame.mne);
-  }
-
-  isPostoSelecionado(posto: Posto): boolean {
-    return this.postosSelecionados.some((p) => p.codPosto === posto.codPosto);
-  }
-
-isTodosLocaisSelecionados(posto: PostoPost): boolean {
-  const postoSelecionado = this.postosSelecionados.find(p => p.codPosto === posto.codPosto);
-  if (!postoSelecionado) return false;
-
-  // Se codLocalInternacao estiver vazio, considera todos selecionados
-  if (postoSelecionado.codLocalInternacao === '') {
-    return true;
-  }
-
-  const locaisDoPosto = this.getLocaisDoPosto(posto.codPosto);
-  return locaisDoPosto.every(local => 
-    postoSelecionado.locaisSelecionados?.includes(local.codLocalInternacao)
-  );
-}
-
-  filtrarLocaisPorPosto(posto: Posto): LocalInternacao[] {
-    return this.locaisInternacaoDisponiveis.filter(
-      (local) => local.codPosto === posto.codPosto
-    );
-  }
-
-  deveExibirPosto(posto: PostoComLocais): boolean {
-    return posto.locaisDisponiveis && posto.locaisDisponiveis.length > 0;
+      this.postosSelecionados[postoIndex].codLocalInternacao =
+        locais.length > 0 ? locais[0] : '';
+    }
   }
 
   atualizarLocalPosto(codPosto: string, codLocal: string): void {
@@ -398,14 +410,19 @@ isTodosLocaisSelecionados(posto: PostoPost): boolean {
     }
   }
 
+  filtrarLocaisPorPosto(posto: Posto): LocalInternacao[] {
+    return this.locaisInternacaoDisponiveis.filter(
+      (local) => local.codPosto === posto.codPosto
+    );
+  }
+
   onSubmit(): void {
     if (
       this.configuracaoForm.valid &&
       this.examesSelecionados.length > 0 &&
       this.postosSelecionados.length > 0
-       
     ) {
-        const postosParaEnviar = this.postosSelecionados.flatMap((posto) => {
+      const postosParaEnviar = this.postosSelecionados.flatMap((posto) => {
         // Caso "Selecionar todos" esteja marcado (sem locais específicos)
         if (
           this.isTodosLocaisSelecionados(posto) ||
@@ -434,17 +451,22 @@ isTodosLocaisSelecionados(posto: PostoPost): boolean {
         exames: this.examesSelecionados,
         postos: postosParaEnviar,
       };
-    
-  //console.log('Dados a enviar:', JSON.stringify(configuracao, null, 2));
-     
+
+      //console.log('Dados a enviar:', JSON.stringify(configuracao, null, 2));
+
       const itemId = this.route.snapshot.paramMap.get('id');
-    const operacao = this.configuracaoService.putConfiguracao(itemId, configuracao);
-    operacao.subscribe({
+      const operacao = this.configuracaoService.putConfiguracao(
+        itemId,
+        configuracao
+      );
+      operacao.subscribe({
         next: (response) => {
           Swal.fire({
             position: 'top-end',
             icon: 'success',
-            title: itemId ? 'Cadastro atualizado com sucesso!' : 'Cadastro criado com sucesso!',
+            title: itemId
+              ? 'Cadastro atualizado com sucesso!'
+              : 'Cadastro criado com sucesso!',
             showConfirmButton: false,
             timer: 1000,
           });
@@ -454,11 +476,13 @@ isTodosLocaisSelecionados(posto: PostoPost): boolean {
           Swal.fire({
             position: 'top-end',
             icon: 'error',
-            text: `Ocorreu um erro, o cadastro não foi ${itemId ? 'atualizado' : 'realizado'}, tente novamente!`,
+            text: `Ocorreu um erro, o cadastro não foi ${
+              itemId ? 'atualizado' : 'realizado'
+            }, tente novamente!`,
             showConfirmButton: false,
             timer: 1000,
           });
-        }
+        },
       });
     } else {
       Swal.fire({
