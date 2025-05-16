@@ -72,7 +72,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         next: (response: any) => {
           this.configs = response;
           Swal.fire({
-            position: 'top-end',
             icon: 'success',
             title: 'Perfil de Configuração, carregado com sucesso!',
             showConfirmButton: false,

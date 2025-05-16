@@ -462,7 +462,6 @@ export class EditarComponent implements OnInit {
       operacao.subscribe({
         next: (response) => {
           Swal.fire({
-            position: 'top-end',
             icon: 'success',
             title: itemId
               ? 'Cadastro atualizado com sucesso!'
@@ -474,7 +473,6 @@ export class EditarComponent implements OnInit {
         error: (error) => {
           console.error('Erro:', error);
           Swal.fire({
-            position: 'top-end',
             icon: 'error',
             text: `Ocorreu um erro, o cadastro não foi ${
               itemId ? 'atualizado' : 'realizado'
@@ -486,7 +484,6 @@ export class EditarComponent implements OnInit {
       });
     } else {
       Swal.fire({
-        position: 'top-end',
         icon: 'error',
         text: 'Preencha todos os campos obrigatórios e selecione pelo menos um exame e um posto!',
         showConfirmButton: true,

@@ -51,16 +51,13 @@ export class ConfiguracaoComponent implements OnInit {
         });
       //SweetAlert2
       Swal.fire({
-        position: 'top-end',
         icon: 'success',
         title: 'Carregado com sucesso!',
         showConfirmButton: false,
         timer: 1500,
       });
     } catch (error) {
-      Swal.fire({
-        position: 'top-end',
-        icon: 'error',
+      Swal.fire({        icon: 'error',
         text: 'Ocorreu um erro, o caregamento das informações!',
         showConfirmButton: false,
         timer: 1500,

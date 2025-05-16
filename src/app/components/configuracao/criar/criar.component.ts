@@ -364,7 +364,6 @@ export class CriarComponent implements OnInit {
         (response) => {
           console.log('Sucesso:', response);
           Swal.fire({
-                 position: 'top-end',
                  icon: 'success',
                  title: 'Cadastro criado com sucesso!',
                  showConfirmButton: false,
@@ -374,7 +373,6 @@ export class CriarComponent implements OnInit {
         (error) => {
           console.error('Erro:', error);
           Swal.fire({
-                  position: 'top-end',
                   icon: 'error',
                   text: 'Ocorreu um erro, o cadastro não foi realizado, tente novamente!',
                   showConfirmButton: false,
@@ -384,7 +382,6 @@ export class CriarComponent implements OnInit {
       );
     } else {
       Swal.fire({
-        position: 'top-end',
         icon: 'error',
         text: 'Preencha pelo menos um local de internação para o posto habilitado!',
         showConfirmButton: true,

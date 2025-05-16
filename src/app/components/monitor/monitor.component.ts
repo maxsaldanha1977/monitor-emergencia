@@ -143,7 +143,6 @@ console.log("A largura da tela é: " + larguraTela + " pixels");
         },
         error: (error) => {
           Swal.fire({
-            position: 'top-end',
             icon: 'error',
             text: 'Ocorreu um erro no caregamento das informações! Atualize o navegador ou tente mais tarde.',
             showConfirmButton: false,
@@ -173,7 +172,6 @@ console.log("A largura da tela é: " + larguraTela + " pixels");
             );
             this.currentPage = 0;
             Swal.fire({
-              position: 'top-end',
               icon: 'success',
               title: 'Carregado com sucesso!',
               showConfirmButton: false,
@@ -188,7 +186,6 @@ console.log("A largura da tela é: " + larguraTela + " pixels");
         error: (error) => {
           this.textLoading = 'Erro no carregamento ...'; //Defini o texto para o pré carregando
           Swal.fire({
-            position: 'top-end',
             icon: 'error',
             text: 'Ocorreu um erro no caregamento das informações! Atualize o navegador ou tente mais tarde.',
             showConfirmButton: false,
