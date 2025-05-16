@@ -1,17 +1,16 @@
 <mat-toolbar class="user-select-none"> 
-  <img
-    class="img-fluid mt-3 rounded"
-    src="assets/img/ic-monitor.svg"
-    alt="Logo"
-    height="70px"
-    width="70px"
-  />
-  <span class="text-danger text-bolder text-sz-1 align-middle mt-3 none">{{
+    <img
+      class="mt-4 mx-3"
+      src="assets/img/logo.png"
+      alt="Logo"
+    />  
+
+  <span class="text-danger text-bolder text-sz-1 align-middle mt-3 mx-2 none">{{
     title
   }}</span>
   <span class="example-spacer"></span>
-  <div>
-     <p class="text-sz-2 mt-1 card-title text-center fw-lighter">Perfil: {{configuracao.idConfig}} - {{configuracao.descricao}}</p>
+  <div class="mx-2">
+         <p class="text-sz-2 mt-1 card-title text-center fw-lighter">Perfil: {{configuracao.idConfig}} - {{configuracao.descricao}}</p>
     <span class="align-middle text-sz-2"> {{ dataHoraFormatada }}.</span>   
   </div>
   <span class="example-spacer"></span>

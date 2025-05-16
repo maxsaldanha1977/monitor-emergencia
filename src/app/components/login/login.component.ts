@@ -20,6 +20,8 @@ import { ConfiguracaoService } from '../../services/configuracao.service';
 import { OrderModule } from 'ngx-order-pipe';
 import { count, delay, retry } from 'rxjs';
 import Swal from 'sweetalert2';
+import { environment } from '../../../environments/environment';
+import { ImageService } from '../../services/image.service';
 @Component({
   selector: 'app-login',
   imports: [
@@ -37,24 +39,28 @@ import Swal from 'sweetalert2';
   styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit, OnDestroy {
+  private configService = inject(ConfiguracaoService);
+  private imageService = inject(ImageService);
   private intervalId: any;
-  private serviceConfig = inject(ConfiguracaoService);
-  ano: any = new Date().getFullYear();
 
+  imageUrl: string | null = null;
+  configs: Configuracao[] = []; // Variável para armazenar as configurações
+
+  id: any; //Incializador do id selecionado no select
+  ano: any = new Date().getFullYear();
   order: string = 'idConfig'; //identificação para ordenação da listagem
   disableSelect = new FormControl(false); // Variável para desabilitar o botão de  acessar;
-  configs: Configuracao[] = []; // Variável para armazenar as configurações
   dataHoraFormatada: string = ''; // Variável para armazenar a data e hora formatada
-  id: any; //Incializador do id selecionado no select
 
   constructor() {}
 
   ngOnInit(): void {
     this.getConfiguracao();
+    this.updateLogo();
   }
 
   getConfiguracao() {
-    this.serviceConfig
+    this.configService
       .getAllConfiguracao()
       .pipe(
         retry({
@@ -65,7 +71,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response: any) => {
           this.configs = response;
-            Swal.fire({
+          Swal.fire({
             position: 'top-end',
             icon: 'success',
             title: 'Perfil de Configuração, carregado com sucesso!',
@@ -77,6 +83,16 @@ export class LoginComponent implements OnInit, OnDestroy {
           console.error('Erro ao carregar os perfis:', error);
         },
       });
+  }
+  // Faz a requisição
+  updateLogo() {
+    this.imageService.getImage( 'http://192.168.239.142:9090/logo-image').subscribe((success) => {
+      if (success) {
+        console.log('Logo atualizado!');
+        // Forçar recarregamento da imagem
+        this.imageUrl = 'assets/img/logo.png?' + Date.now();
+      }
+    });
   }
 
   ngOnDestroy(): void {
