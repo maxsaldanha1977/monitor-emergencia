@@ -42,10 +42,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   private configService = inject(ConfiguracaoService);
   private imageService = inject(ImageService);
   private intervalId: any;
-
-  imageUrl: string | null = null;
+  logoUrl: string | null = null;
+  loading = true;
+  api: String = environment.api;
   configs: Configuracao[] = []; // Variável para armazenar as configurações
-
+  imageUrl: any;
   id: any; //Incializador do id selecionado no select
   ano: any = new Date().getFullYear();
   order: string = 'idConfig'; //identificação para ordenação da listagem
@@ -56,7 +57,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getConfiguracao();
-    this.updateLogo();
+    this.logoUrl = this.imageService.defaultLogo;
+    this.loadLogo();
   }
 
   getConfiguracao() {
@@ -83,18 +85,30 @@ export class LoginComponent implements OnInit, OnDestroy {
         },
       });
   }
-  // Faz a requisição
-  updateLogo() {
-    this.imageService.getImage( 'http://192.168.239.142:9090/logo-image').subscribe((success) => {
-      if (success) {
-        console.log('Logo atualizado!');
-        // Forçar recarregamento da imagem
-        this.imageUrl = 'assets/img/logo.png?' + Date.now();
-      }
+  private loadLogo() {
+    this.imageService.getLogo().subscribe({
+      next: (url) => {
+        this.logoUrl = url;
+      },
+      error: () => {
+        this.loading = false;
+      },
     });
+  }
+
+  onImageLoad() {
+    this.loading = false;
+  }
+
+  onImageError() {
+    this.logoUrl = this.imageService.defaultLogo;
+    this.loading = false;
   }
 
   ngOnDestroy(): void {
     clearInterval(this.intervalId);
+    if (this.logoUrl?.startsWith('blob:')) {
+      URL.revokeObjectURL(this.logoUrl);
+    }
   }
 }

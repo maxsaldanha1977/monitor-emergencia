@@ -18,6 +18,11 @@ export const httpStatusInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
+         // Ignora erros de imagens
+      if (isImageRequest(req)) {
+        return throwError(() => error);
+      }
+
       // Verifica se é um erro de conexão
       if (error.status === 0 || error.error instanceof ErrorEvent) {
         serverStatus.checkConnection().subscribe();;
@@ -107,4 +112,19 @@ function showErrorAlert(title: string, message: string): void {
     timer: 5000,
     timerProgressBar: true
   });
+}
+
+// Função auxiliar para identificar requisições de imagem
+function isImageRequest(req: any): boolean {
+  // Verifica pelo URL (ex: termina com .png ou contém /images/)
+  if (req.url.match(/\.(png|jpg|jpeg|gif)$/) || req.url.includes('/images/')) {
+    return true;
+  }
+  
+  // Verifica pelo Accept header
+  if (req.headers.get('Accept')?.includes('image/')) {
+    return true;
+  }
+  
+  return false;
 }

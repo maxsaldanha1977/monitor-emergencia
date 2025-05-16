@@ -1,14 +1,30 @@
 <div class="background-image">
   <mat-toolbar class="user-select-none">
-    <img
+    <!--
+      <img
       class="mt-4 mx-3"
-      src="assets/img/logo.png"
+      src="{{imageUrl}}"
       alt="Logo"
        style="mix-blend-mode: multiply; max-width: 200px;max-height: 200px;"
     />  
-
-    <span class="example-spacer"></span>
+    <img
+      *ngIf="logoUrl"
+      [src]="logoUrl"
+      alt="Logo"
+      (error)="handleImageError()"
+      style="mix-blend-mode: multiply; max-width: 200px; max-height: 200px"
+    />-->
+<img [src]="logoUrl" 
+           alt="Logo"
+           (load)="onImageLoad()"
+           (error)="onImageError()"
+           [class.loading]="loading"
+          
+            style="mix-blend-mode: multiply; max-width: 200px; max-height: 200px">
+           
     
+    <span class="example-spacer"></span>
+
     <span class="text-danger h1 mx-3 mt-4">Monitor de Emergência</span>
     <span class="example-spacer"></span>
     <a
@@ -67,23 +83,24 @@
   </div>
   <footer class="fixed-bottom">
     <div class="row user-select-none">
-      <div class="col-3 ">
-         <p class="text-white" >Karyon Consultoria de Informática</p>
-           <img
-      class="profile mx-3"
-      src="assets/img/karyon.jpeg"
-      width="70px"
-      height="70px"
-      alt="Logo"
-    />  
-
-        
+      <div class="col-3 col-sm-1 col-md-1 col-lg-3">
+        <div>
+          <span class="text-white none">Karyon Consultoria de Informática</span>
+        </div>
+        <img
+          class="profile none mx-3"
+          src="assets/img/karyon.jpeg"
+          width="70px"
+          height="70px"
+          alt="Logo"
+        />
       </div>
-      <div class="col-6">
+      <div class="col-6 col-sm-10 col-md-10 col-lg-6">
         <div class="row">
           <div class="col-12">
             <div class="text-white">
-              <strong>Setor de Suporte</strong>: Atendimento das 8h às 17h, de segunda à sexta.
+              <strong>Setor de Suporte</strong>: Atendimento das 8h às 17h, de
+              segunda à sexta.
             </div>
             <span class="text-white">
               Contatos:
@@ -94,16 +111,24 @@
           <div class="col-12">
             <div class="text-center text-white mt-4">
               <small>
-                Copyright © {{ ano }} Monitor de Emergência. Todos os direitos reservados.</small
+                Copyright © {{ ano }} Monitor de Emergência. Todos os direitos
+                reservados.</small
               >
             </div>
           </div>
         </div>
       </div>
-      <div class="col-3">
-          <p class="text-white" >Integrado ao Sistema</p>
-          <img class="none mx-2 " src="assets/img/logo_bioslab.png" alt="Logo" width="200px" height="70px" />
-     
+      <div class="col-3 col-sm-1 col-md-1 col-lg-3">
+        <div>
+          <span class="text-white none">Integrado ao Sistema</span>
+        </div>
+
+        <img
+          class="mx-2 none"
+          src="assets/img/logo_bioslab.png"
+          alt="Logo"
+           style="max-width: 220px; max-height: 70px"
+        />
       </div>
     </div>
   </footer>
