@@ -183,12 +183,12 @@ mat-spinner {
 
     /*Titulo principal*/
     .text-sz-1 {
-        font-size: 2.2rem;
+        font-size: 2rem;
     }
 
     /*Label data e tempo médio*/
     .text-sz-2 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 
     /*Label nome*/
@@ -229,12 +229,12 @@ mat-spinner {
 
     /*Titulo principal*/
     .text-sz-1 {
-        font-size: 3.2rem;
+        font-size: 3rem;
     }
 
     /*Label data e tempo médio*/
     .text-sz-2 {
-        font-size: 2.3rem;
+        font-size: 2rem;
     }
 
     /*Label nome*/
