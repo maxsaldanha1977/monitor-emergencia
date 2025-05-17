@@ -48,7 +48,7 @@
                 @for (item of configs | orderBy: 'idConfig'; track item.idConfig
                 ) {
                 <option value="{{ item.idConfig }}">
-                  Perfil: {{ item.idConfig }} - {{ item.descricao }}
+            👤 {{ item.idConfig }} - {{ item.descricao }}
                 </option>
                 } @empty {
                 <option value="0">Nenhum perfil encontrado</option>

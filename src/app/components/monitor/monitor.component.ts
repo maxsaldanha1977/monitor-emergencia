@@ -36,8 +36,8 @@ export class MonitorComponent implements OnInit, OnDestroy {
   private intervalIdSlide: any;
   private intervalIdTempoMedio: any;
 
-  private currentPage = 0;
-  private totalPages = 0;
+   currentPage = 0;
+   totalPages = 0;
   private pageSize: number = 6;
 
   private reload: number = 3;
