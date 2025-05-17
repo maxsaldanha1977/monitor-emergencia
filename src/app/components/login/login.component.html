@@ -7,20 +7,8 @@
       alt="Logo"
        style="mix-blend-mode: multiply; max-width: 200px;max-height: 200px;"
     />  
-    <img
-      *ngIf="logoUrl"
-      [src]="logoUrl"
-      alt="Logo"
-      (error)="handleImageError()"
-      style="mix-blend-mode: multiply; max-width: 200px; max-height: 200px"
-    />-->
-<img [src]="logoUrl" 
-           alt="Logo"
-           (load)="onImageLoad()"
-           (error)="onImageError()"
-           [class.loading]="loading"
-          
-            style="mix-blend-mode: multiply; max-width: 200px; max-height: 200px">
+    -->
+ <img [src]="logoUrl" alt="Logo"  style="mix-blend-mode: multiply; max-width: 200px; max-height: 200px" >
            
     
     <span class="example-spacer"></span>

@@ -42,11 +42,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   private configService = inject(ConfiguracaoService);
   private imageService = inject(ImageService);
   private intervalId: any;
-  logoUrl: string | null = null;
+ logoUrl: string | null = null;
   loading = true;
-  api: String = environment.api;
+ api: String = environment.api;
   configs: Configuracao[] = []; // Variável para armazenar as configurações
-  imageUrl: any;
+imageUrl: any
   id: any; //Incializador do id selecionado no select
   ano: any = new Date().getFullYear();
   order: string = 'idConfig'; //identificação para ordenação da listagem
@@ -57,8 +57,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getConfiguracao();
-    this.logoUrl = this.imageService.defaultLogo;
-    this.loadLogo();
+    this.loadLogo()
   }
 
   getConfiguracao() {
@@ -85,14 +84,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         },
       });
   }
-  private loadLogo() {
-    this.imageService.getLogo().subscribe({
-      next: (url) => {
-        this.logoUrl = url;
-      },
-      error: () => {
-        this.loading = false;
-      },
+ loadLogo() {
+    this.imageService.getImage().subscribe(url => {
+      this.logoUrl = url;
     });
   }
 
@@ -105,10 +99,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loading = false;
   }
 
+
   ngOnDestroy(): void {
     clearInterval(this.intervalId);
     if (this.logoUrl?.startsWith('blob:')) {
       URL.revokeObjectURL(this.logoUrl);
     }
+   
   }
 }
