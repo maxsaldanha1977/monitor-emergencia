@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -9,16 +9,15 @@ import { environment } from '../../environments/environment';
 export class ImageService {
   private http = inject(HttpClient);
   api = environment.api + '/logo-image';
+  defaultImage = 'assets/img/logo_bioslab.png';
 
   constructor() { }
 
-  getImage():Observable<HttpResponse<Blob>> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'image/png', // Indica que esperamos uma resposta do tipo imagem/png
-      'Accept': 'image/png'       // Indica que aceitamos uma resposta do tipo imagem/png
-    });
-
-    return this.http.get(this.api, { headers: headers, responseType: 'blob', observe: 'response' });
-  }
+getImage(url: string): Observable<string> {
+  return this.http.get(url, { responseType: 'blob' }).pipe(
+    map(blob => URL.createObjectURL(blob)),
+    catchError(() => of(this.defaultImage))
+  );
+}
 
 }

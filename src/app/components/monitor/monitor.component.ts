@@ -13,6 +13,9 @@ import { TempoMedioService } from '../../services/tempoMedio.service';
 import { ConfiguracaoService } from '../../services/configuracao.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { catchError, count, delay, retry } from 'rxjs';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { environment } from '../../../environments/environment';
+import { ImageService } from '../../services/image.service';
 
 @Component({
   selector: 'app-monitor',
@@ -36,17 +39,24 @@ export class MonitorComponent implements OnInit, OnDestroy {
   private intervalIdSlide: any;
   private intervalIdTempoMedio: any;
 
-   currentPage = 0;
-   totalPages = 0;
-  private pageSize: number = 6;
+  currentPage = 0;
+  totalPages = 0;
+  private pageSize: number = 6; //Medida padrão para o tamanho do slide para telas 1080p (Full HD): 1080 pixels.
 
-  private reload: number = 3;
+  private reload: number = 3; //Unidade Minutos - Tempo de atualização padrão devido a cargar de slides
 
   private monitorService = inject(MonitorService);
   private tempoMedioService = inject(TempoMedioService);
   private configuracaoService = inject(ConfiguracaoService);
   private route = inject(ActivatedRoute);
-  
+  private imageService = inject(ImageService);
+  private sanitizer = inject(DomSanitizer);
+
+  private api = environment.api + '/logo-image';
+  profileImageUrl: SafeUrl | null = null;
+  loadingProfileImage: boolean = false;
+  profileImageError: string = '';
+
   private itemId = this.route.snapshot.paramMap.get('id');
 
   textLoading: string = '';
@@ -61,14 +71,12 @@ export class MonitorComponent implements OnInit, OnDestroy {
     baseCalculo: '',
   };
 
-  constructor() {
-    
-  }
-
+  constructor() {}
 
   ngOnInit(): void {
     this.initSetInterval();
-     this.tam(); 
+    this.tam();
+    this.loadImage();
   }
 
   ngOnDestroy(): void {
@@ -77,10 +85,19 @@ export class MonitorComponent implements OnInit, OnDestroy {
     clearInterval(this.intervalIdSlide);
     clearInterval(this.intervalIdTempoMedio);
   }
-tam(): void{
-  const larguraTela = window.innerWidth;
-console.log("A largura da tela é: " + larguraTela + " pixels");
-}
+
+  tam(): void {
+    const larguraTela = window.innerWidth;
+    const alturaTela = window.innerHeight;
+    console.log(
+      'A largura da tela é: ' +
+        larguraTela +
+        ' pixels' +
+        'A altura da tela é: ' +
+        alturaTela +
+        ' pixels'
+    );
+  }
 
   initSetInterval(): void {
     this.configuracaoService
@@ -253,6 +270,31 @@ console.log("A largura da tela é: " + larguraTela + " pixels");
     return result;
   }
 
+  async loadImage() {
+    this.loadingProfileImage = true;
+    this.profileImageError = '';
+    try {
+      const response = await fetch(this.api);
+      if (!response.ok) {
+        throw new Error(`Erro HTTP: ${response.status}`);
+      }
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.startsWith('image/')) {
+        throw new Error('A resposta não é uma imagem válida');
+      }
+      const blob = await response.blob();
+      this.profileImageUrl = this.sanitizer.bypassSecurityTrustUrl(
+        URL.createObjectURL(blob)
+      );
+    } catch (error) {
+      console.error('Erro ao carregar imagem:', error);
+      this.profileImageError =
+        error instanceof Error ? error.message : String(error);
+      this.profileImageUrl = this.imageService.defaultImage;
+    } finally {
+      this.loadingProfileImage = false;
+    }
+  }
   //Função para autormatizar a transição do slide
   nextSlide(): void {
     if (this.totalPages === 0) return;
@@ -312,3 +354,10 @@ console.log("A largura da tela é: " + larguraTela + " pixels");
     }
   }
 }
+
+/*A altura máxima em pixels de uma televisão depende da resolução da mesma. As resoluções mais comuns são 1080p (Full HD), 4K UHD (2160p) e 8K UHD (4320p).
+A altura máxima em pixels para cada resolução é: 
+1080p (Full HD): 1080 pixels.
+4K UHD (2160p): 2160 pixels.
+8K UHD (4320p): 4320 pixels.
+*/

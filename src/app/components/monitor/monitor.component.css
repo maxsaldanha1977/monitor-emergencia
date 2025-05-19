@@ -1,5 +1,6 @@
 mat-toolbar {
-    background-color: transparent;
+  background-color: transparent;
+  height: 100px;
 }
 
 .example-spacer {
@@ -87,20 +88,6 @@ span.Solicitado {
     padding: 20px auto;
     gap: 10px;
 }
-
-
-.red {
-    color: red;
-}
-
-.green {
-    color: green;
-}
-
-.orange {
-    color: orange;
-}
-
 
 .loading-container {
     position: absolute;

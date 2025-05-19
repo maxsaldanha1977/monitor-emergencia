@@ -1,12 +1,9 @@
 <div class="background-image">
   <mat-toolbar class="user-select-none">
-    <!--
-   
-     <img [src]="profileImageUrl" alt="Logo"  style="mix-blend-mode: multiply; max-width: 200px; max-height: 200px" >
-    -->
+     
    <img
       class="mt-4 mx-3"
-      src="assets/img/logo.png"
+      [src]="profileImageUrl"
       alt="Logo"
        style="mix-blend-mode: multiply; max-width: 200px;max-height: 200px;"
     />  
@@ -26,7 +23,7 @@
     </a>
   </mat-toolbar>
 
-  <div class="container main">
+  <div class="container main">   
     <div class="row">
       <div class="col-6 col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <div class="card-title text-center center-vertical user-select-none">
@@ -48,7 +45,7 @@
                 @for (item of configs | orderBy: 'idConfig'; track item.idConfig
                 ) {
                 <option value="{{ item.idConfig }}">
-            👤 {{ item.idConfig }} - {{ item.descricao }}
+            ⚙️ {{ item.idConfig }} - {{ item.descricao }}
                 </option>
                 } @empty {
                 <option value="0">Nenhum perfil encontrado</option>

@@ -1,11 +1,4 @@
-import {
-  Component,
-  Inject,
-  inject,
-  OnDestroy,
-  OnInit,
-  VERSION,
-} from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, VERSION } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CommonModule } from '@angular/common';
@@ -44,10 +37,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   private imageService = inject(ImageService);
   private intervalId: any;
 
-  api: String = environment.api;
+  private api = environment.api + '/logo-image';
   configs: Configuracao[] = []; // Variável para armazenar as configurações
 
-profileImageUrl: SafeUrl | null = null;
+  profileImageUrl: SafeUrl | null = null;
   loadingProfileImage: boolean = false;
   profileImageError: string = '';
 
@@ -90,48 +83,35 @@ profileImageUrl: SafeUrl | null = null;
       });
   }
 
- loadImage(): void {
+  async loadImage() {
     this.loadingProfileImage = true;
-    this.imageService.getImage().subscribe({
-      next: (response) => {
-        console.log('Resposta da imagem:', response); // Para diagnóstico
-        if (response.body instanceof Blob) {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            this.profileImageUrl = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
-            this.loadingProfileImage = false;
-          };
-          reader.readAsDataURL(response.body); // Linha 95 (aproximadamente)
-        } else if (response.body) {
-          // Tentativa de lidar com Base64 (se o backend enviar assim)
-          try {
-            const base64String = response.body ; // Ajuste conforme a estrutura do seu JSON
-            if (base64String) {
-              this.profileImageUrl = this.sanitizer.bypassSecurityTrustUrl(`data:image/png;base64,${base64String}`);
-              this.loadingProfileImage = false;
-            } else {
-              this.profileImageError = 'Formato de imagem inesperado na resposta.';
-              this.loadingProfileImage = false;
-              console.error('Corpo da resposta sem dados de imagem válidos:', response.body);
-            }
-          } catch (error) {
-            this.profileImageError = 'Erro ao processar a resposta da imagem.';
-            this.loadingProfileImage = false;
-            console.error('Erro ao processar Base64:', error, response.body);
-          }
-        } else {
-          this.profileImageError = 'Erro ao receber a imagem de perfil (corpo da resposta vazio).';
-          this.loadingProfileImage = false;
-        }
-      },
-      error: (error) => {
-        this.profileImageError = 'Erro ao carregar a imagem de perfil: ' + error;
-        this.loadingProfileImage = false;
-        console.error(error);
-      },
-    });
+    this.profileImageError = '';
+    try {
+      const response = await fetch(this.api);
+      if (!response.ok) {
+        throw new Error(`Erro HTTP: ${response.status}`);
+      }
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.startsWith('image/')) {
+        throw new Error('A resposta não é uma imagem válida');
+      }
+      const blob = await response.blob();
+      this.profileImageUrl = this.sanitizer.bypassSecurityTrustUrl(
+        URL.createObjectURL(blob)
+      );
+    } catch (error) {
+      console.error('Erro ao carregar imagem:', error);
+      this.profileImageError =
+        error instanceof Error ? error.message : String(error);
+      this.profileImageUrl = this.imageService.defaultImage;
+    } finally {
+      this.loadingProfileImage = false;
+    }
   }
 
+  handleError() {
+    this.profileImageUrl = this.imageService.defaultImage;
+  }
 
   ngOnDestroy(): void {
     clearInterval(this.intervalId);

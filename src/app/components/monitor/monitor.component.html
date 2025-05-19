@@ -1,7 +1,7 @@
 <mat-toolbar class="user-select-none">
   <img
     class="mt-4 mx-3"
-    src="assets/img/logo.png"
+    [src]="profileImageUrl"
     style="mix-blend-mode: multiply; max-width: 200px; max-height: 200px"
     alt="Logo"
   />
@@ -16,7 +16,7 @@
    <span class="example-spacer"></span>
     <div>
        <p class="text-sz-2 card-title fw-lighter text-center mt-3">
-       👤 {{ configuracao.idConfig }} - {{ configuracao.descricao }} <!--| Pagina: {{currentPage + 1}}/{{totalPages}}-->
+       ⚙️ {{ configuracao.idConfig }} - {{ configuracao.descricao }} <!--| Pagina: {{currentPage + 1}}/{{totalPages}}-->
        </p>
       
       <span class="text-sz-2"> {{ dataHoraFormatada }}.</span>
