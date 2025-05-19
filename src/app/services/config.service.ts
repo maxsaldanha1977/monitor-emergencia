@@ -12,7 +12,7 @@ export class ConfigService {
 
   loadConfig() {
     return this.http
-      .get('/assets/config.json')
+      .get('assets/config.json')
       .toPromise()
       .then((config) => {
         this.config = config;

@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loadingProfileImage = true;
     this.profileImageError = '';
     try {
-      const response = await fetch(this.api);
+      const response = await fetch(this.apiUrl  + '/logo-image');
       if (!response.ok) {
         throw new Error(`Erro HTTP: ${response.status}`);
       }
