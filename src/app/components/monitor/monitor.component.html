@@ -131,23 +131,23 @@
                 </div>
                 } @else {
                 <div class="row">
-                  <div class="col-6 align-start">
-                    <h3 class="card-title text-capitalize text-truncate">
+                  <div class="col-6 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 align-start text-truncate">
+                   <span class="card-title text-capitalize text-sz-3 h3">
                       {{ item.nomePaciente }}
-                    </h3>
+                    </span>
                   </div>
-                  <div class="col-2 align-start">
-                    <i class="bi bi-alarm mx-1 fs-4"></i>
-                    <span class="h4">{{
+               <div class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2 align-start">
+                    <i class="bi bi-clock-history mx-1 fs-4"></i>
+                    <span class="text-sz-4 h4">{{
                       item.dtCadastro | date : "HH'h'mm"
                     }}</span>
                   </div>
-                  <div class="col-2 align-start">
+               <div class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2 align-start">
                     <i class="bi bi-hourglass-top mx-1 fs-4"></i>
                     <span class="h4">{{ item.decorrido }}</span>
                   </div>
-                  <div class="col-2 text-center">
-                    <span class="{{ status(item.situacao) }}">
+                   <div class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2 text-center">
+                   <span class="{{ status(item.situacao) }} text-sz-4">
                       {{ item.situacao }}</span
                     >
                   </div>

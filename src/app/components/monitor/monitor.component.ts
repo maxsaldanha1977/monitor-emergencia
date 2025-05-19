@@ -225,22 +225,21 @@ export class MonitorComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (response: any) => {
-        const tempoMedioMinutos = parseInt(response.tempoMedio, 10);
-        const horas = Math.floor(tempoMedioMinutos / 60);
-        const minutos = tempoMedioMinutos % 60;
+          const tempoMedioMinutos = parseInt(response.tempoMedio, 10);
+          const horas = Math.floor(tempoMedioMinutos / 60);
+          const minutos = tempoMedioMinutos % 60;
 
-        if (tempoMedioMinutos > 0) {
-          this.tempoMedio.tempoMedio =
-            horas > 0 ? `${horas}h ${minutos}min` : `${minutos}min`;
-        } else {
-          this.tempoMedio.tempoMedio = '';
-        }
-        this.tempoMedio.baseCalculo = response.baseCalculo;
-        console.log('getTempoMedio');
-    
-    },
-    error: (error) => {
-       this.textLoading = 'Erro no carregamento ...'; //Defini o texto para o pré carregando
+          if (tempoMedioMinutos > 0) {
+            this.tempoMedio.tempoMedio =
+              horas > 0 ? `${horas}h ${minutos}min` : `${minutos}min`;
+          } else {
+            this.tempoMedio.tempoMedio = '';
+          }
+          this.tempoMedio.baseCalculo = response.baseCalculo;
+          console.log('getTempoMedio');
+        },
+        error: (error) => {
+          this.textLoading = 'Erro no carregamento ...'; //Defini o texto para o pré carregando
           Swal.fire({
             icon: 'error',
             text: 'Ocorreu um erro no carregamento do tempo médio!',
@@ -288,53 +287,52 @@ export class MonitorComponent implements OnInit, OnDestroy {
     });
     return result;
   }
-  
-//Função para carregar a imagem do logo
- async loadImage() {
-  this.loadingProfileImage = true;
-  this.profileImageError = '';
-  let attempts = 0;
-  const maxAttempts = 3;
-  let success = false;
 
-  while (attempts < maxAttempts && !success) {
-    attempts++;
-    try {
-      const response = await fetch(this.api);
-      
-      if (!response.ok) {
-        throw new Error(`Erro HTTP: ${response.status}`);
-      }
+  //Função para carregar a imagem do logo
+  async loadImage() {
+    this.loadingProfileImage = true;
+    this.profileImageError = '';
+    let attempts = 0;
+    const maxAttempts = 3;
+    let success = false;
 
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.startsWith('image/')) {
-        throw new Error('A resposta não é uma imagem válida');
-      }
+    while (attempts < maxAttempts && !success) {
+      attempts++;
+      try {
+        const response = await fetch(this.api);
 
-      const blob = await response.blob();
-      this.profileImageUrl = this.sanitizer.bypassSecurityTrustUrl(
-        URL.createObjectURL(blob)
-      );
-      success = true;
+        if (!response.ok) {
+          throw new Error(`Erro HTTP: ${response.status}`);
+        }
 
-    } catch (error) {
-      console.error(`Tentativa ${attempts} falhou:`, error);
-      
-      if (attempts === maxAttempts) {
-        this.profileImageError = 
-          error instanceof Error ? error.message : String(error);
-        this.profileImageUrl = this.imageService.defaultImage;
-      } else {
-        // Aguarda um tempo antes de tentar novamente (exponencial backoff)
-        await new Promise(resolve => 
-          setTimeout(resolve, 1000 * Math.pow(2, attempts))
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.startsWith('image/')) {
+          throw new Error('A resposta não é uma imagem válida');
+        }
+
+        const blob = await response.blob();
+        this.profileImageUrl = this.sanitizer.bypassSecurityTrustUrl(
+          URL.createObjectURL(blob)
         );
+        success = true;
+      } catch (error) {
+        console.error(`Tentativa ${attempts} falhou:`, error);
+
+        if (attempts === maxAttempts) {
+          this.profileImageError =
+            error instanceof Error ? error.message : String(error);
+          this.profileImageUrl = this.imageService.defaultImage;
+        } else {
+          // Aguarda um tempo antes de tentar novamente (exponencial backoff)
+          await new Promise((resolve) =>
+            setTimeout(resolve, 1000 * Math.pow(2, attempts))
+          );
+        }
       }
     }
-  }
 
-  this.loadingProfileImage = false;
-}
+    this.loadingProfileImage = false;
+  }
 
   //Função para autormatizar a transição do slide
   nextSlide(): void {
