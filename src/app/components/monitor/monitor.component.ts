@@ -217,7 +217,14 @@ export class MonitorComponent implements OnInit, OnDestroy {
   getTempoMedio(): void {
     this.tempoMedioService
       .getTempoMedioById(this.itemId)
-      .subscribe((response: any) => {
+      .pipe(
+        retry({
+          count: 3,
+          delay: 1000,
+        })
+      )
+      .subscribe({
+        next: (response: any) => {
         const tempoMedioMinutos = parseInt(response.tempoMedio, 10);
         const horas = Math.floor(tempoMedioMinutos / 60);
         const minutos = tempoMedioMinutos % 60;
@@ -230,6 +237,18 @@ export class MonitorComponent implements OnInit, OnDestroy {
         }
         this.tempoMedio.baseCalculo = response.baseCalculo;
         console.log('getTempoMedio');
+    
+    },
+    error: (error) => {
+       this.textLoading = 'Erro no carregamento ...'; //Defini o texto para o pré carregando
+          Swal.fire({
+            icon: 'error',
+            text: 'Ocorreu um erro no carregamento do tempo médio!',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          console.error('Erro ao carregar tempo médio:', error);
+        },
       });
   }
 
@@ -269,32 +288,54 @@ export class MonitorComponent implements OnInit, OnDestroy {
     });
     return result;
   }
+  
+//Função para carregar a imagem do logo
+ async loadImage() {
+  this.loadingProfileImage = true;
+  this.profileImageError = '';
+  let attempts = 0;
+  const maxAttempts = 3;
+  let success = false;
 
-  async loadImage() {
-    this.loadingProfileImage = true;
-    this.profileImageError = '';
+  while (attempts < maxAttempts && !success) {
+    attempts++;
     try {
       const response = await fetch(this.api);
+      
       if (!response.ok) {
         throw new Error(`Erro HTTP: ${response.status}`);
       }
+
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.startsWith('image/')) {
         throw new Error('A resposta não é uma imagem válida');
       }
+
       const blob = await response.blob();
       this.profileImageUrl = this.sanitizer.bypassSecurityTrustUrl(
         URL.createObjectURL(blob)
       );
+      success = true;
+
     } catch (error) {
-      console.error('Erro ao carregar imagem:', error);
-      this.profileImageError =
-        error instanceof Error ? error.message : String(error);
-      this.profileImageUrl = this.imageService.defaultImage;
-    } finally {
-      this.loadingProfileImage = false;
+      console.error(`Tentativa ${attempts} falhou:`, error);
+      
+      if (attempts === maxAttempts) {
+        this.profileImageError = 
+          error instanceof Error ? error.message : String(error);
+        this.profileImageUrl = this.imageService.defaultImage;
+      } else {
+        // Aguarda um tempo antes de tentar novamente (exponencial backoff)
+        await new Promise(resolve => 
+          setTimeout(resolve, 1000 * Math.pow(2, attempts))
+        );
+      }
     }
   }
+
+  this.loadingProfileImage = false;
+}
+
   //Função para autormatizar a transição do slide
   nextSlide(): void {
     if (this.totalPages === 0) return;

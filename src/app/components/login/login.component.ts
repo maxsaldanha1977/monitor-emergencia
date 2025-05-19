@@ -82,7 +82,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         },
       });
   }
-
+  
+//Função para carregar a imagem do logo
   async loadImage() {
     this.loadingProfileImage = true;
     this.profileImageError = '';

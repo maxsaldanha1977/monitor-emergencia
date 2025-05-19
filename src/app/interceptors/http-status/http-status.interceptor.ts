@@ -27,6 +27,7 @@ export const httpStatusInterceptor: HttpInterceptorFn = (req, next) => {
       if (error.status === 0 || error.error instanceof ErrorEvent) {
         serverStatus.checkConnection().subscribe();;
       }
+      
       // Tratamento específico para cada status HTTP
       switch (error.status) {
         case 0: // Erro de conexão (offline)
