@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConfigService {
-
+  private http = inject(HttpClient);
   private config: any;
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   loadConfig() {
     return this.http
