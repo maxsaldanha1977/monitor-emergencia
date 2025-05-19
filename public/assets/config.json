@@ -1,0 +1,7 @@
+{
+  "apiUrl": "http://192.168.239.142:9090",
+  "production": false,
+  "featureFlags": {
+    "enableAnalytics": true
+  }
+}

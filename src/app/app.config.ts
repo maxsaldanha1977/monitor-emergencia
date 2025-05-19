@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -14,6 +14,7 @@ import localeDE from '@angular/common/locales/de';
 import localeFR from '@angular/common/locales/fr';
 import { numberInterceptor } from './interceptors/number/number.interceptor';
 import { httpStatusInterceptor } from './interceptors/http-status/http-status.interceptor';
+import { ConfigService } from './services/config.service';
 registerLocaleData(localePT);
 registerLocaleData(localeES);
 registerLocaleData(localeDE);
@@ -27,5 +28,12 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([numberInterceptor, httpStatusInterceptor])
     ),
     { provide: LOCALE_ID, useValue: 'pt-BR' },
+    ConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (configService: ConfigService) => () => configService.loadConfig(),
+      deps: [ConfigService],
+      multi: true,
+    },
   ],
 };

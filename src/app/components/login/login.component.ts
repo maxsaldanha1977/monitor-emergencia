@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 import { environment } from '../../../environments/environment';
 import { ImageService } from '../../services/image.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { ConfigService } from '../../services/config.service';
 @Component({
   selector: 'app-login',
   imports: [
@@ -35,6 +36,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 export class LoginComponent implements OnInit, OnDestroy {
   private configService = inject(ConfiguracaoService);
   private imageService = inject(ImageService);
+  private apiUrl = inject(ConfigService).getConfig().apiUrl;
   private intervalId: any;
 
   private api = environment.api + '/logo-image';
