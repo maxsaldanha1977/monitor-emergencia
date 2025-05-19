@@ -119,7 +119,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
           const tempoMaximoVisita =
             (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
           const tempoMedicao = (this.configuracao.tempoMedicao || 8) * 60000; //Unidade Minutos
-          this.pageSize = this.configuracao.pageSize || 6; //Unidade Minutos
+          this.pageSize = this.configuracao.pageSize || this.pageSize; //Unidade Minutos
 
           this.intervalIdTempoMedio = setInterval(() => {
             this.getTempoMedio();
@@ -189,6 +189,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
             );
             this.currentPage = 0;
             Swal.fire({
+              position: 'top-end',
               icon: 'success',
               title: 'Carregado com sucesso!',
               showConfirmButton: false,

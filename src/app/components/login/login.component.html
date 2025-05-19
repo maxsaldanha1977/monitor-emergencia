@@ -10,7 +10,7 @@
            
     
     <span class="example-spacer"></span>
-
+<img src="assets/img/ic-monitor.svg" alt="Logo" style="width: 100px; height: 100px;"/>
     <span class="text-danger h1 mx-3 mt-4">Monitor de Emergência</span>
     <span class="example-spacer"></span>
     <a
@@ -45,7 +45,7 @@
                 @for (item of configs | orderBy: 'idConfig'; track item.idConfig
                 ) {
                 <option value="{{ item.idConfig }}">
-            ⚙️ {{ item.idConfig }} - {{ item.descricao }}
+             {{ item.idConfig }} - {{ item.descricao }}
                 </option>
                 } @empty {
                 <option value="0">Nenhum perfil encontrado</option>
