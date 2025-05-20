@@ -225,7 +225,7 @@ mat-spinner {
 
     /*Titulo principal*/
     .text-sz-1 {
-        font-size: 3rem;
+        font-size: 2.9rem;
     }
 
     /*Label data e tempo médio*/
@@ -235,14 +235,14 @@ mat-spinner {
 
     /*Label nome*/
     .text-sz-3 {
-        font-size: 2.6rem;
+        font-size: 2.5rem;
     }
 
     /*Label status, registro posto, data de cadastro e tempo decorrido*/
     .text-sz-4 {
-        font-size: 2.2rem;
+        font-size: 2.1rem;
     }
      .text-sz-5 {
-        font-size: 1.8rem;
+        font-size: 1.7rem;
     }
 }
