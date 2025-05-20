@@ -1,6 +1,6 @@
 mat-toolbar {
   background-color: transparent;
-  height: 100px;
+  height: fit-content;
 }
 
 .example-spacer {
@@ -26,14 +26,14 @@ span.ExameLiberado {
 }
 
 span.EmAnalise {
-    color: rgb(189, 189, 13);
+    color: #FFD700;
     font-weight: bold;
     font-size: 1.3rem;
     text-transform: uppercase;
 }
 
 span.ExameEmAnalise {
-    color: rgb(189, 189, 13);
+    color: #FFD700;
     font-weight: bold;
     font-size: 1.3rem;
     text-transform: uppercase;
@@ -68,7 +68,7 @@ span.Liberado {
 }
 
 span.Pronto {
-    color: rgb(189, 189, 13);
+    color: #FFD700;
     font-weight: bold;
     text-transform: uppercase;
 }
@@ -226,11 +226,11 @@ mat-spinner {
 
     /*Label nome*/
     .text-sz-3 {
-        font-size: 2.45rem;
+        font-size: 2.6rem;
     }
 
     /*Label status, registro posto, data de cadastro e tempo decorrido*/
     .text-sz-4 {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
 }

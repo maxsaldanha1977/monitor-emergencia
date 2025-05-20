@@ -1,20 +1,22 @@
 <div class="background-image">
   <mat-toolbar class="user-select-none">
-     
-   <img
-      class="mt-4 mx-3"
+    <img
+      class="mx-3"
       [src]="profileImageUrl"
       alt="Logo"
-       style="mix-blend-mode: multiply; max-width: 200px;max-height: 200px;"
-    />  
-           
-    
+      style="mix-blend-mode: multiply; max-width: 150px; max-height: 150px"
+    />
+
     <span class="example-spacer"></span>
-<img src="assets/img/ic-monitor.svg" alt="Logo" style="mix-blend-mode: multiply; width: 100px; height: 100px;"/>
-    <span class="text-danger h1 mx-3 mt-4">Monitor de Emergência</span>
+    <img
+      src="assets/img/ic-monitor.svg"
+      alt="Logo"
+      style="mix-blend-mode: multiply; width: 80px; height: 80px"
+    />
+    <span class="text-danger h1 mx-3">Monitor de Emergência</span>
     <span class="example-spacer"></span>
     <a
-      class="mt-2 mx-2"
+      class="mx-2"
       [routerLink]="['configuracao']"
       matTooltip="Clique para acessar as configurações."
       matTooltipPosition="right"
@@ -23,7 +25,7 @@
     </a>
   </mat-toolbar>
 
-  <div class="container main">   
+  <div class="container main">
     <div class="row">
       <div class="col-6 col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12">
         <div class="card-title text-center center-vertical user-select-none">
@@ -45,7 +47,7 @@
                 @for (item of configs | orderBy: 'idConfig'; track item.idConfig
                 ) {
                 <option value="{{ item.idConfig }}">
-             {{ item.idConfig }} - {{ item.descricao }}
+                  {{ item.idConfig }} - {{ item.descricao }}
                 </option>
                 } @empty {
                 <option value="0">Nenhum perfil encontrado</option>
@@ -85,7 +87,7 @@
         <div class="row">
           <div class="col-12">
             <div class="text-white">
-              <strong>Setor de Suporte</strong>: Atendimento das 8h às 17h, de
+               Atendimento das 8h às 17h, de
               segunda à sexta.
             </div>
             <span class="text-white">
@@ -113,7 +115,7 @@
           class="mx-2 none"
           src="assets/img/logo_bioslab.png"
           alt="Logo"
-           style="max-width: 230px; max-height: 70px"
+          style="max-width: 230px; max-height: 70px"
         />
       </div>
     </div>

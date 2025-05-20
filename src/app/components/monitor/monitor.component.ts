@@ -165,7 +165,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
           this.intervalIdHora = setInterval(() => {
             this.atualizarDataHora();
             this.monitoramento.forEach((monitor) => {
-              monitor.decorrido = calcularDiferencaHora(monitor.dtVisita);
+              monitor.decorrido = calcularDiferencaHora(monitor.dtCadastro);
             });
           }, 1000);
           console.log('ConfiguracaoService in setInterval');

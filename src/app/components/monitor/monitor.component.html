@@ -1,31 +1,31 @@
 <mat-toolbar class="user-select-none">
   <img
-    class="mt-4 mx-3"
+    class="m-1"
     [src]="profileImageUrl"
     style="mix-blend-mode: multiply; max-width: 200px; max-height: 200px"
     alt="Logo"
   />
   <span class="example-spacer"></span>
-  <div class="mx-2 mt-4">
-        <span
-        class="text-danger mt-3 text-bolder text-sz-1 text-center none"
-        >{{ title }}</span
-      >
-   
+  <div class="mx-1">
+    <span class="text-danger mt-1 text-bolder text-sz-1 text-center none">{{
+      title
+    }}</span>
   </div>
-   <span class="example-spacer"></span>
-    <div>
-       <p class="text-sz-2 card-title fw-lighter text-center mt-2">
-       <i class="bi bi-gear"></i> {{ configuracao?.idConfig }} - {{ configuracao?.descricao }} <!--| Pagina: {{currentPage + 1}}/{{totalPages}}-->
-       </p>
-      
-      <span class="text-sz-2"> {{ dataHoraFormatada }}.</span>
-
-     
-    </div>
   <span class="example-spacer"></span>
   <div>
-    <p class="text-sz-2 mt-2 card-title fw-lighter"><i class="bi bi-stopwatch"></i> Tempo Médio:</p>
+    <p class="text-sz-2 card-title fw-lighter text-center">
+      <i class="bi bi-gear"></i> {{ configuracao?.idConfig }} -
+      {{ configuracao?.descricao }}
+      <!--| Pagina: {{currentPage + 1}}/{{totalPages}}-->
+    </p>
+
+    <span class="text-sz-2"> {{ dataHoraFormatada }}.</span>
+  </div>
+  <span class="example-spacer"></span>
+  <div>
+    <p class="text-sz-2 card-title fw-lighter">
+      <i class="bi bi-stopwatch"></i> Tempo Médio:
+    </p>
     @if(tempoMedio.tempoMedio !== '' ) {
     <span class="text-sz-2 fw-medium">
       {{ tempoMedio.tempoMedio }} nas últimas
@@ -37,7 +37,7 @@
   </div>
   <span class="example-spacer"></span>
   <a
-    class="mt-3 mx-2"
+    class="mx-2"
     [routerLink]="['/']"
     matTooltip="Clique para sair"
     matTooltipPosition="right"
@@ -71,7 +71,6 @@
             @for (item of slide; track item.nomePaciente + '-' + $index) {
             <div class="card">
               <div class="card-body">
-                @if(configuracao.exibirRegistroAtendimento === true){
                 <div class="row">
                   <div
                     class="col-4 col-xxl-4 col-xl-4 col-lg-4 col-md-8 col-sm-8 align-start text-truncate"
@@ -80,12 +79,15 @@
                       {{ item.nomePaciente }}
                     </span>
                   </div>
-
                   <div
                     class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-4 align-start"
                   >
+                    @if(configuracao.exibirRegistroAtendimento === true){
+
                     <i class="bi bi-person-lines-fill fs-3 mx-1"></i>
                     <span class="text-sz-4 h4">{{ item.registroPosto }}</span>
+
+                    }
                   </div>
                   <div
                     class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-4 align-start"
@@ -108,61 +110,21 @@
                       {{ item.situacao }}</span
                     >
                   </div>
-
-                  <div class="col-12 align-start text-truncate">
-                    <span class="card-category">Exames: </span>
-                    <!-- Foi inserido track exame.mne + '-' + $index para criar um idenficador e evitar a duplicação na leitura do array para verificar os status-->
-                    @for (exame of item.exames; track exame.mne + '-' + $index)
-                    {
-                    <span class="{{ statusExame(exame.status) }}">{{
-                      exame.mne
-                    }}</span>
-                    <span class="me-1">;</span>
-                    } @empty {
-                    <div class="m-auto mt-4">
-                      <div class="card">
-                        <div class="card-body">
-                          <h3 class="text-center">Sem exames para exibir</h3>
-                        </div>
-                      </div>
-                    </div>
-                    }
-                  </div>
                 </div>
-                } @else {
-                <div class="row">
-                  <div class="col-6 col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 align-start text-truncate">
-                   <span class="card-title text-capitalize text-sz-3 h3">
-                      {{ item.nomePaciente }}
-                    </span>
-                  </div>
-               <div class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2 align-start">
-                    <i class="bi bi-clock-history mx-1 fs-4"></i>
-                    <span class="text-sz-4 h4">{{
-                      item.dtVisita | date : "HH'h'mm"
-                    }}</span>
-                  </div>
-               <div class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2 align-start">
-                    <i class="bi bi-hourglass-top mx-1 fs-4"></i>
-                    <span class="h4">{{ item.decorrido }}</span>
-                  </div>
-                   <div class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2 text-center">
-                   <span class="{{ status(item.situacao) }} text-sz-4">
-                      {{ item.situacao }}</span
-                    >
-                  </div>
 
+                <div class="row">
                   <div
                     class="col-lg-12 col-md-12 col-sm-12 align-start text-truncate"
                   >
                     <span class="card-category">Exames: </span>
                     @for (exame of item.exames; track exame.mne) {
-                    <span class="fs-5 bold {{ statusExame(exame.status) }}">{{
-                      exame.mne
-                    }}</span>
-                    <span class="me-1">;</span>
+                    <span
+                      class="bold {{ statusExame(exame.status) }} text-sz-4"
+                      >{{ exame.mne }}</span
+                    >
+                    <span class="me-2">;</span>
                     } @empty {
-                    <div class="m-auto mt-4">
+                    <div class="m-auto mt-3">
                       <div class="card">
                         <div class="card-body">
                           <h3 class="text-center">Sem exames para exibir</h3>
@@ -172,7 +134,6 @@
                     }
                   </div>
                 </div>
-                }
               </div>
             </div>
             } @empty {
