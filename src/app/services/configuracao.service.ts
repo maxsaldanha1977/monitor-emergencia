@@ -1,18 +1,18 @@
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Configuracao } from '../model/Configuracao';
 import { ConfiguracaoPost } from '../model/ConfiguracaoPost';
 import { ConfiguracaoUpdate } from '../model/ConfiguracaoUpdate';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfiguracaoService {
-  private http = inject(HttpClient);
 
-  api: String = environment.api;
+  private http = inject(HttpClient);
+  private api = inject(ConfigService).getConfig().apiUrl;
 
   getAllConfiguracao(): Observable<Configuracao[]> {
     return this.http.get<Configuracao[]>(`${this.api}/configs`);

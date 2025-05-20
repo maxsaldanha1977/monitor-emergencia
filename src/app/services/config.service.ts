@@ -25,4 +25,5 @@ export class ConfigService {
   getConfig() {
     return this.config;
   }
+
 }

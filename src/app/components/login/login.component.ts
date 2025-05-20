@@ -36,10 +36,10 @@ import { ConfigService } from '../../services/config.service';
 export class LoginComponent implements OnInit, OnDestroy {
   private configService = inject(ConfiguracaoService);
   private imageService = inject(ImageService);
-  private apiUrl = inject(ConfigService).getConfig().apiUrl;
+  private api = inject(ConfigService).getConfig().apiUrl;
   private intervalId: any;
 
-  private api = environment.api + '/logo-image';
+
   configs: Configuracao[] = []; // Variável para armazenar as configurações
 
   profileImageUrl: SafeUrl | null = null;
@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loadingProfileImage = true;
     this.profileImageError = '';
     try {
-      const response = await fetch(this.apiUrl  + '/logo-image');
+      const response = await fetch(this.api  + '/logo-image');
       if (!response.ok) {
         throw new Error(`Erro HTTP: ${response.status}`);
       }

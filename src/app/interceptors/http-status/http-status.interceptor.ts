@@ -22,16 +22,11 @@ export const httpStatusInterceptor: HttpInterceptorFn = (req, next) => {
       if (isImageRequest(req)) {
         return throwError(() => error);
       }
-
-      // Verifica se é um erro de conexão
-      if (error.status === 0 || error.error instanceof ErrorEvent) {
-        serverStatus.checkConnection().subscribe();;
-      }
       
       // Tratamento específico para cada status HTTP
       switch (error.status) {
-        case 0: // Erro de conexão (offline)
-          serverStatus.checkConnection().subscribe();
+        case 0: // Erro de conexão (offline)          
+        serverStatus.checkConnection().subscribe();
           showErrorAlert('Erro de Comunicação', 'Atualize o navegador ou verifique sua conexão');
           break;
 
@@ -65,8 +60,8 @@ export const httpStatusInterceptor: HttpInterceptorFn = (req, next) => {
 
         case 502: // Bad Gateway
         case 503: // Service Unavailable
-        case 504: // Gateway Timeout
-          serverStatus.checkConnection().subscribe();
+        case 504: // Gateway Timeout          
+        serverStatus.checkConnection().subscribe();
           showErrorAlert('Serviço indisponível', 'O servidor está temporariamente indisponível. Tente novamente mais tarde.');
           break;
 

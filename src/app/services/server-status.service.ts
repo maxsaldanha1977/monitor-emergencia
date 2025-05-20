@@ -1,35 +1,26 @@
 // server-status.service.ts
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {
-  BehaviorSubject,
-  Observable,
-  fromEvent,
-  interval,
-  of,
-} from 'rxjs';
-import {
-  catchError,
-  finalize,
-  map,
-  throttleTime,
-} from 'rxjs/operators';
+import { BehaviorSubject, Observable, fromEvent, interval, of } from 'rxjs';
+import { catchError, finalize, map, throttleTime } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { environment } from '../../environments/environment';
+import { ConfigStatusService } from './configStatus.service';
 
 @Injectable({ providedIn: 'root' })
 export class ServerStatusService {
   private http = inject(HttpClient);
-  private readonly checkInterval = 10000; // 10 segundos
+  private readonly checkInterval = 1000; // 5 segundos
   private isOnline = false;
   private connectionCheckInProgress = false;
+
   private statusSubject = new BehaviorSubject<
     'online' | 'offline' | 'checking'
   >('checking');
 
   public serverStatus$ = this.statusSubject.asObservable();
 
-  api = environment.api;
+  //private api = environment.api;
+  private configStatusService = inject(ConfigStatusService);
 
   constructor() {
     this.setupConnectionMonitoring();
@@ -46,31 +37,42 @@ export class ServerStatusService {
     // Primeira verificação imediata
     this.checkConnection();
   }
-    
+// Verifica a conexão com o servidor
   checkConnection(): Observable<boolean> {
     if (this.connectionCheckInProgress) {
       return of(this.statusSubject.value === 'online');
     }
-
-    return this.http.get(`${this.api}` + '/check-api', {
-      observe: 'response',
-      headers: { 'Cache-Control': 'no-cache' }
-    }).pipe(
-      throttleTime(2000),
-      map(response => {
-        const isOnline = response.status === 200;
-        this.updateServerStatus(isOnline);
-        return isOnline;
-      }),
-      catchError(error => {
-        this.updateServerStatus(false);
-        console.error('Erro ao verificar o status do servidor', error);
-        return of(false);
-      }),
-      finalize(() => {
-        this.connectionCheckInProgress = false;
+    if (!this.configStatusService.isReady) {
+      console.error('Configurações não carregadas');
+      return of(false);
+    }
+    const healthCheckUrl =
+      `${this.configStatusService.apiUrl}/check-api`.replace(
+        /([^:]\/)\/+/g,
+        '$1'
+      );
+    return this.http
+      .get(`${healthCheckUrl}`, {
+        observe: 'response',
+        headers: { 'Cache-Control': 'no-cache' },
       })
-    );
+      .pipe(
+        throttleTime(2000),
+        map((response) => {
+          const isOnline = response.status === 200;
+          this.updateServerStatus(isOnline);
+          console.log('Status do servidor:', isOnline);
+          return isOnline;
+        }),
+        catchError((error) => {
+          this.updateServerStatus(false);
+          console.error('Erro ao verificar o status do servidor', error);
+          return of(false);
+        }),
+        finalize(() => {
+          this.connectionCheckInProgress = false;
+        })
+      );
   }
 
   private handleOffline(): void {
@@ -103,7 +105,7 @@ export class ServerStatusService {
       allowOutsideClick: false,
       showConfirmButton: false,
       timerProgressBar: true,
-      didOpen: () => Swal.showLoading()
+      didOpen: () => Swal.showLoading(),
     });
   }
 
@@ -116,5 +118,4 @@ export class ServerStatusService {
       showConfirmButton: false,
     });
   }
-  
 }
