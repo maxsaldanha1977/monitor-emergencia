@@ -21,27 +21,23 @@ mat-toolbar {
 span.ExameLiberado {
     color: green;
     font-weight: bold;
-    font-size: 1.3rem;
     text-transform: uppercase;
 }
 
 span.EmAnalise {
     color: #FFD700;
     font-weight: bold;
-    font-size: 1.3rem;
     text-transform: uppercase;
 }
 
 span.ExameEmAnalise {
     color: #FFD700;
     font-weight: bold;
-    font-size: 1.3rem;
     text-transform: uppercase;
 }
 
 span.ExameSolicitado {
     color: rgb(184, 181, 181);
-    font-size: 1.3rem;
     font-weight: bold;
     text-transform: uppercase;
 }
@@ -143,6 +139,9 @@ mat-spinner {
 }
 
 @media (min-width: 1025px) and (max-width: 1200px) {
+    .none {
+        display: none;
+    }
 
     /*Titulo principal*/
     .text-sz-1 {
@@ -161,6 +160,9 @@ mat-spinner {
 
     /*Label status, registro posto, data de cadastro e tempo decorrido*/
     .text-sz-4 {
+        font-size: 1.5rem;
+    }
+     .text-sz-5 {
         font-size: 1.3rem;
     }
 }
@@ -187,6 +189,10 @@ mat-spinner {
     .text-sz-4 {
         font-size: 1.5rem;
     }
+
+    .text-sz-5 {
+        font-size: 1.4rem;
+    }
 }
 
 @media (min-width: 1400px) and (max-width: 1599px) {
@@ -210,6 +216,9 @@ mat-spinner {
     .text-sz-4 {
         font-size: 1.6rem;
     }
+    .text-sz-5 {
+        font-size: 1.4rem;
+    }
 }
 
 @media (min-width: 1600px) {
@@ -232,5 +241,8 @@ mat-spinner {
     /*Label status, registro posto, data de cadastro e tempo decorrido*/
     .text-sz-4 {
         font-size: 2.2rem;
+    }
+     .text-sz-5 {
+        font-size: 1.8rem;
     }
 }

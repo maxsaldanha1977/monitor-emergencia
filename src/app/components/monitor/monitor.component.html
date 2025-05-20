@@ -116,10 +116,9 @@
                   <div
                     class="col-lg-12 col-md-12 col-sm-12 align-start text-truncate"
                   >
-                    <span class="card-category">Exames: </span>
                     @for (exame of item.exames; track exame.mne) {
                     <span
-                      class="bold {{ statusExame(exame.status) }} text-sz-4"
+                      class="{{ statusExame(exame.status) }} text-sz-5 bold"
                       >{{ exame.mne }}</span
                     >
                     <span class="me-2">;</span>
