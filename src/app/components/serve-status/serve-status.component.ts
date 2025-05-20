@@ -46,4 +46,5 @@ import { CommonModule } from '@angular/common';
 export class ServerStatusComponent {
   serverStatus = inject(ServerStatusService);
   status$ = this.serverStatus.serverStatus$;
+  
 }

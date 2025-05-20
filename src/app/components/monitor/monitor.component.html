@@ -74,7 +74,7 @@
                 @if(configuracao.exibirRegistroAtendimento === true){
                 <div class="row">
                   <div
-                    class="col-4 col-xxl-4 col-xl-4 col-lg-4 col-md-8 col-sm-4 align-start text-truncate"
+                    class="col-4 col-xxl-4 col-xl-4 col-lg-4 col-md-8 col-sm-8 align-start text-truncate"
                   >
                     <span class="card-title text-capitalize text-sz-3 h3">
                       {{ item.nomePaciente }}
@@ -139,7 +139,7 @@
                <div class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2 align-start">
                     <i class="bi bi-clock-history mx-1 fs-4"></i>
                     <span class="text-sz-4 h4">{{
-                      item.dtCadastro | date : "HH'h'mm"
+                      item.dtVisita | date : "HH'h'mm"
                     }}</span>
                   </div>
                <div class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2 align-start">

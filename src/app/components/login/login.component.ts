@@ -33,12 +33,12 @@ import { ConfigService } from '../../services/config.service';
   styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit, OnDestroy {
-
   private configService = inject(ConfiguracaoService);
   private imageService = inject(ImageService);
   private api = inject(ConfigService).getConfig().apiUrl + '/logo-image';
+  private sanitizer = inject(DomSanitizer);
+  
   private intervalId: any;
-
   configs: Configuracao[] = []; // Variável para armazenar as configurações
 
   profileImageUrl: SafeUrl | null = null;
@@ -50,7 +50,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   order: string = 'idConfig'; //identificação para ordenação da listagem
   disableSelect = new FormControl(false); // Variável para desabilitar o botão de  acessar;
   dataHoraFormatada: string = ''; // Variável para armazenar a data e hora formatada
-  sanitizer = inject(DomSanitizer);
 
   constructor() {}
 
@@ -84,8 +83,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         },
       });
   }
-  
-//Função para carregar a imagem do logo
+
+  //Função para carregar a imagem do logo
   async loadImage() {
     this.loadingProfileImage = true;
     this.profileImageError = '';

@@ -14,8 +14,9 @@ import { ConfiguracaoService } from '../../services/configuracao.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { catchError, count, delay, retry } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { environment } from '../../../environments/environment';
 import { ImageService } from '../../services/image.service';
+import { ConfigService } from '../../services/config.service';
+import { ServerStatusService } from '../../services/server-status.service';
 
 @Component({
   selector: 'app-monitor',
@@ -34,30 +35,29 @@ import { ImageService } from '../../services/image.service';
 export class MonitorComponent implements OnInit, OnDestroy {
   title = 'Monitor de Emergência';
 
-  private intervalIdHora: any;
-  private intervalIdAtualizacao: any;
-  private intervalIdSlide: any;
-  private intervalIdTempoMedio: any;
-
-  currentPage = 0;
-  totalPages = 0;
-  private pageSize: number = 6; //Medida padrão para o tamanho do slide para telas 1080p (Full HD): 1080 pixels.
-
-  private reload: number = 3; //Unidade Minutos - Tempo de atualização padrão devido a cargar de slides
-
   private monitorService = inject(MonitorService);
   private tempoMedioService = inject(TempoMedioService);
   private configuracaoService = inject(ConfiguracaoService);
   private route = inject(ActivatedRoute);
   private imageService = inject(ImageService);
   private sanitizer = inject(DomSanitizer);
+  private serverStatus = inject(ServerStatusService);
 
-  private api = environment.api + '/logo-image';
+  private api = inject(ConfigService).getConfig().apiUrl + '/logo-image';
+  private itemId = this.route.snapshot.paramMap.get('id');
+  private intervalIdHora: any;
+  private intervalIdAtualizacao: any;
+  private intervalIdSlide: any;
+  private intervalIdTempoMedio: any;
+  private pageSize: number = 6; //Medida padrão para o tamanho do slide para telas 1080p (Full HD): 1080 pixels.
+  private reload: number = 3; //Unidade Minutos - Tempo de atualização padrão devido a cargar de slides
+
+  status$ = this.serverStatus.serverStatus$;
+  currentPage = 0;
+  totalPages = 0;
   profileImageUrl: SafeUrl | null = null;
   loadingProfileImage: boolean = false;
   profileImageError: string = '';
-
-  private itemId = this.route.snapshot.paramMap.get('id');
 
   textLoading: string = '';
   decorrido: string = '';
@@ -100,6 +100,18 @@ export class MonitorComponent implements OnInit, OnDestroy {
   }
 
   initSetInterval(): void {
+    this.status$.subscribe(status => {
+      if (status === 'offline') {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Parece que você está offline. Verifique sua conexão com a internet.',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
+
     this.configuracaoService
       .getConfiguracaoById(this.itemId)
       .pipe(
@@ -153,7 +165,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
           this.intervalIdHora = setInterval(() => {
             this.atualizarDataHora();
             this.monitoramento.forEach((monitor) => {
-              monitor.decorrido = calcularDiferencaHora(monitor.dtCadastro);
+              monitor.decorrido = calcularDiferencaHora(monitor.dtVisita);
             });
           }, 1000);
           console.log('ConfiguracaoService in setInterval');

@@ -2,14 +2,14 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, fromEvent, interval, of } from 'rxjs';
-import { catchError, finalize, map, throttleTime } from 'rxjs/operators';
+import { catchError, finalize, map, switchMap, throttleTime } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { ConfigStatusService } from './configStatus.service';
 
 @Injectable({ providedIn: 'root' })
 export class ServerStatusService {
   private http = inject(HttpClient);
-  private readonly checkInterval = 2000; // 5 segundos
+  private readonly checkInterval = 10000; // 5 segundos
   private isOnline = false;
   private connectionCheckInProgress = false;
   private configStatusService = inject(ConfigStatusService);
@@ -28,12 +28,14 @@ export class ServerStatusService {
     fromEvent(window, 'online').subscribe(() => this.checkConnection());
     fromEvent(window, 'offline').subscribe(() => this.handleOffline());
 
-    // Verificação periódica independente do status do navegador
-    interval(this.checkInterval).subscribe(() => this.checkConnection());
-
+   interval(this.checkInterval).pipe(
+      switchMap(() => this.checkConnection())
+    ).subscribe();
+   
     // Primeira verificação imediata
     this.checkConnection();
   }
+
 // Verifica a conexão com o servidor
   checkConnection(): Observable<boolean> {
     if (this.connectionCheckInProgress) {
@@ -70,6 +72,7 @@ export class ServerStatusService {
           this.connectionCheckInProgress = false;
         })
       );
+     
   }
 
   private handleOffline(): void {
