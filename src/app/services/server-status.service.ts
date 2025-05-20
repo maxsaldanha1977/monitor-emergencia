@@ -9,18 +9,15 @@ import { ConfigStatusService } from './configStatus.service';
 @Injectable({ providedIn: 'root' })
 export class ServerStatusService {
   private http = inject(HttpClient);
-  private readonly checkInterval = 1000; // 5 segundos
+  private readonly checkInterval = 2000; // 5 segundos
   private isOnline = false;
   private connectionCheckInProgress = false;
-
+  private configStatusService = inject(ConfigStatusService);
   private statusSubject = new BehaviorSubject<
     'online' | 'offline' | 'checking'
   >('checking');
 
   public serverStatus$ = this.statusSubject.asObservable();
-
-  //private api = environment.api;
-  private configStatusService = inject(ConfigStatusService);
 
   constructor() {
     this.setupConnectionMonitoring();
@@ -57,7 +54,7 @@ export class ServerStatusService {
         headers: { 'Cache-Control': 'no-cache' },
       })
       .pipe(
-        throttleTime(2000),
+        throttleTime(1000),
         map((response) => {
           const isOnline = response.status === 200;
           this.updateServerStatus(isOnline);

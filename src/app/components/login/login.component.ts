@@ -13,7 +13,6 @@ import { ConfiguracaoService } from '../../services/configuracao.service';
 import { OrderModule } from 'ngx-order-pipe';
 import { count, delay, retry } from 'rxjs';
 import Swal from 'sweetalert2';
-import { environment } from '../../../environments/environment';
 import { ImageService } from '../../services/image.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ConfigService } from '../../services/config.service';
@@ -34,11 +33,11 @@ import { ConfigService } from '../../services/config.service';
   styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit, OnDestroy {
+
   private configService = inject(ConfiguracaoService);
   private imageService = inject(ImageService);
-  private api = inject(ConfigService).getConfig().apiUrl;
+  private api = inject(ConfigService).getConfig().apiUrl + '/logo-image';
   private intervalId: any;
-
 
   configs: Configuracao[] = []; // Variável para armazenar as configurações
 
@@ -73,8 +72,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         next: (response: any) => {
           this.configs = response;
           Swal.fire({
+            position: 'top-end',
             icon: 'success',
-            title: 'Perfil de Configuração, carregado com sucesso!',
+            title: 'Listagem de Perfil, carregada com sucesso!',
             showConfirmButton: false,
             timer: 1500,
           });
@@ -89,27 +89,46 @@ export class LoginComponent implements OnInit, OnDestroy {
   async loadImage() {
     this.loadingProfileImage = true;
     this.profileImageError = '';
-    try {
-      const response = await fetch(this.api  + '/logo-image');
-      if (!response.ok) {
-        throw new Error(`Erro HTTP: ${response.status}`);
+    let attempts = 0;
+    const maxAttempts = 3;
+    let success = false;
+
+    while (attempts < maxAttempts && !success) {
+      attempts++;
+      try {
+        const response = await fetch(this.api);
+
+        if (!response.ok) {
+          throw new Error(`Erro HTTP: ${response.status}`);
+        }
+
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.startsWith('image/')) {
+          throw new Error('A resposta não é uma imagem válida');
+        }
+
+        const blob = await response.blob();
+        this.profileImageUrl = this.sanitizer.bypassSecurityTrustUrl(
+          URL.createObjectURL(blob)
+        );
+        success = true;
+      } catch (error) {
+        console.error(`Tentativa ${attempts} falhou:`, error);
+
+        if (attempts === maxAttempts) {
+          this.profileImageError =
+            error instanceof Error ? error.message : String(error);
+          this.profileImageUrl = this.imageService.defaultImage;
+        } else {
+          // Aguarda um tempo antes de tentar novamente (exponencial backoff)
+          await new Promise((resolve) =>
+            setTimeout(resolve, 1000 * Math.pow(2, attempts))
+          );
+        }
       }
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.startsWith('image/')) {
-        throw new Error('A resposta não é uma imagem válida');
-      }
-      const blob = await response.blob();
-      this.profileImageUrl = this.sanitizer.bypassSecurityTrustUrl(
-        URL.createObjectURL(blob)
-      );
-    } catch (error) {
-      console.error('Erro ao carregar imagem:', error);
-      this.profileImageError =
-        error instanceof Error ? error.message : String(error);
-      this.profileImageUrl = this.imageService.defaultImage;
-    } finally {
-      this.loadingProfileImage = false;
     }
+
+    this.loadingProfileImage = false;
   }
 
   handleError() {

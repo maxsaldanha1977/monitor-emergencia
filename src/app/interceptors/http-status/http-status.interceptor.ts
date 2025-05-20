@@ -22,7 +22,14 @@ export const httpStatusInterceptor: HttpInterceptorFn = (req, next) => {
       if (isImageRequest(req)) {
         return throwError(() => error);
       }
-      
+     // Detecta erros de conexão
+      if (error.status === 0 || error.error instanceof ErrorEvent) {
+        serverStatus.checkConnection().subscribe();
+      }
+      // Detecta erros do servidor (5xx)
+      else if (error.status >= 500) {
+        serverStatus.checkConnection().subscribe();
+      }
       // Tratamento específico para cada status HTTP
       switch (error.status) {
         case 0: // Erro de conexão (offline)          
@@ -55,6 +62,7 @@ export const httpStatusInterceptor: HttpInterceptorFn = (req, next) => {
           break;
 
         case 500: // Internal Server Error
+         serverStatus.checkConnection().subscribe();
           showErrorAlert('Erro no servidor', 'Ocorreu um erro interno no servidor. Tente novamente mais tarde.');
           break;
 
