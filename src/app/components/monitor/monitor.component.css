@@ -19,7 +19,7 @@ mat-toolbar {
 }
 
 span.ExameLiberado {
-    color: green;
+    color: rgb(5, 100, 18);
     font-weight: bold;
     text-transform: uppercase;
 }
@@ -50,7 +50,7 @@ span.Pendente {
 }
 
 span.Ativo {
-    color: green;
+    color: rgb(5, 100, 18);
     font-size: 1.3rem;
     font-weight: bold;
     text-transform: uppercase;
