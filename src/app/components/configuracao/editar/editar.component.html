@@ -200,10 +200,9 @@
           </div>
         </div>
         <div class="list-group mb-3">
-          <div
-            class="list-group-item"
-            *ngFor="let posto of postosDisponiveis | customFilter : filterPosto"
-          >
+          @for (posto of postosDisponiveis | customFilter : filterPosto; track
+          posto.codPosto + '-' + $index) {
+          <div class="list-group-item">
             <div class="row">
               <div class="col-2">
                 <div class="form-group">
@@ -237,8 +236,8 @@
                 </div>
               </div>
             </div>
-
-            <div *ngIf="isPostoSelecionado(posto)" class="config-posto">
+            @if(isPostoSelecionado(posto)){
+            <div class="config-posto">
               <div class="card">
                 <div class="card-body">
                   <div class="row">
@@ -275,10 +274,9 @@
                     </div>
 
                     <div class="row">
-                      <div
-                        *ngFor="let local of getLocaisDoPosto(posto.codPosto)"
-                        class="col-3"
-                      >
+                      @for (local of getLocaisDoPosto(posto.codPosto); track
+                      local.codPosto + '-' + $index) {
+                      <div class="col-3">
                         <div class="form-check">
                           <input
                             class="form-check-input"
@@ -311,12 +309,15 @@
                           </label>
                         </div>
                       </div>
+                      }
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            }
           </div>
+          }
         </div>
 
         <!-- Seção de Exames -->
@@ -341,14 +342,9 @@
         <div class="card">
           <div class="card-body">
             <div class="row">
-              <div
-                class="col-4"
-                *ngFor="
-                  let exame of examesDisponiveis
-                    | orderBy : 'mne'
-                    | customFilter : filterExame
-                "
-              >
+              @for(exame of examesDisponiveis | orderBy : 'mne' | customFilter :
+              filterExame; track exame.mne) {
+              <div class="col-4">
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -362,6 +358,7 @@
                   </label>
                 </div>
               </div>
+              }
             </div>
           </div>
         </div>
