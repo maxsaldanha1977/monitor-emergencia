@@ -9,7 +9,7 @@ import { ConfigStatusService } from './configStatus.service';
 @Injectable({ providedIn: 'root' })
 export class ServerStatusService {
   private http = inject(HttpClient);
-  private readonly checkInterval = 10000; // 5 segundos
+  private readonly checkInterval = 30000; //  30 segundos
   private isOnline = false;
   private connectionCheckInProgress = false;
   private configStatusService = inject(ConfigStatusService);
