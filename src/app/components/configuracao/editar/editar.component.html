@@ -107,11 +107,13 @@
                   id="tempoDisponibilidade"
                   formControlName="tempoDisponibilidade"
                   required
-                  min="1"
-                  aria-label="Username"
-                  aria-describedby="basic-addon1"
                   min="0"
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"                
                   max="60"
+                  appValidaInput  
+                  [maxValor]="60"
+                  [minValor]="0"
                 />
                 <span class="input-group-text" id="basic-addon1">minutos</span>
               </div>
@@ -132,6 +134,9 @@
                   required
                   min="0"
                   max="10"
+                   appValidaInput  
+                  [maxValor]="10"
+                  [minValor]="0"
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                 />
@@ -154,6 +159,9 @@
                   required
                   min="0"
                   max="20"
+                  appValidaInput  
+                  [maxValor]="20"
+                  [minValor]="0"
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                 />
@@ -172,6 +180,9 @@
                   formControlName="tempoMaximoVisita"
                   min="0"
                   max="120"
+                  appValidaInput  
+                  [maxValor]="120"
+                  [minValor]="0"
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                 />

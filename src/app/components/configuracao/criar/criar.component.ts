@@ -29,6 +29,7 @@ import { CustomFilterPipePipe } from '../../../pipe/custom-filter-pipe.pipe';
 import { CharacterCounterDirective } from '../../../utils/character-counter/character-counter.directive';
 import Swal from 'sweetalert2';
 import { ConfiguracaoService } from '../../../services/configuracao.service';
+import { ValidaInputDirective } from '../../../utils/valida-input.directive';
 
 interface PostoComLocais extends Posto {
   locaisDisponiveis: LocalInternacao[];
@@ -51,6 +52,7 @@ interface PostoComLocais extends Posto {
     MatIconModule,
     CustomFilterPipePipe,
     CharacterCounterDirective,
+    ValidaInputDirective
   ],
   templateUrl: './criar.component.html',
   styleUrl: './criar.component.css',

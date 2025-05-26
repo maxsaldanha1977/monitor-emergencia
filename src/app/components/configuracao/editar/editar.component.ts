@@ -20,7 +20,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { Exame } from '../../../model/Exame';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
-import { ConfiguracaoPost } from '../../../model/ConfiguracaoPost';
 import { LocalInternacao } from '../../../model/LocalInternacao';
 import { LocalInternacaoService } from '../../../services/localInternacao.service';
 import { OrderModule } from 'ngx-order-pipe';
@@ -30,6 +29,7 @@ import { CharacterCounterDirective } from '../../../utils/character-counter/char
 import { ExamePost } from '../../../model/ExamePost';
 import { PostoPost } from '../../../model/PostoPost';
 import { ConfiguracaoUpdate } from '../../../model/ConfiguracaoUpdate';
+import { ValidaInputDirective } from '../../../utils/valida-input.directive';
 
 interface PostoComLocais extends Posto {
   locaisDisponiveis: LocalInternacao[];
@@ -52,6 +52,7 @@ interface PostoComLocais extends Posto {
     CustomFilterPipePipe,
     OrderModule,
     FilterPipeModule,
+    ValidaInputDirective
   ],
   templateUrl: './editar.component.html',
   styleUrl: './editar.component.css',
