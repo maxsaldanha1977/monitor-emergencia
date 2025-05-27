@@ -18,6 +18,7 @@ import { ImageService } from '../../services/image.service';
 import { ConfigService } from '../../services/config.service';
 import { ServerStatusService } from '../../services/server-status.service';
 import { AlertaStatusDirective } from '../../utils/alerta-status.directive';
+import { TempoDecorridoNumberPipe } from '../../pipe/tempo-decorrido-number.pipe';
 
 @Component({
   selector: 'app-monitor',
@@ -29,8 +30,7 @@ import { AlertaStatusDirective } from '../../utils/alerta-status.directive';
     MatButtonModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
-    AlertaStatusDirective
-    
+    TempoDecorridoNumberPipe,
   ],
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.css',
@@ -66,7 +66,8 @@ export class MonitorComponent implements OnInit, OnDestroy {
   decorrido: string = '';
   dataHoraFormatada: string = '';
   isLoading: boolean = true;
-
+  limiteAlertaAtrasado: number = 120; //Possivel implementação de parâmetro de configuração
+  
   configuracao: any;
   monitoramento: Monitor[] = [];
   tempoMedio = {
@@ -103,7 +104,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   }
 
   initSetInterval(): void {
-    this.status$.subscribe(status => {
+    this.status$.subscribe((status) => {
       if (status === 'offline') {
         Swal.fire({
           icon: 'error',
@@ -408,7 +409,6 @@ export class MonitorComponent implements OnInit, OnDestroy {
       return 'Não definido';
     }
   }
-
 }
 
 /*A altura máxima em pixels de uma televisão depende da resolução da mesma. As resoluções mais comuns são 1080p (Full HD), 4K UHD (2160p) e 8K UHD (4320p).
