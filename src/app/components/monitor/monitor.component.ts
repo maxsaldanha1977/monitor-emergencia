@@ -387,20 +387,20 @@ export class MonitorComponent implements OnInit, OnDestroy {
     } else if (x === 'Solicitado') {
       return 'Solicitado';
     } else {
-      return 'Pendente';
+      return 'Não definido';
     }
   }
 
   //Função para gerar legenda para a response booleana de status
   statusExame(x: any) {
     if (x === 'EA') {
-      return 'EmAnalise';
+      return 'Pronto';
     } else if (x === 'LB') {
-      return 'ExameLiberado';
+      return 'Liberado';
     } else if (x === 'SL') {
-      return 'ExameSolicitado';
+      return 'Solicitado';
     } else if (x === 'PT') {
-      return 'ExameEmAnalise';
+      return 'Pronto';
     } else {
       return 'Não definido';
     }

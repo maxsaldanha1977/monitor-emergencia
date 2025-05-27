@@ -18,45 +18,6 @@ mat-toolbar {
     width: 100%;
 }
 
-span.ExameLiberado {
-    color: rgb(5, 100, 18);
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-span.EmAnalise {
-    color: #FFD700;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-span.ExameEmAnalise {
-    color: #FFD700;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-span.ExameSolicitado {
-    color: rgb(184, 181, 181);
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-span.Pendente {
-    color: rgb(145, 10, 10);
-    font-size: 1.3rem;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-span.Ativo {
-    color: rgb(5, 100, 18);
-    font-size: 1.3rem;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-
 span.Liberado {
     color: rgb(5, 100, 18);
     font-weight: bold;
@@ -64,11 +25,10 @@ span.Liberado {
 }
 
 span.Pronto {
-    color: #FFD700;
+    color: #d3b300;
     font-weight: bold;
     text-transform: uppercase;
 }
-
 
 span.Solicitado {
     color: rgb(119, 117, 117);
