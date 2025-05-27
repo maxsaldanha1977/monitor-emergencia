@@ -1,5 +1,7 @@
 {
     "cSpell.words": [
+        "Alerta",
+        "Atendimento",
         "atualizar",
         "Configuracao",
         "decorrido",
@@ -7,12 +9,16 @@
         "Disponiveis",
         "exame",
         "exames",
+        "exibir",
         "Internacao",
         "minutos",
         "monitoramento",
+        "Paciente",
         "posto",
         "postos",
+        "registro",
         "segundos",
-        "Selecionado"
+        "Selecionado",
+        "situacao"
     ]
 }

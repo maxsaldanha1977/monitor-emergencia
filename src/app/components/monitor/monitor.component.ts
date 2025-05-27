@@ -17,6 +17,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ImageService } from '../../services/image.service';
 import { ConfigService } from '../../services/config.service';
 import { ServerStatusService } from '../../services/server-status.service';
+import { AlertaStatusDirective } from '../../utils/alerta-status.directive';
 
 @Component({
   selector: 'app-monitor',
@@ -28,6 +29,8 @@ import { ServerStatusService } from '../../services/server-status.service';
     MatButtonModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
+    AlertaStatusDirective
+    
   ],
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.css',
@@ -394,7 +397,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   //Função para gerar legenda para a response booleana de status
   statusExame(x: any) {
     if (x === 'EA') {
-      return 'Pronto';
+      return 'Analise';
     } else if (x === 'LB') {
       return 'Liberado';
     } else if (x === 'SL') {
@@ -405,6 +408,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
       return 'Não definido';
     }
   }
+
 }
 
 /*A altura máxima em pixels de uma televisão depende da resolução da mesma. As resoluções mais comuns são 1080p (Full HD), 4K UHD (2160p) e 8K UHD (4320p).

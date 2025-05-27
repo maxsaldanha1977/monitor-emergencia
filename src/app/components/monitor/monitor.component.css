@@ -30,6 +30,12 @@ span.Pronto {
     text-transform: uppercase;
 }
 
+span.Analise {
+    color: #d3b300;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
 span.Solicitado {
     color: rgb(119, 117, 117);
     font-weight: bold;
@@ -60,6 +66,15 @@ span.Solicitado {
 
 mat-spinner {
     margin: 20px auto;
+}
+
+@keyframes piscarSuave {
+  0%, 100% { background-color: rgba(51, 173, 55, 0); } /* Verde com opacidade 0 */
+  50% { background-color: rgba(76, 175, 80, 0.7); } /* Verde com 70% de opacidade */
+}
+
+.alert-pronto {
+  animation: piscarSuave 3s infinite ease-in-out;
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {

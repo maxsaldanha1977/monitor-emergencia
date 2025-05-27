@@ -68,8 +68,8 @@
             "
           >
             <!-- Foi inserido track exame.mne + '-' + $index para criar um idenficador e evitar a duplicação na leitura do array para verificar os status-->
-            @for (item of slide; track item.nomePaciente + '-' + $index) {
-            <div class="card">
+            @for (item of slide; track item.nomePaciente + '-' + $index) {           
+              <div class="card" [appAlertaStatus]="item.situacao" >
               <div class="card-body">
                 <div class="row">
                   <div
