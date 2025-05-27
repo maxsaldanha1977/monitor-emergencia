@@ -74,7 +74,7 @@ mat-spinner {
 }
 
 .alert-liberado {
-  animation: piscarSuaveVerde 5s infinite ease-in-out;
+  animation: piscarSuaveVerde 3s infinite ease-in-out;
 }
 
 @keyframes piscarSuaveVermelho {
@@ -83,7 +83,7 @@ mat-spinner {
 }
 
 .alert-atrasado {
-  animation: piscarSuaveVermelho 5s infinite ease-in-out;
+  animation: piscarSuaveVermelho 3s infinite ease-in-out;
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
