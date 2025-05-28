@@ -101,7 +101,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
     );
   }
 
-  initSetInterval(): void {
+  private initSetInterval(): void {
     this.status$.subscribe((status) => {
       if (status === 'offline') {
         Swal.fire({
@@ -184,8 +184,8 @@ export class MonitorComponent implements OnInit, OnDestroy {
   }
 
   //Serviço retorna os dados de monitoramento.
-  getMonitoramento(): void {
-    this.textLoading = 'Carregando slides...'; //Defini o texto para o pré carregando
+  private getMonitoramento(): void {
+    this.textLoading = 'Carregando os slides...'; //Defini o texto para o pré carregando
     this.monitorService
       .getMonitoramentoById(this.itemId)
       .pipe(
@@ -229,7 +229,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   }
 
   //Serviço retorna o cálculo de Tempo Médio
-  getTempoMedio(): void {
+ private getTempoMedio(): void {
     this.tempoMedioService
       .getTempoMedioById(this.itemId)
       .pipe(
@@ -361,7 +361,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   }
 
   //Função para capturar e gerar o relégio da Toolbar
-  atualizarDataHora(): void {
+  private atualizarDataHora(): void {
     const agora = new Date();
 
     const dia = agora.getDate();
