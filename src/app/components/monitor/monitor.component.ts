@@ -43,9 +43,10 @@ export class MonitorComponent implements OnInit, OnDestroy {
   private imageService = inject(ImageService);
   private sanitizer = inject(DomSanitizer);
   private serverStatus = inject(ServerStatusService);
-
   private api = inject(ConfigService).getConfig().apiUrl + '/logo-image';
+
   private itemId = this.route.snapshot.paramMap.get('id');
+  
   private intervalIdHora: any;
   private intervalIdAtualizacao: any;
   private intervalIdSlide: any;
