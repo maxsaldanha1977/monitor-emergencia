@@ -46,7 +46,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   private api = inject(ConfigService).getConfig().apiUrl + '/logo-image';
 
   private itemId = this.route.snapshot.paramMap.get('id');
-  
+
   private intervalIdHora: any;
   private intervalIdAtualizacao: any;
   private intervalIdSlide: any;
@@ -55,12 +55,12 @@ export class MonitorComponent implements OnInit, OnDestroy {
   private tempoRequest: number = 3; //Unidade Minutos - Tempo de atualização padrão devido a cargar de slides
 
   status$ = this.serverStatus.serverStatus$;
+  
   currentPage = 0;
   totalPages = 0;
   profileImageUrl: SafeUrl | null = null;
   loadingProfileImage: boolean = false;
   profileImageError: string = '';
-
   textLoading: string = '';
   decorrido: string = '';
   dataHoraFormatada: string = '';
@@ -129,10 +129,8 @@ export class MonitorComponent implements OnInit, OnDestroy {
 
           // Atualiza os valores dos intervalos com os dados da API, e converte para milissegundos devido o setInterval
           this.tempoRequest = (this.configuracao.tempoReload || 3) * 60000; //Unidade Minutos - Aguarndando implementação
-          const tempoRefreshTela =
-            (this.configuracao.tempoRefreshTela || 10) * 1000; //Unidade Segundos
-          const tempoMaximoVisita =
-            (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
+          const tempoRefreshTela = (this.configuracao.tempoRefreshTela || 10) * 1000; //Unidade Segundos
+          const tempoMaximoVisita = (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
           const tempoMedicao = (this.configuracao.tempoMedicao || 8) * 60000; //Unidade Minutos
           this.pageSize = this.configuracao.pageSize || this.pageSize; //Unidade Minutos
 
