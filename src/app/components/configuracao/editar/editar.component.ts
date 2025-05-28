@@ -30,6 +30,7 @@ import { ExamePost } from '../../../model/ExamePost';
 import { PostoPost } from '../../../model/PostoPost';
 import { ConfiguracaoUpdate } from '../../../model/ConfiguracaoUpdate';
 import { ValidaInputDirective } from '../../../utils/valida-input.directive';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 interface PostoComLocais extends Posto {
   locaisDisponiveis: LocalInternacao[];
@@ -52,6 +53,7 @@ interface PostoComLocais extends Posto {
     CustomFilterPipePipe,
     OrderModule,
     FilterPipeModule,
+    MatProgressSpinnerModule,
     ValidaInputDirective
   ],
   templateUrl: './editar.component.html',
@@ -69,6 +71,7 @@ export class EditarComponent implements OnInit {
   private changeDetectorRef = inject(ChangeDetectorRef);
 
   posto: any;
+   textLoading: string = 'Carregando as informações';
   filterExame: string = '';
   filterPosto: string = '';
   configuracaoForm: FormGroup;
@@ -79,7 +82,7 @@ export class EditarComponent implements OnInit {
   postosSelecionados: PostoPost[] = [];
   locaisInternacaoDisponiveis: LocalInternacao[] = [];
   locaisInternacaoSelecionados: LocalInternacao[] = [];
-  carregando: boolean = false;
+  isLoading: boolean = false;
 
   constructor() {
     this.configuracaoForm = this.fb.group({
@@ -98,7 +101,7 @@ export class EditarComponent implements OnInit {
   }
 
   carregarDados(): void {
-    this.carregando = true;
+    this.isLoading = true;
     const itemId = this.route.snapshot.paramMap.get('id');
 
     // Primeiro carrega todos os dados disponíveis
@@ -113,10 +116,9 @@ export class EditarComponent implements OnInit {
           codLocalInternacao: '',
           locaisSelecionados: [],
         }));
-        this.carregando = false;
+        this.isLoading = false;
       }
-    });
-    
+    });    
   }
 
   carregarDadosDisponiveis(): Promise<void> {
@@ -175,12 +177,12 @@ export class EditarComponent implements OnInit {
           // Trata os postos selecionados
           this.processarPostosSelecionados(configuracaoExistente);
 
-          this.carregando = false;
+          this.isLoading = false;
           this.changeDetectorRef.detectChanges();
         },
         error: (error) => {
           console.error('Erro ao carregar configuração existente', error);
-          this.carregando = false;
+          this.isLoading = false;
         },
       });
     }

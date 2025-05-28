@@ -109,9 +109,9 @@
                   required
                   min="0"
                   aria-label="Username"
-                  aria-describedby="basic-addon1"                
+                  aria-describedby="basic-addon1"
                   max="60"
-                  appValidaInput  
+                  appValidaInput
                   [maxValor]="60"
                   [minValor]="0"
                 />
@@ -134,7 +134,7 @@
                   required
                   min="0"
                   max="10"
-                   appValidaInput  
+                  appValidaInput
                   [maxValor]="10"
                   [minValor]="0"
                   aria-label="Username"
@@ -159,7 +159,7 @@
                   required
                   min="0"
                   max="20"
-                  appValidaInput  
+                  appValidaInput
                   [maxValor]="20"
                   [minValor]="0"
                   aria-label="Username"
@@ -180,7 +180,7 @@
                   formControlName="tempoMaximoVisita"
                   min="0"
                   max="120"
-                  appValidaInput  
+                  appValidaInput
                   [maxValor]="120"
                   [minValor]="0"
                   aria-label="Username"
@@ -371,6 +371,13 @@
               </div>
               }
             </div>
+          </div>
+        </div>
+        
+        <div class="m-auto mt-4">
+          <div *ngIf="isLoading === true" class="loading-indicator">
+            <mat-spinner></mat-spinner>
+            <h3 class="text-center">{{ textLoading }}</h3>
           </div>
         </div>
 
