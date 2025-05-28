@@ -59,7 +59,7 @@
               <span class="mx-2">{{ item?.idConfig }}</span>
             </h4>
           </mat-panel-title>
-          <mat-panel-description>
+          <mat-panel-description>            
             <h4 class="card-title">
               <span class="mx-2"> {{ item.descricao }}</span>
             </h4>
@@ -147,11 +147,12 @@
         }
       </mat-expansion-panel>
       }@empty {
-      <div class="m-auto mt-4">
-        <div class="loading-indicator">
-          <h3 class="text-center">Sem Perfil de Configuração para exibir</h3>
-        </div>
-      </div>
+         <div class="m-auto mt-4">
+            <div *ngIf="isLoading" class="loading-indicator">
+              <mat-spinner></mat-spinner>
+              <h3 class="text-center">{{ textLoading }}</h3>
+            </div>
+          </div>      
       }
     </mat-accordion>
   </div>

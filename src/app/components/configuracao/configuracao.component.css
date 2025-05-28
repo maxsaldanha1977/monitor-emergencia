@@ -1,21 +1,21 @@
 .example-action-buttons {
-    padding-bottom: 20px;
-  }
-  
-  .example-headers-align .mat-expansion-panel-header-description {
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .example-headers-align .mat-mdc-form-field + .mat-mdc-form-field {
-    margin-left: 8px;
-  }
+  padding-bottom: 20px;
+}
 
-  span.Sim {
-    color: green;
-    font-size: 1.3rem;
-    font-weight: bold;
-    text-transform: uppercase;
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.example-headers-align .mat-mdc-form-field+.mat-mdc-form-field {
+  margin-left: 8px;
+}
+
+span.Sim {
+  color: green;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 span.Não {
@@ -26,14 +26,18 @@ span.Não {
 }
 
 .loading-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 56px;
-    right: 0;
-    background: rgba(0, 0, 0, 0.15);
-    z-index: 99;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+mat-spinner {
+    margin: 20px auto;
 }

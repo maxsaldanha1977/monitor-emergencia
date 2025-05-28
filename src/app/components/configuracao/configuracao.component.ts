@@ -9,7 +9,9 @@ import Swal from 'sweetalert2';
 import { OrderModule } from 'ngx-order-pipe';
 import { FormsModule } from '@angular/forms';
 import { CustomFilterPipePipe } from '../../pipe/custom-filter-pipe.pipe';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { retry } from 'rxjs';
 
 @Component({
   selector: 'app-configuracao',
@@ -21,17 +23,20 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     OrderModule,
     FormsModule,
     CustomFilterPipePipe,
-    MatTooltipModule
+    MatTooltipModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './configuracao.component.html',
   styleUrl: './configuracao.component.css',
 })
 export class ConfiguracaoComponent implements OnInit {
-  title = 'Configuração de Perfil';  
+  title = 'Configuração de Perfil de Monitoramento';
 
   private configuraracaoService = inject(ConfiguracaoService);
- 
-  filter: string = ''; 
+
+  filter: string = '';
+  isLoading: boolean = true;
+  textLoading: string = '';
 
   configuracao: Configuracao[] = [];
 
@@ -42,51 +47,81 @@ export class ConfiguracaoComponent implements OnInit {
   }
 
   //Serviço retorna os dados de monitoramento.
-  getAllConfiguracao(): void {
-    try {
-      this.configuraracaoService
-        .getAllConfiguracao()
-        .subscribe((response: any) => {
-          this.configuracao = response;
-        });
-      //SweetAlert2
-      Swal.fire({
-        icon: 'success',
-        title: 'Carregado com sucesso!',
-        showConfirmButton: false,
-        timer: 1500,
+  private getAllConfiguracao(): void {
+    this.textLoading = 'Carregando as informações';
+    this.configuraracaoService
+      .getAllConfiguracao()
+      .pipe(
+        retry({
+          count: 3,
+          delay: 1000,
+        })
+      )
+      .subscribe({
+        next: (response: any) => {
+          if (response) {
+            this.configuracao = response;
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Carregado com sucesso!',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          } else {
+            this.textLoading = 'Sem exames em análise no momento!';
+          }
+        },
+        error: (error) => {
+          this.textLoading = 'Erro no carregamento ...'; //Defini o texto para o pré carregando
+          Swal.fire({
+            icon: 'error',
+            text: 'Ocorreu um erro, o carregamento das informações!',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          console.error('Erro ao carregar monitoramento:', error);
+        },
       });
-    } catch (error) {
-      Swal.fire({        icon: 'error',
-        text: 'Ocorreu um erro, o caregamento das informações!',
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    }
   }
-
+  
+  //Serviço de exclusão de configuração.
   deleteConfiguracao(id: any): void {
     try {
       Swal.fire({
         title: 'Deseja deletar o Perfil?',
-        text: "Após a exclusão, não será possível reverte a ação!",
+        text: 'Após a exclusão, não será possível reverte a ação!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Sim, delete o perfil!',
       }).then((result) => {
-        if (result.isConfirmed) {          
+        if (result.isConfirmed) {
           Swal.fire({
             title: 'Deletar Perfil',
             text: 'Perfil, deletado com sucesso!.',
             icon: 'success',
           });
-          this.configuraracaoService.deleteConfiguracao(id).subscribe(() => {
-            this.configuracao = this.configuracao.filter(
-              (item) => item.idConfig !== id
-            );
-          });
+          this.configuraracaoService
+            .deleteConfiguracao(id)
+            .pipe(
+              retry({
+                count: 3,
+                delay: 1000,
+              })
+            )
+            .subscribe({
+              next: (response: any) => {
+                if (response) {
+                  this.configuracao = this.configuracao.filter(
+                    (item) => item.idConfig !== id
+                  );
+                } else {
+                  this.textLoading = 'Realizando a exclusão das informações';
+                }
+              },
+            });
         }
       });
     } catch (error) {

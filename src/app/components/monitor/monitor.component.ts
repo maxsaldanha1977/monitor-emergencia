@@ -17,8 +17,6 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ImageService } from '../../services/image.service';
 import { ConfigService } from '../../services/config.service';
 import { ServerStatusService } from '../../services/server-status.service';
-import { AlertaStatusDirective } from '../../utils/alerta-status.directive';
-import { TempoDecorridoNumberPipe } from '../../pipe/tempo-decorrido-number.pipe';
 
 @Component({
   selector: 'app-monitor',
@@ -30,7 +28,7 @@ import { TempoDecorridoNumberPipe } from '../../pipe/tempo-decorrido-number.pipe
     MatButtonModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
-    TempoDecorridoNumberPipe,
+    
   ],
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.css',
