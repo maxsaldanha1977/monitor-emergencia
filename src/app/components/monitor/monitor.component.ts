@@ -53,7 +53,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   private intervalIdSlide: any;
   private intervalIdTempoMedio: any;
   private pageSize: number = 6; //Medida padrão para o tamanho do slide para telas 1080p (Full HD): 1080 pixels.
-  private reload: number = 3; //Unidade Minutos - Tempo de atualização padrão devido a cargar de slides
+  private tempoRequest: number = 3; //Unidade Minutos - Tempo de atualização padrão devido a cargar de slides
 
   status$ = this.serverStatus.serverStatus$;
   currentPage = 0;
@@ -129,7 +129,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
           this.configuracao = response;
 
           // Atualiza os valores dos intervalos com os dados da API, e converte para milissegundos devido o setInterval
-          this.reload = (this.configuracao.tempoReload || 3) * 60000; //Unidade Minutos - Aguarndando implementação
+          this.tempoRequest = (this.configuracao.tempoReload || 3) * 60000; //Unidade Minutos - Aguarndando implementação
           const tempoRefreshTela =
             (this.configuracao.tempoRefreshTela || 10) * 1000; //Unidade Segundos
           const tempoMaximoVisita =
@@ -147,7 +147,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
 
           this.intervalIdAtualizacao = setInterval(() => {
             this.getMonitoramento();
-          }, this.reload);
+          }, this.tempoRequest);
 
           //Valida a configuração de exames e postos se cadastrados.
           if (

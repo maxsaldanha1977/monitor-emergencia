@@ -116,6 +116,7 @@ export class EditarComponent implements OnInit {
         this.carregando = false;
       }
     });
+    
   }
 
   carregarDadosDisponiveis(): Promise<void> {
@@ -152,34 +153,37 @@ export class EditarComponent implements OnInit {
       // Carrega exames disponíveis em paralelo
       this.examesService.getAllExames().subscribe({
         next: (exames) => (this.examesDisponiveis = exames),
-        error: (error) => console.error('Erro ao carregar exames', error),
+        error: (error) => console.error('Erro ao carregar exames', error)
       });
+     
     });
   }
 
-  carregarConfiguracaoExistente(itemId: string): void {
-    this.configuracaoService.getConfiguracaoById(itemId).subscribe({
-      next: (configuracaoExistente) => {
-        // Preenche o formulário com os dados básicos
-        this.configuracaoForm.patchValue(configuracaoExistente);
+    carregarConfiguracaoExistente(itemId: string): void {
+      this.configuracaoService.getConfiguracaoById(itemId).subscribe({
+        next: (configuracaoExistente) => {
+          console.log('Configuração existente:', configuracaoExistente); // <-- Mostra o retorno no console
 
-        // Preenche os exames selecionados
-        this.examesSelecionados = configuracaoExistente.exames
-          ? [...configuracaoExistente.exames]
-          : [];
+          // Preenche o formulário com os dados básicos
+          this.configuracaoForm.patchValue(configuracaoExistente);
 
-        // Trata os postos selecionados
-        this.processarPostosSelecionados(configuracaoExistente);
+          // Preenche os exames selecionados
+          this.examesSelecionados = configuracaoExistente.exames
+            ? [...configuracaoExistente.exames]
+            : [];
 
-        this.carregando = false;
-        this.changeDetectorRef.detectChanges();
-      },
-      error: (error) => {
-        console.error('Erro ao carregar configuração existente', error);
-        this.carregando = false;
-      },
-    });
-  }
+          // Trata os postos selecionados
+          this.processarPostosSelecionados(configuracaoExistente);
+
+          this.carregando = false;
+          this.changeDetectorRef.detectChanges();
+        },
+        error: (error) => {
+          console.error('Erro ao carregar configuração existente', error);
+          this.carregando = false;
+        },
+      });
+    }
 
   processarPostosSelecionados(configuracaoExistente: any): void {
     if (
@@ -267,7 +271,9 @@ export class EditarComponent implements OnInit {
   }
 
   isExameSelecionado(exame: Exame): boolean {
-    return this.examesSelecionados.some((e) => e.mne === exame.mne);
+    const selecionado = this.examesSelecionados.some((e) => e.mne === exame.mne);
+   // console.log(`Exame ${exame.mne} selecionado:`, selecionado);
+    return selecionado;
   }
 
   //LOCAL DE INTERNAÇÃO
@@ -453,7 +459,7 @@ export class EditarComponent implements OnInit {
         postos: postosParaEnviar,
       };
 
-      //console.log('Dados a enviar:', JSON.stringify(configuracao, null, 2));
+      console.log('Dados a enviar:', JSON.stringify(configuracao, null, 2));
 
       const itemId = this.route.snapshot.paramMap.get('id');
       const operacao = this.configuracaoService.putConfiguracao(
