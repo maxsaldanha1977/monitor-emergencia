@@ -126,7 +126,7 @@
             <div class="row">
               @for(exame of item.exames; track exame.mne){
               <div class="col-1">
-                <h3 class="card-title">{{ exame.mne }}</h3>
+                <h4 class="card-title">{{ exame.mne }}</h4>
               </div>
               }
             </div>
@@ -137,7 +137,7 @@
         <div class="card">
           <div class="card-body">
             <div class="row">
-              @for(posto of item.postos | unique: 'codPosto'; track posto.codPosto + '-' + $index){
+              @for(posto of item.postos; track posto.codPosto + '-' + $index){
               <div class="col-2">
                 <span class="card-category"><strong>{{ posto.codPosto }}</strong></span>
                 <span class="card-title"

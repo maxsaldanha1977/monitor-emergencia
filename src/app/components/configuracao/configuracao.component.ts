@@ -136,15 +136,7 @@ export class ConfiguracaoComponent implements OnInit {
       });
     }
   }
-// Função para formatar a exibição dos locais de um posto
-formatarLocaisPosto(codPosto: string, postos: any[]): string {
-  const locais = postos
-    .filter(p => p.codPosto === codPosto)
-    .map(p => p.codLocalInternacao)
-    .filter(l => l && l.trim() !== '');
-  
-  return locais.length > 0 ? locais.join(', ') : "";
-}
+
   //Função para gerar legenda para a response booleana de status
   status(x: any) {
     if (x === true) {
