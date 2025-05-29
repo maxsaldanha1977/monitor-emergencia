@@ -12,6 +12,7 @@ import { CustomFilterPipePipe } from '../../pipe/custom-filter-pipe.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { retry } from 'rxjs';
+import {NgPipesModule} from 'ngx-pipes';
 
 @Component({
   selector: 'app-configuracao',
@@ -25,6 +26,7 @@ import { retry } from 'rxjs';
     CustomFilterPipePipe,
     MatTooltipModule,
     MatProgressSpinnerModule,
+    NgPipesModule
   ],
   templateUrl: './configuracao.component.html',
   styleUrl: './configuracao.component.css',
@@ -61,6 +63,7 @@ export class ConfiguracaoComponent implements OnInit {
         next: (response: any) => {
           if (response) {
             this.configuracao = response;
+            console.log('Configurações carregadas:', this.configuracao);
             Swal.fire({
               position: 'top-end',
               icon: 'success',
@@ -69,7 +72,7 @@ export class ConfiguracaoComponent implements OnInit {
               timer: 1500,
             });
           } else {
-            this.textLoading = 'Sem exames em análise no momento!';
+            this.textLoading = 'Sem configurações para exibir!!';
           }
         },
         error: (error) => {
@@ -133,7 +136,15 @@ export class ConfiguracaoComponent implements OnInit {
       });
     }
   }
-
+// Função para formatar a exibição dos locais de um posto
+formatarLocaisPosto(codPosto: string, postos: any[]): string {
+  const locais = postos
+    .filter(p => p.codPosto === codPosto)
+    .map(p => p.codLocalInternacao)
+    .filter(l => l && l.trim() !== '');
+  
+  return locais.length > 0 ? locais.join(', ') : "";
+}
   //Função para gerar legenda para a response booleana de status
   status(x: any) {
     if (x === true) {

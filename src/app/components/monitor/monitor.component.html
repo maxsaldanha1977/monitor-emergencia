@@ -14,7 +14,7 @@
   <span class="example-spacer"></span>
   <div>
     <p class="text-sz-2 card-title fw-lighter text-center">
-      <i class="bi bi-gear"></i> {{ configuracao?.idConfig }} -
+      <i class="bi bi-person-square mx-2"></i>{{ configuracao?.idConfig }} -
       {{ configuracao?.descricao }}
       <!--| Pagina: {{currentPage + 1}}/{{totalPages}}-->
     </p>
@@ -72,10 +72,10 @@
             <div
               class="card"
               [ngClass]="{
-                'alert-liberado': item.situacao === 'Liberado'               
+                'alert-liberado': item.situacao === 'Liberado'
               }"
             >
-            <!-- 'alert-atrasado':
+              <!-- 'alert-atrasado':
                   (item.situacao === 'Pronto' || item.situacao === 'Solicitado') &&
                   (item.decorrido | appTempoDecorridoNumber) > limiteAlertaAtrasado-->
               <div class="card-body">
