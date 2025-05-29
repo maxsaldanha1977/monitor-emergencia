@@ -11,7 +11,7 @@ import { CustomFilterPipePipe } from '../../pipe/custom-filter-pipe.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { retry } from 'rxjs';
-import { NgPipesModule } from 'ngx-pipes';
+import { NgPipesModule} from 'ngx-pipes';
 
 @Component({
   selector: 'app-configuracao',
