@@ -17,10 +17,10 @@ export class AppComponent {
      isMobile = false;
 
   constructor() {
-     // Verificação inicial ao carregar a aplicação
-     this.serverStatus.checkConnection().subscribe();
+    // Verificação inicial ao carregar a aplicação
+    this.serverStatus.checkConnection().subscribe();
 
-       // Verificação o tamanho da tela e realiza o blouqueio
+         // Verificação o tamanho da tela e realiza o blouqueio
       this.breakpointObserver.observe([`(max-width: 767px)`])
       .subscribe(result => {
         this.isMobile = result.matches;

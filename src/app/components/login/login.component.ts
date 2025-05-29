@@ -97,12 +97,13 @@ export class LoginComponent implements OnInit, OnDestroy {
       try {
         const response = await fetch(this.api);
 
-        if (!response.ok) {
+        if (!response.ok) {this.profileImageUrl = this.imageService.defaultImage;
           throw new Error(`Erro HTTP: ${response.status}`);
         }
 
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.startsWith('image/')) {
+          this.profileImageUrl = this.imageService.defaultImage;
           throw new Error('A resposta não é uma imagem válida');
         }
 

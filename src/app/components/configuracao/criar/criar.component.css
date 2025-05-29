@@ -30,3 +30,6 @@ section {
     width: 140px;
   }
   
+  label {
+  user-select: none;
+}

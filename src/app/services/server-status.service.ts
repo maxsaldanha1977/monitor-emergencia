@@ -23,7 +23,7 @@ export class ServerStatusService {
     this.setupConnectionMonitoring();
   }
 
-  private setupConnectionMonitoring(): void {
+   setupConnectionMonitoring(): void {
     // Monitora eventos online/offline do navegador
     fromEvent(window, 'online').subscribe(() => this.checkConnection());
     fromEvent(window, 'offline').subscribe(() => this.handleOffline());

@@ -22,3 +22,6 @@ mat-toolbar {
 mat-spinner {
     margin: 20px auto;
 }
+label {
+  user-select: none;
+}

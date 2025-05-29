@@ -6,13 +6,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { ConfiguracaoService } from '../../services/configuracao.service';
 import { Configuracao } from '../../model/Configuracao';
 import Swal from 'sweetalert2';
-import { OrderModule } from 'ngx-order-pipe';
 import { FormsModule } from '@angular/forms';
 import { CustomFilterPipePipe } from '../../pipe/custom-filter-pipe.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { retry } from 'rxjs';
-import {NgPipesModule} from 'ngx-pipes';
+import { NgPipesModule } from 'ngx-pipes';
 
 @Component({
   selector: 'app-configuracao',
@@ -21,7 +20,6 @@ import {NgPipesModule} from 'ngx-pipes';
     RouterModule,
     MatButtonModule,
     CommonModule,
-    OrderModule,
     FormsModule,
     CustomFilterPipePipe,
     MatTooltipModule,
@@ -136,7 +134,7 @@ export class ConfiguracaoComponent implements OnInit {
       });
     }
   }
-
+  
   //Função para gerar legenda para a response booleana de status
   status(x: any) {
     if (x === true) {

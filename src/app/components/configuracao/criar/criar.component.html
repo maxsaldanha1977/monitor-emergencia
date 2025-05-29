@@ -96,9 +96,12 @@
           <div class="col-3">
             <div class="form-group">
               <label
+                matTooltip="Define o intervalo máximo de exibição dos exames liberados na tela."
+                matTooltipPosition="above"
                 >Tempo de Disponibilidade (0-60)
-                <span class="text-danger">*</span></label
-              >
+                <span class="text-danger">*</span
+                ><i class="bi bi-question-lg text-danger"></i
+              ></label>
 
               <div class="input-group mb-3">
                 <input
@@ -122,8 +125,10 @@
           <div class="col-3">
             <div class="form-group">
               <label
-                >Tempo de Medição (0-10)
-                <span class="text-danger">*</span>
+                matTooltip="Define o intervalo para que seja executado o cálculo de tempo de medição."
+                matTooltipPosition="above"
+                >Tempo de Medição (0-10) <span class="text-danger">*</span
+                ><i class="bi bi-question-lg text-danger"></i>
               </label>
               <div class="input-group mb-3">
                 <input
@@ -147,9 +152,11 @@
           <div class="col-3">
             <div class="form-group">
               <label
-                >Transição do Slide (0-20)
-                <span class="text-danger">*</span></label
-              >
+                matTooltip="Define o intervalo de transição entre os slides."
+                matTooltipPosition="above"
+                >Transição do Slide (0-20) <span class="text-danger">*</span
+                ><i class="bi bi-question-lg text-danger"></i
+              ></label>
               <div class="input-group mb-3">
                 <input
                   type="number"
@@ -171,7 +178,12 @@
           </div>
           <div class="col-3">
             <div class="form-group">
-              <label>Tempo Máximo de Visita (0-120) </label>
+              <label
+                matTooltip="Define o intervalo extra para o tempo de disponibildade."
+                matTooltipPosition="above"
+                >Tempo Máximo de Visita (0-120)
+                <i class="bi bi-question-lg text-danger"></i
+              ></label>
               <div class="input-group mb-3">
                 <input
                   type="number"
@@ -180,7 +192,7 @@
                   formControlName="tempoMaximoVisita"
                   min="0"
                   max="120"
-                  appValidaInput  
+                  appValidaInput
                   [maxValor]="120"
                   [minValor]="0"
                   aria-label="Username"
@@ -195,19 +207,27 @@
         <!-- Seção de Postos -->
         <div class="row mb-4">
           <div class="col-6">
-            <label>Posto <span class="text-danger">*</span></label>
+            <label
+              matTooltip="Para casdatrar um posto, é necessário selecionar pelo menos um local de internação."
+              matTooltipPosition="above"
+              >Posto <span class="text-danger">*</span>
+              <i class="bi bi-question-lg text-danger"></i
+            ></label>
           </div>
-          <div class="col-6 text-end">
-            <input
-              class="form-control"
-              id="search"
-              matInput
-              type="search"
-              [(ngModel)]="filterPosto"
-              [ngModelOptions]="{ standalone: true }"
-              placeholder="Pesquisar posto..."
-              style="background-image: none"
-            />
+          <div class="col-6">
+            <div class="d-flex align-items-center">
+              <i class="bi bi-search fa-2x me-2"></i>
+              <input
+                class="form-control"
+                id="search"
+                matInput
+                type="search"
+                [(ngModel)]="filterPosto"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Pesquisar posto..."
+                style="background-image: none"
+              />
+            </div>
           </div>
         </div>
         <div class="list-group mb-3">
@@ -350,20 +370,29 @@
         <!-- Seção de Exames -->
         <div class="row mb-3">
           <div class="col-6">
-            <label>Exame <span class="text-danger">*</span></label>
+            <label
+              matTooltip="Para cadastrar um perfil, é necessário selecionar pelo menos um exame."
+              matTooltipPosition="above"
+            >
+              Exame <span class="text-danger">*</span>
+              <i class="bi bi-question-lg text-danger"></i
+            ></label>
           </div>
 
           <div class="col-6">
-            <input
-              class="form-control"
-              id="search"
-              matInput
-              type="text"
-              [(ngModel)]="filterExame"
-              [ngModelOptions]="{ standalone: true }"
-              placeholder="Pesquisar exame..."
-              style="background-image: none"
-            />
+            <div class="d-flex align-items-center">
+              <i class="bi bi-search fa-2x me-2"></i>
+              <input
+                class="form-control"
+                id="search"
+                matInput
+                type="text"
+                [(ngModel)]="filterExame"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Pesquisar exame..."
+                style="background-image: none"
+              />
+            </div>
           </div>
         </div>
         <div class="card">
