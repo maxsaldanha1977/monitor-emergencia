@@ -59,7 +59,7 @@ interface PostoComLocais extends Posto {
 })
 
 export class CriarComponent implements OnInit {
-  title = 'Criar Perfil de Configuração';
+  title = 'Cadastrar Perfil de Configuração';
 
   private postosService = inject(PostoService);
   private examesService = inject(ExameService);
