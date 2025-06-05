@@ -201,13 +201,13 @@ export class MonitorComponent implements OnInit, OnDestroy {
               this.monitoramento.length / this.pageSize
             );
             this.currentPage = 0;
-            Swal.fire({
+           /* Swal.fire({
               position: 'top-end',
               icon: 'success',
               title: 'Carregado com sucesso!',
               showConfirmButton: false,
               timer: 1500,
-            });
+            }); */
           } else {
             this.textLoading = 'Sem exames em análise no momento!';
           }

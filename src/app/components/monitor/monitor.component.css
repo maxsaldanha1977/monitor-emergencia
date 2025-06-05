@@ -1,251 +1,255 @@
 mat-toolbar {
-    background-color: transparent;
-    height: fit-content;
+  background-color: transparent;
+  height: fit-content;
 }
 
 .example-spacer {
-    flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 
 .slider-container {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
 }
 
 .slides-wrapper {
-    display: flex;
-    width: 100%;
+  display: flex;
+  width: 100%;
 }
 
 span.Liberado {
-    color: rgb(5, 100, 18);
-    font-weight: bold;
-    text-transform: uppercase;
+  color: rgb(5, 100, 18);
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 span.Pronto {
-    color: #d3b300;
-    font-weight: bold;
-    text-transform: uppercase;
+  color: #d3b300;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 span.Analise {
-    color: #d3b300;
-    font-weight: bold;
-    text-transform: uppercase;
+  color: #d3b300;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 span.Solicitado {
-    color: rgb(119, 117, 117);
-    font-weight: bold;
-    text-transform: uppercase;
+  color: rgb(119, 117, 117);
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .loading-indicator {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px auto;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px auto;
+  gap: 10px;
 }
 
 .loading-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 56px;
-    right: 0;
-    background: rgba(0, 0, 0, 0.15);
-    z-index: 99;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 mat-spinner {
-    margin: 20px auto;
+  margin: 20px auto;
 }
 
 @keyframes piscarSuaveVerde {
-    0%, 100% {
-        background-color: rgba(255, 255, 255);
-    }
+  0%,
+  100% {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
 
-    /* Verde com opacidade 0 */
-    50% {
-        background-color: rgba(76, 175, 80, 0.7);
-    }
+  /* Verde com opacidade 0 */
+  25% {
+    background-color: rgba(81, 196, 85, 0.7);
+  }
+  50% {
+    background-color: rgba(54, 155, 57, 0.7);
+  }
+  75% {
+    background-color: rgba(39, 151, 43, 0.7);
+  }
 
-    /* Verde com 70% de opacidade */
+  /* Verde com 70% de opacidade */
 }
 
 .alert-liberado {
-    animation: piscarSuaveVerde 5s infinite ease-in-out;
+  animation: piscarSuaveVerde 5s infinite ease-in-out;
 }
 
 @keyframes piscarSuaveVermelho {
-    0%, 100% {
-        background-color: rgba(255, 255, 255);
-    }
+  0%,
+  100% {
+    background-color: rgba(255, 255, 255);
+  }
 
-    /* Vermelho com opacidade 0 */
-    50% {
-        background-color: rgba(189, 95, 95, 0.7);
-    }
+  /* Vermelho com opacidade 0 */
+  50% {
+    background-color: rgba(189, 95, 95, 0.7);
+  }
 
-    /* Vermelho com 70% de opacidade */
+  /* Vermelho com 70% de opacidade */
 }
 
 .alert-atrasado {
-    animation: piscarSuaveVermelho 5s infinite ease-in-out;
+  animation: piscarSuaveVermelho 5s infinite ease-in-out;
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
-    .none {
-        display: none;
-    }
+  .none {
+    display: none;
+  }
 
-    .center-vertical {
-        margin-top: 1%;
-    }
+  .center-vertical {
+    margin-top: 1%;
+  }
 
-    .img-tam {
-        width: 180px;
-        height: 80px;
-    }
+  .img-tam {
+    width: 180px;
+    height: 80px;
+  }
 
-    /*Titulo principal*/
-    .text-sz-1 {
-        font-size: 2.2rem;
-    }
+  /*Titulo principal*/
+  .text-sz-1 {
+    font-size: 2.2rem;
+  }
 
-    /*Label data e tempo médio*/
-    .text-sz-2 {
-        font-size: 1.2rem;
-    }
+  /*Label data e tempo médio*/
+  .text-sz-2 {
+    font-size: 1.2rem;
+  }
 
-    /*Label nome*/
-    .text-sz-3 {
-        font-size: 1.6rem;
-    }
+  /*Label nome*/
+  .text-sz-3 {
+    font-size: 1.6rem;
+  }
 
-    /*Label status, registro posto, data de cadastro e tempo decorrido*/
-    .text-sz-4 {
-        font-size: 1.2rem;
-    }
-
+  /*Label status, registro posto, data de cadastro e tempo decorrido*/
+  .text-sz-4 {
+    font-size: 1.2rem;
+  }
 }
 
 @media (min-width: 1025px) and (max-width: 1200px) {
-    .none {
-        display: none;
-    }
+  .none {
+    display: none;
+  }
 
-    /*Titulo principal*/
-    .text-sz-1 {
-        font-size: 2rem;
-    }
+  /*Titulo principal*/
+  .text-sz-1 {
+    font-size: 2rem;
+  }
 
-    /*Label data e tempo médio*/
-    .text-sz-2 {
-        font-size: 1.4rem;
-    }
+  /*Label data e tempo médio*/
+  .text-sz-2 {
+    font-size: 1.4rem;
+  }
 
-    /*Label nome*/
-    .text-sz-3 {
-        font-size: 1.8rem;
-    }
+  /*Label nome*/
+  .text-sz-3 {
+    font-size: 1.8rem;
+  }
 
-    /*Label status, registro posto, data de cadastro e tempo decorrido*/
-    .text-sz-4 {
-        font-size: 1.5rem;
-    }
+  /*Label status, registro posto, data de cadastro e tempo decorrido*/
+  .text-sz-4 {
+    font-size: 1.5rem;
+  }
 
-    .text-sz-5 {
-        font-size: 1.3rem;
-    }
+  .text-sz-5 {
+    font-size: 1.3rem;
+  }
 }
 
 /*Breakpoint para TV*/
 @media (min-width: 1201px) and (max-width: 1399px) {
+  /*Titulo principal*/
+  .text-sz-1 {
+    font-size: 2rem;
+  }
 
-    /*Titulo principal*/
-    .text-sz-1 {
-        font-size: 2rem;
-    }
+  /*Label data e tempo médio*/
+  .text-sz-2 {
+    font-size: 1.4rem;
+  }
 
-    /*Label data e tempo médio*/
-    .text-sz-2 {
-        font-size: 1.4rem;
-    }
+  /*Label nome*/
+  .text-sz-3 {
+    font-size: 1.7rem;
+  }
 
-    /*Label nome*/
-    .text-sz-3 {
-        font-size: 1.7rem;
-    }
+  /*Label status, registro posto, data de cadastro e tempo decorrido*/
+  .text-sz-4 {
+    font-size: 1.5rem;
+  }
 
-    /*Label status, registro posto, data de cadastro e tempo decorrido*/
-    .text-sz-4 {
-        font-size: 1.5rem;
-    }
-
-    .text-sz-5 {
-        font-size: 1.4rem;
-    }
+  .text-sz-5 {
+    font-size: 1.4rem;
+  }
 }
 
 @media (min-width: 1400px) and (max-width: 1599px) {
+  /*Titulo principal*/
+  .text-sz-1 {
+    font-size: 2.2rem;
+  }
 
-    /*Titulo principal*/
-    .text-sz-1 {
-        font-size: 2.2rem;
-    }
+  /*Label data e tempo médio*/
+  .text-sz-2 {
+    font-size: 1.7rem;
+  }
 
-    /*Label data e tempo médio*/
-    .text-sz-2 {
-        font-size: 1.7rem;
-    }
+  /*Label nome*/
+  .text-sz-3 {
+    font-size: 1.8rem;
+  }
 
-    /*Label nome*/
-    .text-sz-3 {
-        font-size: 1.8rem;
-    }
+  /*Label status, registro posto, data de cadastro e tempo decorrido*/
+  .text-sz-4 {
+    font-size: 1.6rem;
+  }
 
-    /*Label status, registro posto, data de cadastro e tempo decorrido*/
-    .text-sz-4 {
-        font-size: 1.6rem;
-    }
-
-    .text-sz-5 {
-        font-size: 1.4rem;
-    }
+  .text-sz-5 {
+    font-size: 1.4rem;
+  }
 }
 
 @media (min-width: 1600px) {
+  /*Titulo principal*/
+  .text-sz-1 {
+    font-size: 2.9rem;
+  }
 
-    /*Titulo principal*/
-    .text-sz-1 {
-        font-size: 2.9rem;
-    }
+  /*Label data e tempo médio*/
+  .text-sz-2 {
+    font-size: 2rem;
+  }
 
-    /*Label data e tempo médio*/
-    .text-sz-2 {
-        font-size: 2rem;
-    }
+  /*Label nome*/
+  .text-sz-3 {
+    font-size: 2.5rem;
+  }
 
-    /*Label nome*/
-    .text-sz-3 {
-        font-size: 2.5rem;
-    }
+  /*Label status, registro posto, data de cadastro e tempo decorrido*/
+  .text-sz-4 {
+    font-size: 2.1rem;
+  }
 
-    /*Label status, registro posto, data de cadastro e tempo decorrido*/
-    .text-sz-4 {
-        font-size: 2.1rem;
-    }
-
-    .text-sz-5 {
-        font-size: 1.7rem;
-    }
+  .text-sz-5 {
+    font-size: 1.7rem;
+  }
 }
