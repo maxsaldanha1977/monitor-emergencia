@@ -30,7 +30,7 @@ import { NgPipesModule} from 'ngx-pipes';
   styleUrl: './configuracao.component.css',
 })
 export class ConfiguracaoComponent implements OnInit {
-  title = 'Configuração de Perfil de Monitoramento';
+  title = 'Perfil de Configuração';
 
   private configuraracaoService = inject(ConfiguracaoService);
 
@@ -85,7 +85,7 @@ export class ConfiguracaoComponent implements OnInit {
         },
       });
   }
-  
+
   //Serviço de exclusão de configuração.
   deleteConfiguracao(id: any): void {
     try {
@@ -134,7 +134,7 @@ export class ConfiguracaoComponent implements OnInit {
       });
     }
   }
-  
+
   //Função para gerar legenda para a response booleana de status
   status(x: any) {
     if (x === true) {
