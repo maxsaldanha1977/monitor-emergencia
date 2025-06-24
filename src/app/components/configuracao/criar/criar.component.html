@@ -125,7 +125,7 @@
           <div class="col-3">
             <div class="form-group">
               <label
-                matTooltip="Define o intervalo para que seja executado o cálculo de tempo de medição."
+                matTooltip="Define o intervalo para que seja executado o cálculo de tempo médio."
                 matTooltipPosition="above"
                 >Tempo de Medição (0-10) <span class="text-danger">*</span
                 ><i class="bi bi-question-circle text-danger mx-2"></i>
@@ -154,7 +154,7 @@
               <label
                 matTooltip="Define o intervalo de transição entre os slides."
                 matTooltipPosition="above"
-                >Transição do Slide (0-20) <span class="text-danger">*</span
+                >Transição do Slide (5-20) <span class="text-danger">*</span
                 ><i class="bi bi-question-circle text-danger mx-2"></i
               ></label>
               <div class="input-group mb-3">
@@ -168,7 +168,7 @@
                   max="20"
                   appValidaInput
                   [maxValor]="20"
-                  [minValor]="0"
+                  [minValor]="5"
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                 />
