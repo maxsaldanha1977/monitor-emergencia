@@ -17,6 +17,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ImageService } from '../../services/image.service';
 import { ConfigService } from '../../services/config.service';
 import { ServerStatusService } from '../../services/server-status.service';
+import { ServerStatusComponent } from "../serve-status/serve-status.component";
 
 @Component({
   selector: 'app-monitor',
@@ -28,8 +29,8 @@ import { ServerStatusService } from '../../services/server-status.service';
     MatButtonModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
-    
-  ],
+    ServerStatusComponent
+],
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.css',
 })
@@ -55,7 +56,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   private tempoRequest: number = 3; //Unidade Minutos - Tempo de atualização padrão devido a cargar de slides
 
   status$ = this.serverStatus.serverStatus$;
-  
+
   currentPage = 0;
   totalPages = 0;
   profileImageUrl: SafeUrl | null = null;
@@ -66,7 +67,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   dataHoraFormatada: string = '';
   isLoading: boolean = true;
   limiteAlertaAtrasado: number = 120; //Possivel implementação de parâmetro de configuração
-  
+
   configuracao: any;
   monitoramento: Monitor[] = [];
   tempoMedio = {
@@ -409,7 +410,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
 }
 
 /*A altura máxima em pixels de uma televisão depende da resolução da mesma. As resoluções mais comuns são 1080p (Full HD), 4K UHD (2160p) e 8K UHD (4320p).
-A altura máxima em pixels para cada resolução é: 
+A altura máxima em pixels para cada resolução é:
 1080p (Full HD): 1080 pixels.
 4K UHD (2160p): 2160 pixels.
 8K UHD (4320p): 4320 pixels.

@@ -30,6 +30,7 @@ import { CharacterCounterDirective } from '../../../utils/character-counter/char
 import Swal from 'sweetalert2';
 import { ConfiguracaoService } from '../../../services/configuracao.service';
 import { ValidaInputDirective } from '../../../utils/valida-input.directive';
+import { ServerStatusComponent } from "../../serve-status/serve-status.component";
 
 interface PostoComLocais extends Posto {
   locaisDisponiveis: LocalInternacao[];
@@ -52,8 +53,9 @@ interface PostoComLocais extends Posto {
     MatIconModule,
     CustomFilterPipePipe,
     CharacterCounterDirective,
-    ValidaInputDirective
-  ],
+    ValidaInputDirective,
+    ServerStatusComponent
+],
   templateUrl: './criar.component.html',
   styleUrl: './criar.component.css',
 })
@@ -72,7 +74,7 @@ export class CriarComponent implements OnInit {
   filterExame: string = '';
   filterPosto: string = '';
   configuracaoForm: FormGroup;
-  
+
   examesDisponiveis: Exame[] = [];
   postosDisponiveis: Posto[] = [];
   examesSelecionados: ExamePost[] = [];
@@ -360,8 +362,8 @@ export class CriarComponent implements OnInit {
       };
 
       //console.log('Dados a enviar:', JSON.stringify(configuracao, null, 2));
-     
-     
+
+
       this.configuracaoService.postConfiguracao(configuracao).subscribe(
         (response) => {
           console.log('Sucesso:', response);
@@ -388,8 +390,8 @@ export class CriarComponent implements OnInit {
         text: 'Preencha pelo menos um local de internação para o posto habilitado!',
         showConfirmButton: true,
       });
-       
+
     }
   }
-  
+
 }

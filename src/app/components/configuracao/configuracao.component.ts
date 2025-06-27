@@ -12,6 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { retry } from 'rxjs';
 import { NgPipesModule} from 'ngx-pipes';
+import { ServerStatusComponent } from "../serve-status/serve-status.component";
 
 @Component({
   selector: 'app-configuracao',
@@ -24,8 +25,9 @@ import { NgPipesModule} from 'ngx-pipes';
     CustomFilterPipePipe,
     MatTooltipModule,
     MatProgressSpinnerModule,
-    NgPipesModule
-  ],
+    NgPipesModule,
+    ServerStatusComponent
+],
   templateUrl: './configuracao.component.html',
   styleUrl: './configuracao.component.css',
 })

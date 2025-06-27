@@ -31,6 +31,7 @@ import { PostoPost } from '../../../model/PostoPost';
 import { ConfiguracaoUpdate } from '../../../model/ConfiguracaoUpdate';
 import { ValidaInputDirective } from '../../../utils/valida-input.directive';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ServerStatusComponent } from "../../serve-status/serve-status.component";
 
 interface PostoComLocais extends Posto {
   locaisDisponiveis: LocalInternacao[];
@@ -54,8 +55,9 @@ interface PostoComLocais extends Posto {
     OrderModule,
     FilterPipeModule,
     MatProgressSpinnerModule,
-    ValidaInputDirective
-  ],
+    ValidaInputDirective,
+    ServerStatusComponent
+],
   templateUrl: './editar.component.html',
   styleUrl: './editar.component.css',
 })
@@ -118,7 +120,7 @@ export class EditarComponent implements OnInit {
         }));
         this.isLoading = false;
       }
-    });    
+    });
   }
 
   carregarDadosDisponiveis(): Promise<void> {
@@ -157,7 +159,7 @@ export class EditarComponent implements OnInit {
         next: (exames) => (this.examesDisponiveis = exames),
         error: (error) => console.error('Erro ao carregar exames', error)
       });
-     
+
     });
   }
 
