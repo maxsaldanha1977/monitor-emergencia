@@ -83,12 +83,6 @@ export class MonitorComponent implements OnInit, OnDestroy {
     this.windowHeight = window.innerHeight;
   }
 
-  ngOnDestroy(): void {
-    clearInterval(this.intervalIdHora);
-    clearInterval(this.intervalIdAtualizacao);
-    clearInterval(this.intervalIdSlide);
-    clearInterval(this.intervalIdTempoMedio);
-  }
 
   tam(): void {
     const larguraTela = window.innerWidth;
@@ -353,6 +347,12 @@ export class MonitorComponent implements OnInit, OnDestroy {
     this.dataHoraFormatada = `Hoje, ${dia} de ${mes} de ${ano} às ${horas}h ${minutos}min ${segundos}s`;
   }
 
+  ngOnDestroy(): void {
+    clearInterval(this.intervalIdHora);
+    clearInterval(this.intervalIdAtualizacao);
+    clearInterval(this.intervalIdSlide);
+    clearInterval(this.intervalIdTempoMedio);
+  }
   //Função do TypeScript para ajustar a hora que está como int, para exibir 01h ao invês de 1h.
   pad(valor: number): string {
     return valor < 10 ? '0' + valor : valor.toString();
