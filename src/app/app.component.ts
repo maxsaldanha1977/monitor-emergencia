@@ -1,13 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { ServerStatusComponent } from './components/serve-status/serve-status.component';
 import { ServerStatusService } from './services/server-status.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ServerStatusComponent, CommonModule ],
+  imports: [RouterOutlet,  CommonModule ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

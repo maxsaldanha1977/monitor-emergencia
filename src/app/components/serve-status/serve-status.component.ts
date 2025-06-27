@@ -27,15 +27,15 @@ import { CommonModule } from '@angular/common';
       animation: slideIn 0.5s;
       color: white;
     }
-    
+
     .offline {
       background-color: #f44336;
     }
-    
+
     .checking {
       background-color: #ff9800;
     }
-    
+
     @keyframes slideIn {
       from { transform: translateY(100%); }
       to { transform: translateY(0); }
@@ -46,5 +46,5 @@ import { CommonModule } from '@angular/common';
 export class ServerStatusComponent {
   serverStatus = inject(ServerStatusService);
   status$ = this.serverStatus.serverStatus$;
-  
+
 }

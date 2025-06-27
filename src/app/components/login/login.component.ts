@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 import { ImageService } from '../../services/image.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ConfigService } from '../../services/config.service';
+import { ServerStatusComponent } from "../serve-status/serve-status.component";
 @Component({
   selector: 'app-login',
   imports: [
@@ -28,7 +29,8 @@ import { ConfigService } from '../../services/config.service';
     FormsModule,
     MatSelectModule,
     OrderModule,
-  ],
+    ServerStatusComponent
+],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
@@ -37,7 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   private imageService = inject(ImageService);
   private api = inject(ConfigService).getConfig().apiUrl + '/logo-image';
   private sanitizer = inject(DomSanitizer);
-  
+
   private intervalId: any;
   configs: Configuracao[] = []; // Variável para armazenar as configurações
 
