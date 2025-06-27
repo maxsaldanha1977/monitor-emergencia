@@ -31,13 +31,14 @@ export class ServerStatusService {
    interval(this.checkInterval).pipe(
       switchMap(() => this.checkConnection())
     ).subscribe();
-   
+
     // Primeira verificação imediata
     this.checkConnection();
   }
 
 // Verifica a conexão com o servidor
   checkConnection(): Observable<boolean> {
+
     if (this.connectionCheckInProgress) {
       return of(this.statusSubject.value === 'online');
     }
@@ -72,7 +73,7 @@ export class ServerStatusService {
           this.connectionCheckInProgress = false;
         })
       );
-     
+
   }
 
   private handleOffline(): void {

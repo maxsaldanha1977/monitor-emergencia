@@ -13,7 +13,6 @@ import { ConfiguracaoService } from '../../services/configuracao.service';
 import { OrderModule } from 'ngx-order-pipe';
 import { count, delay, retry } from 'rxjs';
 import Swal from 'sweetalert2';
-import { ImageService } from '../../services/image.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ConfigService } from '../../services/config.service';
 import { ServerStatusComponent } from "../serve-status/serve-status.component";
@@ -36,7 +35,6 @@ import { ServerStatusComponent } from "../serve-status/serve-status.component";
 })
 export class LoginComponent implements OnInit, OnDestroy {
   private configService = inject(ConfiguracaoService);
-  private imageService = inject(ImageService);
   private api = inject(ConfigService).getConfig().apiUrl + '/logo-image';
   private sanitizer = inject(DomSanitizer);
 
@@ -92,6 +90,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.profileImageError = '';
     let attempts = 0;
     const maxAttempts = 3;
+    const defaultImage: string = "'assets/img/logo_bioslab.png'";
     let success = false;
 
     while (attempts < maxAttempts && !success) {
@@ -99,13 +98,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       try {
         const response = await fetch(this.api);
 
-        if (!response.ok) {this.profileImageUrl = this.imageService.defaultImage;
+        if (!response.ok) {
+          this.profileImageUrl = defaultImage;
           throw new Error(`Erro HTTP: ${response.status}`);
         }
 
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.startsWith('image/')) {
-          this.profileImageUrl = this.imageService.defaultImage;
+          this.profileImageUrl = defaultImage;
           throw new Error('A resposta não é uma imagem válida');
         }
 
@@ -120,7 +120,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (attempts === maxAttempts) {
           this.profileImageError =
             error instanceof Error ? error.message : String(error);
-          this.profileImageUrl = this.imageService.defaultImage;
+          this.profileImageUrl = defaultImage;
         } else {
           // Aguarda um tempo antes de tentar novamente (exponencial backoff)
           await new Promise((resolve) =>
@@ -134,7 +134,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   handleError() {
-    this.profileImageUrl = this.imageService.defaultImage;
+    this.profileImageUrl = 'assets/img/logo_bioslab.png';
   }
 
   ngOnDestroy(): void {

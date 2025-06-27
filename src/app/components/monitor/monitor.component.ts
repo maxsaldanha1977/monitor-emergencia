@@ -14,7 +14,6 @@ import { ConfiguracaoService } from '../../services/configuracao.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { catchError, count, delay, retry } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ImageService } from '../../services/image.service';
 import { ConfigService } from '../../services/config.service';
 import { ServerStatusService } from '../../services/server-status.service';
 import { ServerStatusComponent } from "../serve-status/serve-status.component";
@@ -41,7 +40,6 @@ export class MonitorComponent implements OnInit, OnDestroy {
   private tempoMedioService = inject(TempoMedioService);
   private configuracaoService = inject(ConfiguracaoService);
   private route = inject(ActivatedRoute);
-  private imageService = inject(ImageService);
   private sanitizer = inject(DomSanitizer);
   private serverStatus = inject(ServerStatusService);
   private api = inject(ConfigService).getConfig().apiUrl + '/logo-image';
@@ -336,7 +334,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
         if (attempts === maxAttempts) {
           this.profileImageError =
             error instanceof Error ? error.message : String(error);
-          this.profileImageUrl = this.imageService.defaultImage;
+          this.profileImageUrl = 'assets/img/logo_bioslab.png';
         } else {
           // Aguarda um tempo antes de tentar novamente (exponencial backoff)
           await new Promise((resolve) =>
