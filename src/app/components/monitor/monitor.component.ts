@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -16,7 +16,7 @@ import { catchError, count, delay, retry } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ConfigService } from '../../services/config.service';
 import { ServerStatusService } from '../../services/server-status.service';
-import { ServerStatusComponent } from "../serve-status/serve-status.component";
+import { ServerStatusComponent } from '../serve-status/serve-status.component';
 import { LogoService } from '../../services/logo.service';
 
 @Component({
@@ -29,8 +29,8 @@ import { LogoService } from '../../services/logo.service';
     MatButtonModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
-    ServerStatusComponent
-],
+    ServerStatusComponent,
+  ],
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.css',
 })
@@ -41,7 +41,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   private tempoMedioService = inject(TempoMedioService);
   private configuracaoService = inject(ConfiguracaoService);
   private route = inject(ActivatedRoute);
-   private logoService =inject(LogoService);
+  private logoService = inject(LogoService);
   private serverStatus = inject(ServerStatusService);
   private api = inject(ConfigService).getConfig().apiUrl + '/logo-image';
 
@@ -55,7 +55,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   private tempoRequest: number = 3; //Unidade Minutos - Tempo de atualização padrão devido a cargar de slides
 
   status$ = this.serverStatus.serverStatus$;
-
+  windowHeight: number = 0;
   currentPage = 0;
   totalPages = 0;
   profileImageUrl: SafeUrl | null = null;
@@ -80,6 +80,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
     this.initSetInterval();
     this.tam();
     this.loadImage();
+    this.windowHeight = window.innerHeight;
   }
 
   ngOnDestroy(): void {
@@ -101,7 +102,15 @@ export class MonitorComponent implements OnInit, OnDestroy {
         ' pixels'
     );
   }
-
+/*
+@HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.windowHeight = window.innerHeight;
+      this.pageSize = Math.floor(this.windowHeight / 160 - 60); //Calcular a quantidade de cards por slide altura/ tamanho aproximado do card
+    console.log('Nova altura:', this.windowHeight);
+    // Adicione aqui a lógica que precisa executar quando a altura muda
+  }
+*/
   private initSetInterval(): void {
     this.status$.subscribe((status) => {
       if (status === 'offline') {
@@ -126,13 +135,14 @@ export class MonitorComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response: any) => {
           this.configuracao = response;
-
           // Atualiza os valores dos intervalos com os dados da API, e converte para milissegundos devido o setInterval
           this.tempoRequest = (this.configuracao.tempoReload || 3) * 60000; //Unidade Minutos - Aguarndando implementação
-          const tempoRefreshTela = (this.configuracao.tempoRefreshTela || 10) * 1000; //Unidade Segundos
-          const tempoMaximoVisita = (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
+          const tempoRefreshTela =
+            (this.configuracao.tempoRefreshTela || 10) * 1000; //Unidade Segundos
+          const tempoMaximoVisita =
+            (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
           const tempoMedicao = (this.configuracao.tempoMedicao || 8) * 60000; //Unidade Minutos
-          this.pageSize = this.configuracao.pageSize || this.pageSize; //Unidade Minutos
+         // this.pageSize =  this.pageSize ; //Unidade Minutos altura -
 
           this.intervalIdTempoMedio = setInterval(() => {
             this.getTempoMedio();
@@ -201,7 +211,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
               this.monitoramento.length / this.pageSize
             );
             this.currentPage = 0;
-           /* Swal.fire({
+            /* Swal.fire({
               position: 'top-end',
               icon: 'success',
               title: 'Carregado com sucesso!',
@@ -228,7 +238,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   }
 
   //Serviço retorna o cálculo de Tempo Médio
- private getTempoMedio(): void {
+  private getTempoMedio(): void {
     this.tempoMedioService
       .getTempoMedioById(this.itemId)
       .pipe(
@@ -301,7 +311,6 @@ export class MonitorComponent implements OnInit, OnDestroy {
     });
     return result;
   }
-
 
   //Função para carregar a imagem do logo
   async loadImage() {
