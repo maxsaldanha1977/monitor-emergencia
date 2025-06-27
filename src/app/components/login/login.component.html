@@ -1,12 +1,9 @@
 <div class="background-image">
   <mat-toolbar class="user-select-none">
-    <img
-      class="mx-3"
-      [src]="profileImageUrl"
-      alt="Logo"
-      style="mix-blend-mode: multiply; max-width: 150px; max-height: 150px"
-    />
 
+<div *ngIf="loadingProfileImage" class="mx-3">Carregando imagem...</div>
+    <div *ngIf="profileImageError" class="error">{{ profileImageError }}</div>
+    <img *ngIf="profileImageUrl" [src]="profileImageUrl" alt="Profile" style="mix-blend-mode: multiply; max-width: 150px; max-height: 150px" />
     <span class="example-spacer"></span>
     <img
       src="assets/img/ic-monitor.svg"

@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ConfigService } from '../../services/config.service';
 import { ServerStatusComponent } from "../serve-status/serve-status.component";
+import { LogoService } from '../../services/logo.service';
 @Component({
   selector: 'app-login',
   imports: [
@@ -36,7 +37,8 @@ import { ServerStatusComponent } from "../serve-status/serve-status.component";
 export class LoginComponent implements OnInit, OnDestroy {
   private configService = inject(ConfiguracaoService);
   private api = inject(ConfigService).getConfig().apiUrl + '/logo-image';
-  private sanitizer = inject(DomSanitizer);
+  private logoService =inject(LogoService);
+
 
   private intervalId: any;
   configs: Configuracao[] = []; // Variável para armazenar as configurações
@@ -88,46 +90,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   async loadImage() {
     this.loadingProfileImage = true;
     this.profileImageError = '';
-    let attempts = 0;
-    const maxAttempts = 3;
-    const defaultImage: string = "'assets/img/logo_bioslab.png'";
-    let success = false;
 
-    while (attempts < maxAttempts && !success) {
-      attempts++;
-      try {
-        const response = await fetch(this.api);
+    const result = await this.logoService.loadImage(this.api);
+    this.profileImageUrl = result.url;
 
-        if (!response.ok) {
-          this.profileImageUrl = defaultImage;
-          throw new Error(`Erro HTTP: ${response.status}`);
-        }
-
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.startsWith('image/')) {
-          this.profileImageUrl = defaultImage;
-          throw new Error('A resposta não é uma imagem válida');
-        }
-
-        const blob = await response.blob();
-        this.profileImageUrl = this.sanitizer.bypassSecurityTrustUrl(
-          URL.createObjectURL(blob)
-        );
-        success = true;
-      } catch (error) {
-        console.error(`Tentativa ${attempts} falhou:`, error);
-
-        if (attempts === maxAttempts) {
-          this.profileImageError =
-            error instanceof Error ? error.message : String(error);
-          this.profileImageUrl = defaultImage;
-        } else {
-          // Aguarda um tempo antes de tentar novamente (exponencial backoff)
-          await new Promise((resolve) =>
-            setTimeout(resolve, 1000 * Math.pow(2, attempts))
-          );
-        }
-      }
+    if (result.error) {
+      this.profileImageError = result.error;
     }
 
     this.loadingProfileImage = false;
