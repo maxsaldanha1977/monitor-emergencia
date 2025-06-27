@@ -87,7 +87,7 @@ export class CriarComponent implements OnInit {
       descricao: ['', Validators.required],
       tempoDisponibilidade: ['30', Validators.required],
       tempoMedicao: ['5', Validators.required],
-      tempoRefreshTela: ['10', Validators.required],
+      tempoRefreshTela: ['10', Validators.required], //tempoRefreshTela -> tempoTransicao
       tempoMaximoVisita: ['30'],
       exibirExamePendente: ['true', Validators.required],
       exibirRegistroAtendimento: ['true', Validators.required],

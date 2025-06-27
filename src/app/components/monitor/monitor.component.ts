@@ -131,7 +131,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
           this.configuracao = response;
           // Atualiza os valores dos intervalos com os dados da API, e converte para milissegundos devido o setInterval
           this.tempoRequest = (this.configuracao.tempoReload || 3) * 60000; //Unidade Minutos - Aguarndando implementação
-          const tempoRefreshTela =
+          const tempoTransicao =
             (this.configuracao.tempoRefreshTela || 10) * 1000; //Unidade Segundos
           const tempoMaximoVisita =
             (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
@@ -144,7 +144,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
 
           this.intervalIdSlide = setInterval(() => {
             this.nextSlide();
-          }, tempoRefreshTela);
+          }, tempoTransicao);
 
           this.intervalIdAtualizacao = setInterval(() => {
             this.getMonitoramento();
