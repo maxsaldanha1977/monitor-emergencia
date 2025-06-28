@@ -96,15 +96,15 @@ export class MonitorComponent implements OnInit, OnDestroy {
         ' pixels'
     );
   }
-/*
+
 @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     this.windowHeight = window.innerHeight;
-      this.pageSize = Math.floor(this.windowHeight / 160 - 60); //Calcular a quantidade de cards por slide altura/ tamanho aproximado do card
+      this.pageSize = Math.floor((this.windowHeight - 60) / 147); //Calcular a quantidade de cards por slide altura/ tamanho aproximado do card
     console.log('Nova altura:', this.windowHeight);
     // Adicione aqui a lógica que precisa executar quando a altura muda
   }
-*/
+
   private initSetInterval(): void {
     this.status$.subscribe((status) => {
       if (status === 'offline') {
@@ -136,7 +136,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
           const tempoMaximoVisita =
             (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
           const tempoMedicao = (this.configuracao.tempoMedicao || 8) * 60000; //Unidade Minutos
-         // this.pageSize =  this.pageSize ; //Unidade Minutos altura -
+          this.pageSize =  Math.floor((this.windowHeight - 60) / 147) ; //Unidade Minutos altura -
 
           this.intervalIdTempoMedio = setInterval(() => {
             this.getTempoMedio();
