@@ -1,4 +1,10 @@
-import { Component, HostListener, inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  inject,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -12,7 +18,15 @@ import Swal from 'sweetalert2';
 import { TempoMedioService } from '../../services/tempoMedio.service';
 import { ConfiguracaoService } from '../../services/configuracao.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { catchError, count, delay, retry } from 'rxjs';
+import {
+  catchError,
+  count,
+  debounceTime,
+  delay,
+  distinctUntilChanged,
+  retry,
+  Subject,
+} from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ConfigService } from '../../services/config.service';
 import { ServerStatusService } from '../../services/server-status.service';
@@ -54,6 +68,9 @@ export class MonitorComponent implements OnInit, OnDestroy {
   private pageSize: number = 6; //Medida padrão para o tamanho do slide para telas 1080p (Full HD): 1080 pixels.
   private tempoRequest: number = 3; //Unidade Minutos - Tempo de atualização padrão devido a cargar de slides
 
+  private resizeSubject = new Subject<number>();
+  private previousHeight: number = 0;
+
   status$ = this.serverStatus.serverStatus$;
   windowHeight: number = 0;
   currentPage = 0;
@@ -81,8 +98,21 @@ export class MonitorComponent implements OnInit, OnDestroy {
     this.tam();
     this.loadImage();
     this.windowHeight = window.innerHeight;
-  }
+    this.resizeSubject
+      .pipe(
+        debounceTime(1000), // Aguarda 1s sem novas alterações
+        distinctUntilChanged() // Só emite se o valor for diferente do anterior
+      )
+      .subscribe((height) => {
+        this.windowHeight = height;
+        this.pageSize = Math.floor((this.windowHeight - 60) / 147);
+        this.getMonitoramento();
+        console.log('Nova altura:', this.windowHeight);
+      });
 
+    // Inicializa com a altura atual
+    this.previousHeight = window.innerHeight;
+  }
 
   tam(): void {
     const larguraTela = window.innerWidth;
@@ -97,12 +127,14 @@ export class MonitorComponent implements OnInit, OnDestroy {
     );
   }
 
-@HostListener('window:resize', ['$event'])
+  @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    this.windowHeight = window.innerHeight;
-      this.pageSize = Math.floor((this.windowHeight - 60) / 147); //Calcular a quantidade de cards por slide altura/ tamanho aproximado do card
-    console.log('Nova altura:', this.windowHeight);
-    // Adicione aqui a lógica que precisa executar quando a altura muda
+    const newHeight = window.innerHeight;
+    // Verifica se a altura realmente mudou
+    if (newHeight !== this.previousHeight) {
+      this.previousHeight = newHeight;
+      this.resizeSubject.next(newHeight);
+    }
   }
 
   private initSetInterval(): void {
@@ -136,7 +168,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
           const tempoMaximoVisita =
             (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
           const tempoMedicao = (this.configuracao.tempoMedicao || 8) * 60000; //Unidade Minutos
-          this.pageSize =  Math.floor((this.windowHeight - 60) / 147) ; //Unidade Minutos altura -
+          this.pageSize = Math.floor((this.windowHeight - 60) / 147); //Unidade Minutos altura -
 
           this.intervalIdTempoMedio = setInterval(() => {
             this.getTempoMedio();

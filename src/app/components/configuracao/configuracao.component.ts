@@ -121,7 +121,7 @@ export class ConfiguracaoComponent implements OnInit {
                     (item) => item.idConfig !== id
                   );
                 } else {
-                  this.textLoading = 'Realizando a exclusão das informações';
+                  this.textLoading = 'Realizando a exclusão do perfil';
                 }
               },
             });
