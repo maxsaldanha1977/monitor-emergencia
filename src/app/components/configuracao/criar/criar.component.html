@@ -32,6 +32,7 @@
       </div>
     </div>
   </div>
+
   <form [formGroup]="configuracaoForm" (ngSubmit)="onSubmit()">
     <div class="card">
       <div class="card-body">
@@ -47,6 +48,9 @@
                 id="descricao"
                 characterCounter
                 [maxLength]="20"
+                appValidaInput
+                [maxValor]="20"
+                [minValor]="3"
                 [counterElementId]="'count-descricao'"
                 formControlName="descricao"
                 required
@@ -98,7 +102,7 @@
               <label
                 matTooltip="Define o intervalo máximo de exibição dos exames liberados na tela."
                 matTooltipPosition="above"
-                >Tempo de Disponibilidade (0-60)
+                >Tempo de Disponibilidade (1-60)
                 <span class="text-danger">*</span
                 ><i class="bi bi-question-circle text-danger mx-2"></i
               ></label>
@@ -112,11 +116,11 @@
                   required
                   aria-label="Username"
                   aria-describedby="basic-addon1"
-                  min="0"
+                  min="1"
                   max="60"
                   appValidaInput
                   [maxValor]="60"
-                  [minValor]="0"
+                  [minValor]="1"
                 />
                 <span class="input-group-text" id="basic-addon1">minutos</span>
               </div>
@@ -127,7 +131,7 @@
               <label
                 matTooltip="Define o intervalo para que seja executado o cálculo de tempo médio."
                 matTooltipPosition="above"
-                >Tempo de Medição (0-10) <span class="text-danger">*</span
+                >Tempo de Medição (1-10) <span class="text-danger">*</span
                 ><i class="bi bi-question-circle text-danger mx-2"></i>
               </label>
               <div class="input-group mb-3">
@@ -137,11 +141,11 @@
                   id="tempoMedicao"
                   formControlName="tempoMedicao"
                   required
-                  min="0"
+                  min="1"
                   max="10"
                   appValidaInput
                   [maxValor]="10"
-                  [minValor]="0"
+                  [minValor]="1"
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                 />
@@ -305,7 +309,11 @@
                           class="form-check-label fw-bold"
                           [for]="'todos-' + posto.codPosto"
                         >
-                          Selecionar todos.
+                          {{
+                            isTodosLocaisSelecionados(posto)
+                              ? "Desmarcar todos"
+                              : "Marcar todos"
+                          }}
                         </label>
                       </div>
                     </div>
@@ -361,15 +369,11 @@
           </div>
           }@empty {
           <div class="m-auto mt-4">
-            <div class="card">
-              <div class="card-body">
-                <h3 class="text-center">Sem posto para exibir</h3>
-              </div>
-            </div>
+            <h3 class="text-center">Oops! Não encontrei a informação.</h3>
           </div>
           }
         </div>
- </div>
+      </div>
     </div>
     <div class="card">
       <div class="card-body">
@@ -392,7 +396,7 @@
                 class="form-control"
                 id="search"
                 matInput
-                type="text"
+                type="search"
                 [(ngModel)]="filterExame"
                 [ngModelOptions]="{ standalone: true }"
                 placeholder="Pesquisar exame..."
@@ -420,11 +424,22 @@
                   </label>
                 </div>
               </div>
+              } @empty {
+              <div class="m-auto mt-4">
+                <h3 class="text-center">Oops! Não encontrei a informação.</h3>
+              </div>
               }
             </div>
           </div>
         </div>
-
+        @if(isLoading){
+        <div class="m-auto mt-4">
+          <div class="loading-container">
+            <mat-spinner></mat-spinner>
+            <h3 class="text-center">{{ textLoading }}</h3>
+          </div>
+        </div>
+        }
         <!-- Botão de Submit -->
         <div class="mt-4 algin-center">
           <button
@@ -452,4 +467,4 @@
     </div>
   </form>
 </div>
- <app-server-status></app-server-status>
+<app-server-status></app-server-status>

@@ -1,7 +1,12 @@
 <mat-toolbar class="user-select-none">
- <div *ngIf="loadingProfileImage" class="mx-3">Carregando imagem...</div>
-    <div *ngIf="profileImageError" class="error">{{ profileImageError }}</div>
-    <img *ngIf="profileImageUrl" [src]="profileImageUrl" alt="Profile" style="mix-blend-mode: multiply; max-width: 150px; max-height: 150px" />
+  <div *ngIf="loadingProfileImage" class="mx-3">Carregando imagem...</div>
+  <div *ngIf="profileImageError" class="error">{{ profileImageError }}</div>
+  <img
+    *ngIf="profileImageUrl"
+    [src]="profileImageUrl"
+    alt="Profile"
+    style="mix-blend-mode: multiply; max-width: 150px; max-height: 150px"
+  />
   <span class="example-spacer"></span>
   <div class="mx-1">
     <span class="text-danger mt-1 text-bolder text-sz-1 text-center none">{{
@@ -71,7 +76,8 @@
                 'alert-liberado': item.situacao === 'Liberado'
               }"
             >
-              <!-- 'alert-atrasado':
+              <!-- ,
+            'alert-atrasado':
                   (item.situacao === 'Pronto' || item.situacao === 'Solicitado') &&
                   (item.decorrido | appTempoDecorridoNumber) > limiteAlertaAtrasado-->
               <div class="card-body">
@@ -150,17 +156,17 @@
             }
           </div>
 
-          } @else {
+          } @else { @if(isLoading){
           <div class="m-auto mt-4">
-            <div *ngIf="isLoading" class="loading-indicator">
+            <div class="loading-indicator">
               <mat-spinner></mat-spinner>
               <h3 class="text-center">{{ textLoading }}</h3>
             </div>
           </div>
-          }
+          } }
         </div>
       </div>
     </div>
   </div>
 </div>
-  <app-server-status></app-server-status>
+<app-server-status></app-server-status>

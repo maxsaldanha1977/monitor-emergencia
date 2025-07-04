@@ -32,6 +32,7 @@ import { ConfigService } from '../../services/config.service';
 import { ServerStatusService } from '../../services/server-status.service';
 import { ServerStatusComponent } from '../serve-status/serve-status.component';
 import { LogoService } from '../../services/logo.service';
+import { TempoDecorridoNumberPipe } from '../../pipe/tempo-decorrido-number.pipe';
 
 @Component({
   selector: 'app-monitor',
@@ -44,6 +45,7 @@ import { LogoService } from '../../services/logo.service';
     MatToolbarModule,
     MatProgressSpinnerModule,
     ServerStatusComponent,
+    TempoDecorridoNumberPipe
   ],
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.css',
@@ -168,7 +170,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
           const tempoMaximoVisita =
             (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
           const tempoMedicao = (this.configuracao.tempoMedicao || 8) * 60000; //Unidade Minutos
-          this.pageSize = Math.floor((this.windowHeight - 60) / 147); //Unidade Minutos altura -
+          this.pageSize = Math.floor((this.windowHeight - 60) / 146.52); //Unidade Minutos altura -
 
           this.intervalIdTempoMedio = setInterval(() => {
             this.getTempoMedio();
@@ -210,7 +212,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
         error: (error) => {
           Swal.fire({
             icon: 'error',
-            text: 'Ocorreu um erro no caregamento das informações! Atualize o navegador ou tente mais tarde.',
+            text: 'Oops! Ocorreu um erro no caregamento das informações! Atualize o navegador ou tente mais tarde.',
             showConfirmButton: false,
             timer: 1500,
           });
@@ -245,7 +247,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
               timer: 1500,
             }); */
           } else {
-            this.textLoading = 'Sem exames em análise no momento!';
+            this.textLoading = 'Oops! Sem exames em análise no momento!';
           }
 
           console.log('getMonitoramento from Monitor');
@@ -254,7 +256,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
           this.textLoading = 'Erro no carregamento ...'; //Defini o texto para o pré carregando
           Swal.fire({
             icon: 'error',
-            text: 'Ocorreu um erro no caregamento das informações! Atualize o navegador ou tente mais tarde.',
+            text: 'Oops! Ocorreu um erro no caregamento das informações! Atualize o navegador ou tente mais tarde.',
             showConfirmButton: false,
             timer: 1500,
           });
@@ -289,10 +291,10 @@ export class MonitorComponent implements OnInit, OnDestroy {
           console.log('getTempoMedio');
         },
         error: (error) => {
-          this.textLoading = 'Erro no carregamento ...'; //Defini o texto para o pré carregando
+          this.textLoading = 'Oops! Erro no carregamento ...'; //Defini o texto para o pré carregando
           Swal.fire({
             icon: 'error',
-            text: 'Ocorreu um erro no carregamento do tempo médio!',
+            text: 'Oops! Ocorreu um erro no carregamento do tempo médio!',
             showConfirmButton: false,
             timer: 1500,
           });
@@ -376,7 +378,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
     const minutos = this.pad(agora.getMinutes());
     const segundos = this.pad(agora.getSeconds());
 
-    this.dataHoraFormatada = `Hoje, ${dia} de ${mes} de ${ano} às ${horas}h ${minutos}min ${segundos}s`;
+    this.dataHoraFormatada = `Hoje, ${dia} de ${mes} de ${ano} às ${horas}h${minutos}min${segundos}s`;
   }
 
   ngOnDestroy(): void {

@@ -32,9 +32,9 @@ export const httpStatusInterceptor: HttpInterceptorFn = (req, next) => {
       }
       // Tratamento específico para cada status HTTP
       switch (error.status) {
-        case 0: // Erro de conexão (offline)          
+        case 0: // Erro de conexão (offline)
         serverStatus.checkConnection().subscribe();
-          showErrorAlert('Erro de Comunicação', 'Atualize o navegador ou verifique sua conexão');
+          showErrorAlert('Oops! Erro de Comunicação', 'Atualize o navegador ou verifique sua conexão');
           break;
 
         case 400: // Bad Request
@@ -46,35 +46,35 @@ export const httpStatusInterceptor: HttpInterceptorFn = (req, next) => {
           break;
 
         case 403: // Forbidden
-          showErrorAlert('Acesso negado', 'Você não tem permissão para acessar este recurso');
+          showErrorAlert('Oops! Acesso negado', 'Você não tem permissão para acessar este recurso');
           break;
 
         case 404: // Not Found
-          showErrorAlert('Recurso não encontrado', 'O endereço solicitado não existe');
+          showErrorAlert('Oops! Recurso não encontrado', 'O endereço solicitado não existe');
           break;
 
         case 408: // Request Timeout
-          showErrorAlert('Tempo esgotado', 'O servidor demorou muito para responder. Tente novamente mais tarde.');
+          showErrorAlert('Oops! Tempo esgotado', 'O servidor demorou muito para responder. Tente novamente mais tarde.');
           break;
 
         case 429: // Too Many Requests
-          showErrorAlert('Muitas requisições', 'Por favor, aguarde antes de fazer novas requisições');
+          showErrorAlert('Oops! Muitas requisições', 'Por favor, aguarde antes de fazer novas requisições');
           break;
 
         case 500: // Internal Server Error
          serverStatus.checkConnection().subscribe();
-          showErrorAlert('Erro no servidor', 'Ocorreu um erro interno no servidor. Tente novamente mais tarde.');
+          showErrorAlert('Oops! Erro no servidor', 'Ocorreu um erro interno no servidor. Tente novamente mais tarde.');
           break;
 
         case 502: // Bad Gateway
         case 503: // Service Unavailable
-        case 504: // Gateway Timeout          
+        case 504: // Gateway Timeout
         serverStatus.checkConnection().subscribe();
-          showErrorAlert('Serviço indisponível', 'O servidor está temporariamente indisponível. Tente novamente mais tarde.');
+          showErrorAlert('Oops! Serviço indisponível', 'O servidor está temporariamente indisponível. Tente novamente mais tarde.');
           break;
 
         default:
-          showErrorAlert(`Erro ${error.status}`, error.message || 'Ocorreu um erro desconhecido. Tente novamente mais tarde.');
+          showErrorAlert(`Erro ${error.status}`, error.message || 'Oops! Ocorreu um erro desconhecido. Tente novamente mais tarde.');
       }
 
       return throwError(() => error);
@@ -84,8 +84,8 @@ export const httpStatusInterceptor: HttpInterceptorFn = (req, next) => {
 
 // Funções auxiliares para tratamento de erros
 function handleBadRequest(error: HttpErrorResponse): void {
-  let errorMessage = 'Requisição inválida';
-  
+  let errorMessage = 'Oops! Requisição inválida';
+
   if (error.error?.errors) {
     errorMessage = Object.values(error.error.errors).join('\n');
   } else if (error.error?.message) {
@@ -97,7 +97,7 @@ function handleBadRequest(error: HttpErrorResponse): void {
 
 function handleUnauthorizedError(router: Router): void {
   Swal.fire({
-    title: 'Sessão expirada',
+    title: 'Oops! Sessão expirada',
     text: 'Por favor, faça login novamente',
     icon: 'warning',
     confirmButtonText: 'OK',
@@ -124,11 +124,11 @@ function isImageRequest(req: any): boolean {
   if (req.url.match(/\.(png|jpg|jpeg|gif)$/) || req.url.includes('/images/')) {
     return true;
   }
-  
+
   // Verifica pelo Accept header
   if (req.headers.get('Accept')?.includes('image/')) {
     return true;
   }
-  
+
   return false;
 }

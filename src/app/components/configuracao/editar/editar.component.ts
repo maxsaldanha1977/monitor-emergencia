@@ -73,9 +73,10 @@ export class EditarComponent implements OnInit {
   private changeDetectorRef = inject(ChangeDetectorRef);
 
   posto: any;
-   textLoading: string = 'Carregando as informações';
+   textLoading: string = '';
   filterExame: string = '';
   filterPosto: string = '';
+  isLoading: boolean = true;
   configuracaoForm: FormGroup;
 
   examesDisponiveis: Exame[] = [];
@@ -84,7 +85,7 @@ export class EditarComponent implements OnInit {
   postosSelecionados: PostoPost[] = [];
   locaisInternacaoDisponiveis: LocalInternacao[] = [];
   locaisInternacaoSelecionados: LocalInternacao[] = [];
-  isLoading: boolean = false;
+
 
   constructor() {
     this.configuracaoForm = this.fb.group({
@@ -103,7 +104,7 @@ export class EditarComponent implements OnInit {
   }
 
   carregarDados(): void {
-    this.isLoading = true;
+     this.textLoading = 'Carregando o perfil de configuração!';
     const itemId = this.route.snapshot.paramMap.get('id');
 
     // Primeiro carrega todos os dados disponíveis
@@ -183,7 +184,7 @@ export class EditarComponent implements OnInit {
           this.changeDetectorRef.detectChanges();
         },
         error: (error) => {
-          console.error('Erro ao carregar configuração existente', error);
+          console.error('Oops! Erro ao carregar configuração existente', error);
           this.isLoading = false;
         },
       });
@@ -298,7 +299,7 @@ export class EditarComponent implements OnInit {
         (l) => l.codLocalInternacao === local.codLocalInternacao
       )
     ) {
-      console.error('O local selecionado não pertence ao posto informado.');
+      console.error('Oops! O local selecionado não pertence ao posto informado.');
       return;
     }
 
@@ -360,6 +361,7 @@ export class EditarComponent implements OnInit {
   }
 
   isTodosLocaisSelecionados(posto: PostoPost): boolean {
+     const locaisDoPosto = this.getLocaisDoPosto(posto.codPosto);
     const postoSelecionado = this.postosSelecionados.find(
       (p) => p.codPosto === posto.codPosto
     );
@@ -370,11 +372,24 @@ export class EditarComponent implements OnInit {
       return true;
     }
 
-    const locaisDoPosto = this.getLocaisDoPosto(posto.codPosto);
     return locaisDoPosto.every((local) =>
       postoSelecionado.locaisSelecionados?.includes(local.codLocalInternacao)
     );
   }
+
+  /* isTodosLocaisSelecionados(posto: PostoPost): boolean {
+    const locaisDoPosto = this.getLocaisDoPosto(posto.codPosto);
+    const postoSelecionado = this.postosSelecionados.find(
+      (p) => p.codPosto === posto.codPosto
+    );
+
+    if (!postoSelecionado?.locaisSelecionados) return false;
+
+    return locaisDoPosto.every((local) =>
+      postoSelecionado.locaisSelecionados?.includes(local.codLocalInternacao)
+    );
+  }
+  */
 
   toggleLocalParaPosto(posto: PostoPost, local: LocalInternacao): void {
     const postoIndex = this.postosSelecionados.findIndex(
@@ -428,6 +443,8 @@ export class EditarComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.isLoading= true;
+    this.textLoading = 'Aguardando resposta do servidor';
     if (
       this.configuracaoForm.valid &&
       this.examesSelecionados.length > 0 &&
@@ -472,11 +489,10 @@ export class EditarComponent implements OnInit {
       );
       operacao.subscribe({
         next: (response) => {
+          this.isLoading = false;
           Swal.fire({
             icon: 'success',
-            title: itemId
-              ? 'Cadastro atualizado com sucesso!'
-              : 'Cadastro criado com sucesso!',
+            title: 'Cadastro atualizado com sucesso!',
             showConfirmButton: false,
             timer: 1000,
           });
@@ -485,9 +501,7 @@ export class EditarComponent implements OnInit {
           console.error('Erro:', error);
           Swal.fire({
             icon: 'error',
-            text: `Ocorreu um erro, o cadastro não foi ${
-              itemId ? 'atualizado' : 'realizado'
-            }, tente novamente!`,
+            text: `Oops! Ocorreu um erro, o cadastro não foi atualizado, tente novamente!`,
             showConfirmButton: false,
             timer: 1000,
           });
@@ -496,7 +510,7 @@ export class EditarComponent implements OnInit {
     } else {
       Swal.fire({
         icon: 'error',
-        text: 'Preencha todos os campos obrigatórios e selecione pelo menos um exame e um posto!',
+        text: 'Oops! Preencha todos os campos obrigatórios e selecione pelo menos um exame e um posto!',
         showConfirmButton: true,
       });
     }

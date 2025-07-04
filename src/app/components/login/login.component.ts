@@ -95,7 +95,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.profileImageUrl = result.url;
 
     if (result.error) {
-      this.profileImageError = result.error;
+      this.profileImageError = '';
     }
 
     this.loadingProfileImage = false;

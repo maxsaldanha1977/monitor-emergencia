@@ -11,8 +11,8 @@ import { CustomFilterPipePipe } from '../../pipe/custom-filter-pipe.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { retry } from 'rxjs';
-import { NgPipesModule} from 'ngx-pipes';
-import { ServerStatusComponent } from "../serve-status/serve-status.component";
+import { NgPipesModule } from 'ngx-pipes';
+import { ServerStatusComponent } from '../serve-status/serve-status.component';
 
 @Component({
   selector: 'app-configuracao',
@@ -26,8 +26,8 @@ import { ServerStatusComponent } from "../serve-status/serve-status.component";
     MatTooltipModule,
     MatProgressSpinnerModule,
     NgPipesModule,
-    ServerStatusComponent
-],
+    ServerStatusComponent,
+  ],
   templateUrl: './configuracao.component.html',
   styleUrl: './configuracao.component.css',
 })
@@ -39,6 +39,7 @@ export class ConfiguracaoComponent implements OnInit {
   filter: string = '';
   isLoading: boolean = true;
   textLoading: string = '';
+  searchTerm: string = '';
 
   configuracao: Configuracao[] = [];
 
@@ -48,9 +49,14 @@ export class ConfiguracaoComponent implements OnInit {
     this.getAllConfiguracao();
   }
 
+  // Método chamado ao digitar no input
+  onSearchInput(event: any): void {
+    this.searchTerm = event.target.value.trim(); // Remove espaços em branco
+     this.textLoading = 'Oops! Não encontrei a informação.';
+  }
   //Serviço retorna os dados de monitoramento.
   private getAllConfiguracao(): void {
-    this.textLoading = 'Carregando as informações';
+    this.textLoading = 'Carregando a listagem!';
     this.configuraracaoService
       .getAllConfiguracao()
       .pipe(
@@ -72,14 +78,14 @@ export class ConfiguracaoComponent implements OnInit {
               timer: 1500,
             });
           } else {
-            this.textLoading = 'Sem configurações para exibir!!';
+            this.textLoading = 'Oops! Sem perfil de configuração para exibir.';
           }
         },
         error: (error) => {
           this.textLoading = 'Erro no carregamento ...'; //Defini o texto para o pré carregando
           Swal.fire({
             icon: 'error',
-            text: 'Ocorreu um erro, o carregamento das informações!',
+            text: 'Oops! Ocorreu um erro, o carregamento das informações!',
             showConfirmButton: false,
             timer: 1500,
           });
@@ -132,7 +138,7 @@ export class ConfiguracaoComponent implements OnInit {
       Swal.fire({
         icon: 'error',
         title: 'Erro na exclusão do perfil',
-        text: 'Ocorreu um erro ao salvar as alterações',
+        text: 'Oops! Ocorreu um erro ao salvar as alterações',
       });
     }
   }

@@ -30,7 +30,8 @@ import { CharacterCounterDirective } from '../../../utils/character-counter/char
 import Swal from 'sweetalert2';
 import { ConfiguracaoService } from '../../../services/configuracao.service';
 import { ValidaInputDirective } from '../../../utils/valida-input.directive';
-import { ServerStatusComponent } from "../../serve-status/serve-status.component";
+import { ServerStatusComponent } from '../../serve-status/serve-status.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 interface PostoComLocais extends Posto {
   locaisDisponiveis: LocalInternacao[];
@@ -54,12 +55,12 @@ interface PostoComLocais extends Posto {
     CustomFilterPipePipe,
     CharacterCounterDirective,
     ValidaInputDirective,
-    ServerStatusComponent
-],
+    ServerStatusComponent,
+    MatProgressSpinnerModule
+  ],
   templateUrl: './criar.component.html',
   styleUrl: './criar.component.css',
 })
-
 export class CriarComponent implements OnInit {
   title = 'Cadastrar Perfil de Configuração';
 
@@ -69,10 +70,11 @@ export class CriarComponent implements OnInit {
   private lolcalInternacaoService = inject(LocalInternacaoService);
   private fb = inject(FormBuilder);
 
-
   posto: any;
   filterExame: string = '';
   filterPosto: string = '';
+  textLoading: string = '';
+  isLoading: boolean = true;
   configuracaoForm: FormGroup;
 
   examesDisponiveis: Exame[] = [];
@@ -82,7 +84,7 @@ export class CriarComponent implements OnInit {
   locaisInternacaoDisponiveis: LocalInternacao[] = [];
   locaisInternacaoSelecionados: LocalInternacao[] = [];
 
-  constructor( ) {
+  constructor() {
     this.configuracaoForm = this.fb.group({
       descricao: ['', Validators.required],
       tempoDisponibilidade: ['30', Validators.required],
@@ -100,6 +102,7 @@ export class CriarComponent implements OnInit {
   }
 
   carregarDados(): void {
+        this.textLoading = 'Carregando a listagem!';
     // Carrega locais de internação primeiro
     this.lolcalInternacaoService.getAllLocalInternacao().subscribe({
       next: (locais) => {
@@ -107,6 +110,7 @@ export class CriarComponent implements OnInit {
         // Depois carrega os postos
         this.postosService.getAllPostos().subscribe({
           next: (postos) => {
+
             this.postosDisponiveis = postos
               .map((posto) => ({
                 ...posto,
@@ -116,6 +120,7 @@ export class CriarComponent implements OnInit {
           },
           error: (error) => console.error('Erro ao carregar postos', error),
         });
+         this.isLoading= false;
       },
       error: (error) =>
         console.error('Erro ao carregar locais de internação', error),
@@ -139,7 +144,7 @@ export class CriarComponent implements OnInit {
         (l) => l.codLocalInternacao === local.codLocalInternacao
       )
     ) {
-      console.error('O local selecionado não pertence ao posto informado.');
+      console.error('Oops! O local selecionado não pertence ao posto informado.');
       return;
     }
 
@@ -320,6 +325,8 @@ export class CriarComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.isLoading= true;
+    this.textLoading = 'Aguardando resposta do servidor';
     if (
       this.configuracaoForm.valid &&
       this.examesSelecionados.length > 0 &&
@@ -363,35 +370,33 @@ export class CriarComponent implements OnInit {
 
       //console.log('Dados a enviar:', JSON.stringify(configuracao, null, 2));
 
-
       this.configuracaoService.postConfiguracao(configuracao).subscribe(
         (response) => {
+           this.isLoading = false;
           console.log('Sucesso:', response);
           Swal.fire({
-                 icon: 'success',
-                 title: 'Cadastro criado com sucesso!',
-                 showConfirmButton: false,
-                 timer: 1000,
-               });
+            icon: 'success',
+            title: 'Cadastro criado com sucesso!',
+            showConfirmButton: false,
+            timer: 1000,
+          });
         },
         (error) => {
           console.error('Erro:', error);
           Swal.fire({
-                  icon: 'error',
-                  text: 'Ocorreu um erro, o cadastro não foi realizado, tente novamente!',
-                  showConfirmButton: false,
-                  timer: 1000,
-                });
+            icon: 'error',
+            text: 'Oops! Ocorreu um erro, o cadastro não foi realizado, tente novamente!',
+            showConfirmButton: false,
+            timer: 1000,
+          });
         }
       );
     } else {
       Swal.fire({
         icon: 'error',
-        text: 'Preencha pelo menos um local de internação para o posto habilitado!',
+        text: 'Oops! Preencha pelo menos um local de internação para o posto habilitado!',
         showConfirmButton: true,
       });
-
     }
   }
-
 }

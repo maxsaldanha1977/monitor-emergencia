@@ -39,8 +39,9 @@
           <input
             class="form-control flex-grow-1"
             id="search"
+            (input)="onSearchInput($event)"
             matInput
-            type="text"
+            type="search"
             [(ngModel)]="filter"
             [ngModelOptions]="{ standalone: true }"
             placeholder="Pesquisar perfil..."
@@ -96,11 +97,11 @@
                 <p class="card-category">Disponibilidade</p>
                 <h3 class="card-title">{{ item.tempoDisponibilidade }} min</h3>
               </div>
-               <div class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-4">
+              <div class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-4">
                 <p class="card-category">Medição</p>
                 <h3 class="card-title">{{ item.tempoMedicao }} min</h3>
               </div>
-            <div class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-4">
+              <div class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-4">
                 <p class="card-category">Transição do slide</p>
                 <h3 class="card-title">{{ item.tempoRefreshTela }} seg</h3>
               </div>
@@ -129,7 +130,7 @@
           <div class="card-body">
             <div class="row">
               @for(exame of item.exames; track exame.mne){
-                <div class="col-1 col-xxl-1 col-xl-1 col-lg-1 col-md-2">
+              <div class="col-1 col-xxl-1 col-xl-1 col-lg-1 col-md-2">
                 <h4 class="card-title">{{ exame.mne }}</h4>
               </div>
               }
@@ -142,7 +143,7 @@
           <div class="card-body">
             <div class="row">
               @for(posto of item.postos; track posto.codPosto + '-' + $index){
-               <div class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-4">
+              <div class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-4">
                 <span class="card-category"
                   ><strong>{{ posto.codPosto }}</strong></span
                 >
@@ -156,14 +157,16 @@
         }
       </mat-expansion-panel>
       }@empty {
-      <div class="m-auto mt-4">
-        <div *ngIf="isLoading" class="loading-indicator">
-          <mat-spinner></mat-spinner>
-          <h3 class="text-center">{{ textLoading }}</h3>
-        </div>
-      </div>
+      @if(isLoading){
+          <div class="m-auto mt-4">
+            <div class="loading-indicator">
+              <mat-spinner></mat-spinner>
+              <h3 class="text-center">{{ textLoading }}</h3>
+            </div>
+          </div>
+          }
       }
     </mat-accordion>
   </div>
 </div>
- <app-server-status></app-server-status>
+<app-server-status></app-server-status>

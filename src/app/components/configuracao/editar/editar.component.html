@@ -32,10 +32,17 @@
       </div>
     </div>
   </div>
+  @if(isLoading){
+  <div class="m-auto mt-4">
+    <div class="loading-indicator">
+      <mat-spinner></mat-spinner>
+      <h3 class="text-center">{{ textLoading }}</h3>
+    </div>
+  </div>
+  } @else {
   <form [formGroup]="configuracaoForm" (ngSubmit)="onSubmit()">
-  <div class="card">
-    <div class="card-body">
-
+    <div class="card">
+      <div class="card-body">
         <!-- Seção de Configurações Gerais -->
         <div class="row">
           <div class="col-6">
@@ -99,7 +106,7 @@
               <label
                 matTooltip="Define o intervalo máximo de exibição dos exames liberados na tela."
                 matTooltipPosition="above"
-                >Tempo de Disponibilidade (0-60)
+                >Tempo de Disponibilidade (1-60)
                 <span class="text-danger">*</span
                 ><i class="bi bi-question-circle text-danger mx-2"></i
               ></label>
@@ -111,13 +118,13 @@
                   id="tempoDisponibilidade"
                   formControlName="tempoDisponibilidade"
                   required
-                  min="0"
+                  min="1"
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                   max="60"
                   appValidaInput
                   [maxValor]="60"
-                  [minValor]="0"
+                  [minValor]="1"
                 />
                 <span class="input-group-text" id="basic-addon1">minutos</span>
               </div>
@@ -128,7 +135,7 @@
               <label
                 matTooltip="Define o intervalo para que seja executado o cálculo de tempo médio."
                 matTooltipPosition="above"
-                >Tempo de Medição (0-10) <span class="text-danger">*</span
+                >Tempo de Medição (1-10) <span class="text-danger">*</span
                 ><i class="bi bi-question-circle text-danger mx-2"></i>
               </label>
               <div class="input-group mb-3">
@@ -138,11 +145,11 @@
                   id="tempoMedicao"
                   formControlName="tempoMedicao"
                   required
-                  min="0"
+                  min="1"
                   max="10"
                   appValidaInput
                   [maxValor]="10"
-                  [minValor]="0"
+                  [minValor]="1"
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                 />
@@ -191,11 +198,11 @@
                   class="form-control"
                   id="tempoMaximoVisita"
                   formControlName="tempoMaximoVisita"
-                  min="0"
+                  min="1"
                   max="120"
                   appValidaInput
                   [maxValor]="120"
-                  [minValor]="0"
+                  [minValor]="1"
                   aria-label="Username"
                   aria-describedby="basic-addon1"
                 />
@@ -204,10 +211,10 @@
             </div>
           </div>
         </div>
+      </div>
     </div>
-  </div>
-   <div class="card">
-    <div class="card-body">
+    <div class="card">
+      <div class="card-body">
         <!-- Seção de Postos -->
         <div class="row mb-4">
           <div class="col-6">
@@ -220,19 +227,19 @@
           </div>
           <div class="col-6">
             <div class="d-flex align-items-center">
-          <i class="bi bi-search fa-2x me-2"></i>
-                <input
-                  class="form-control"
-                  id="search"
-                  matInput
-                  type="search"
-                  [(ngModel)]="filterPosto"
-                  [ngModelOptions]="{ standalone: true }"
-                  placeholder="Pesquisar posto..."
-                  style="background-image: none"
-                />
-              </div>
+              <i class="bi bi-search fa-2x me-2"></i>
+              <input
+                class="form-control"
+                id="search"
+                matInput
+                type="search"
+                [(ngModel)]="filterPosto"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Pesquisar posto..."
+                style="background-image: none"
+              />
             </div>
+          </div>
         </div>
         <div class="list-group mb-3">
           @for (posto of postosDisponiveis | customFilter : filterPosto; track
@@ -284,6 +291,7 @@
                     </div>
                     <div class="col-4 text-end">
                       <div class="form-check">
+                        @if(!isTodosLocaisSelecionados(posto)){
                         <input
                           class="form-check-input"
                           type="checkbox"
@@ -299,11 +307,17 @@
                             )
                           "
                         />
+                        }
+
                         <label
                           class="form-check-label fw-bold"
                           [for]="'todos-' + posto.codPosto"
                         >
-                          Selecionar todos.
+                          {{
+                            isTodosLocaisSelecionados(posto)
+                              ? "Todos marcados"
+                              : "Marcar todos"
+                          }}
                         </label>
                       </div>
                     </div>
@@ -311,7 +325,7 @@
                     <div class="row">
                       @for (local of getLocaisDoPosto(posto.codPosto); track
                       local.codPosto + '-' + $index) {
-                     <div class="col-3 col-xxl-3 col-xl-4 col-lg-6 col-md-12">
+                      <div class="col-3 col-xxl-3 col-xl-4 col-lg-6 col-md-12">
                         <div class="form-check">
                           <input
                             class="form-check-input"
@@ -352,11 +366,16 @@
             </div>
             }
           </div>
+          }@empty {
+          <div class="m-auto mt-4">
+            <h3 class="text-center">Oops! Não encontrei a informação.</h3>
+          </div>
           }
         </div>
+      </div>
     </div>
-   </div> <div class="card">
-    <div class="card-body">
+    <div class="card">
+      <div class="card-body">
         <!-- Seção de Exames -->
         <div class="row mb-3">
           <div class="col-6">
@@ -369,20 +388,20 @@
             ></label>
           </div>
 
-         <div class="col-6">
+          <div class="col-6">
             <div class="d-flex align-items-center">
-          <i class="bi bi-search fa-2x me-2"></i>
-                <input
-                  class="form-control"
-                  id="search"
-                  matInput
-                  type="text"
-                  [(ngModel)]="filterExame"
-                  [ngModelOptions]="{ standalone: true }"
-                  placeholder="Pesquisar exame..."
-                  style="background-image: none"
-                />
-              </div>
+              <i class="bi bi-search fa-2x me-2"></i>
+              <input
+                class="form-control"
+                id="search"
+                matInput
+                type="search"
+                [(ngModel)]="filterExame"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Pesquisar exame..."
+                style="background-image: none"
+              />
+            </div>
           </div>
         </div>
         <div class="card">
@@ -404,18 +423,22 @@
                   </label>
                 </div>
               </div>
+              } @empty {
+              <div class="m-auto mt-4">
+                <h3 class="text-center">Oops! Não encontrei a informação.</h3>
+              </div>
               }
             </div>
           </div>
         </div>
-
+        @if(isLoading){
         <div class="m-auto mt-4">
-          <div *ngIf="isLoading === true" class="loading-indicator">
+          <div class="loading-container">
             <mat-spinner></mat-spinner>
             <h3 class="text-center">{{ textLoading }}</h3>
           </div>
         </div>
-
+        }
         <!-- Botão de Submit -->
         <div class="mt-4 algin-center">
           <button
@@ -439,9 +462,9 @@
             ATUALIZAR
           </button>
         </div>
-
+      </div>
     </div>
-  </div>
-   </form>
+  </form>
+  }
 </div>
- <app-server-status></app-server-status>
+<app-server-status></app-server-status>
