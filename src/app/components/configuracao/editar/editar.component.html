@@ -446,17 +446,12 @@
             type="submit"
             class="btn btn-rose pull-right text-white"
             [ngStyle]="{
-              backgroundColor: configuracaoForm.valid ? '#EC407A' : '#db6c91'
-            }"
-            [ngClass]="{
-              'btn btn-rose': configuracaoForm.valid,
-              'btn btn-secondary': !configuracaoForm.valid
+              backgroundColor: configuracaoForm.valid ? '#EC407A' : '#C0C0C0'
             }"
             [disabled]="
               !configuracaoForm.valid ||
               examesSelecionados.length === 0 ||
-              postosSelecionados.length === 0 ||
-              postosSelecionados.every.length === 0
+              postosSelecionados.length === 0
             "
           >
             ATUALIZAR

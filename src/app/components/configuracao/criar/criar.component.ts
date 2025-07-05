@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -69,6 +69,7 @@ export class CriarComponent implements OnInit {
   private configuracaoService = inject(ConfiguracaoService);
   private lolcalInternacaoService = inject(LocalInternacaoService);
   private fb = inject(FormBuilder);
+  private router = inject(Router);
 
   posto: any;
   filterExame: string = '';
@@ -380,7 +381,9 @@ export class CriarComponent implements OnInit {
             title: 'Cadastro criado com sucesso!',
             showConfirmButton: false,
             timer: 1000,
-          });
+          }).then(() => {
+        this.router.navigate(['/configuracao']); // Redireciona para a página inicial
+      });
         },
         (error) => {
           console.error('Erro:', error);

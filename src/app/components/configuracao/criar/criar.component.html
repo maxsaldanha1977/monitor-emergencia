@@ -432,16 +432,14 @@
             </div>
           </div>
         </div>
-        <!--@if(isLoading){
+        @if(isLoading){
         <div class="m-auto mt-4">
           <div class="loading-container">
             <mat-spinner></mat-spinner>
             <h3 class="text-center">{{ textLoading }}</h3>
           </div>
         </div>
-        } -->
-
-
+        }
         <!-- Botão de Submit -->
         <div class="mt-4 algin-center">
           <button
@@ -449,17 +447,13 @@
             type="submit"
             class="btn btn-rose pull-right text-white"
             [ngStyle]="{
-              backgroundColor: configuracaoForm.valid ? '#EC407A' : '#db6c91'
+              backgroundColor: configuracaoForm.valid ? '#EC407A' : '#C0C0C0'
             }"
-            [ngClass]="{
-              'btn btn-rose': configuracaoForm.valid,
-              'btn btn-secondary': !configuracaoForm.valid
-            }"
+
             [disabled]="
               !configuracaoForm.valid ||
               examesSelecionados.length === 0 ||
-              postosSelecionados.length === 0 ||
-              postosSelecionados.every.length === 0
+              postosSelecionados.length === 0
             "
           >
             CADASTRAR

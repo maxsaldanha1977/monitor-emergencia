@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import { ConfiguracaoService } from '../../../services/configuracao.service';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PostoService } from '../../../services/posto.service';
 import { ExameService } from '../../../services/exame.service';
@@ -72,6 +72,7 @@ export class EditarComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private fb = inject(FormBuilder);
   private changeDetectorRef = inject(ChangeDetectorRef);
+  private router = inject(Router);
 
   posto: any;
    textLoading: string = '';
@@ -512,7 +513,9 @@ export class EditarComponent implements OnInit {
             title: 'Cadastro atualizado com sucesso!',
             showConfirmButton: false,
             timer: 1000,
-          });
+          }).then(() => {
+        this.router.navigate(['/configuracao']); // Redireciona para a página inicial
+      });
         },
         error: (error) => {
           console.error('Erro:', error);
