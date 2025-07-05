@@ -121,14 +121,10 @@ export class ConfiguracaoComponent implements OnInit {
               })
             )
             .subscribe({
-              next: (response: any) => {
-                if (response) {
+              next: () => {
                   this.configuracao = this.configuracao.filter(
                     (item) => item.idConfig !== id
                   );
-                } else {
-                  this.textLoading = 'Realizando a exclusão do perfil';
-                }
               },
             });
         }

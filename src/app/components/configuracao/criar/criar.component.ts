@@ -102,7 +102,7 @@ export class CriarComponent implements OnInit {
   }
 
   carregarDados(): void {
-        this.textLoading = 'Carregando a listagem!';
+        this.textLoading = 'Carregando as informações!';
     // Carrega locais de internação primeiro
     this.lolcalInternacaoService.getAllLocalInternacao().subscribe({
       next: (locais) => {
@@ -370,7 +370,8 @@ export class CriarComponent implements OnInit {
 
       //console.log('Dados a enviar:', JSON.stringify(configuracao, null, 2));
 
-      this.configuracaoService.postConfiguracao(configuracao).subscribe(
+      this.configuracaoService.postConfiguracao(configuracao)
+      .subscribe(
         (response) => {
            this.isLoading = false;
           console.log('Sucesso:', response);

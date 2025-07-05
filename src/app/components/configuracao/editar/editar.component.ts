@@ -32,6 +32,7 @@ import { ConfiguracaoUpdate } from '../../../model/ConfiguracaoUpdate';
 import { ValidaInputDirective } from '../../../utils/valida-input.directive';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ServerStatusComponent } from "../../serve-status/serve-status.component";
+import { retry } from 'rxjs';
 
 interface PostoComLocais extends Posto {
   locaisDisponiveis: LocalInternacao[];
@@ -127,12 +128,23 @@ export class EditarComponent implements OnInit {
   carregarDadosDisponiveis(): Promise<void> {
     return new Promise((resolve) => {
       // Carrega locais de internação primeiro
-      this.lolcalInternacaoService.getAllLocalInternacao().subscribe({
+      this.lolcalInternacaoService.getAllLocalInternacao()
+      .pipe(
+        retry({
+          count: 3,
+          delay: 1000,
+        })
+      ).subscribe({
         next: (locais) => {
           this.locaisInternacaoDisponiveis = locais;
 
           // Depois carrega os postos
-          this.postosService.getAllPostos().subscribe({
+          this.postosService.getAllPostos().pipe(
+                  retry({
+                    count: 3,
+                    delay: 1000,
+                  })
+                ).subscribe({
             next: (postos) => {
               this.postosDisponiveis = postos
                 .map((posto) => ({
@@ -156,7 +168,13 @@ export class EditarComponent implements OnInit {
       });
 
       // Carrega exames disponíveis em paralelo
-      this.examesService.getAllExames().subscribe({
+      this.examesService.getAllExames()
+      .pipe(
+        retry({
+          count: 3,
+          delay: 1000,
+        })
+      ).subscribe({
         next: (exames) => (this.examesDisponiveis = exames),
         error: (error) => console.error('Erro ao carregar exames', error)
       });
@@ -165,7 +183,13 @@ export class EditarComponent implements OnInit {
   }
 
     carregarConfiguracaoExistente(itemId: string): void {
-      this.configuracaoService.getConfiguracaoById(itemId).subscribe({
+      this.configuracaoService.getConfiguracaoById(itemId)
+      .pipe(
+        retry({
+          count: 3,
+          delay: 1000,
+        })
+      ).subscribe({
         next: (configuracaoExistente) => {
           console.log('Configuração existente:', configuracaoExistente); // <-- Mostra o retorno no console
 
@@ -377,19 +401,6 @@ export class EditarComponent implements OnInit {
     );
   }
 
-  /* isTodosLocaisSelecionados(posto: PostoPost): boolean {
-    const locaisDoPosto = this.getLocaisDoPosto(posto.codPosto);
-    const postoSelecionado = this.postosSelecionados.find(
-      (p) => p.codPosto === posto.codPosto
-    );
-
-    if (!postoSelecionado?.locaisSelecionados) return false;
-
-    return locaisDoPosto.every((local) =>
-      postoSelecionado.locaisSelecionados?.includes(local.codLocalInternacao)
-    );
-  }
-  */
 
   toggleLocalParaPosto(posto: PostoPost, local: LocalInternacao): void {
     const postoIndex = this.postosSelecionados.findIndex(
@@ -486,6 +497,12 @@ export class EditarComponent implements OnInit {
       const operacao = this.configuracaoService.putConfiguracao(
         itemId,
         configuracao
+      )
+      .pipe(
+        retry({
+          count: 3,
+          delay: 1000,
+        })
       );
       operacao.subscribe({
         next: (response) => {
