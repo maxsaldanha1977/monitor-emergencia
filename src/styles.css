@@ -15189,7 +15189,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
     --bs-btn-border-radius: 0.5rem;
     --bs-btn-hover-border-color: transparent;
     --bs-btn-box-shadow: 0 4px 7px -1px rgba(0, 0, 0, 0.11), 0 2px 4px -1px rgba(0, 0, 0, 0.07);
-    --bs-btn-disabled-opacity: 0.65;
+    --bs-btn-disabled-opacity: 0.3;
     --bs-btn-focus-box-shadow: 0 0 0 0.2rem rgba(var(--bs-btn-focus-shadow-rgb), .5);
     display: inline-block;
     padding: var(--bs-btn-padding-y) var(--bs-btn-padding-x);
