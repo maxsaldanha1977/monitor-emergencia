@@ -47,7 +47,12 @@
         <div class="row">
           <div class="col-6">
             <div class="form-group">
-              <label>Descrição <span class="text-danger">*</span> </label>
+              <label
+               matTooltip="A descricao precisa ter no mínimo 3 caracteres e no máximo 20 caracteres"
+                matTooltipPosition="above">Descrição <span class="text-danger">*
+                  <i class="bi bi-question-circle text-danger mx-2"></i
+              >
+                </span> </label>
               <span class="float-end" id="count-descricao">0/20</span>
               <input
                 type="text"
@@ -358,6 +363,12 @@
                           </label>
                         </div>
                       </div>
+                      }@empty {
+                      <div class="m-auto mt-4">
+                        <h3 class="text-center">
+                          ⚠️ Oops! Não encontrei a informação.
+                        </h3>
+                      </div>
                       }
                     </div>
                   </div>
@@ -368,7 +379,7 @@
           </div>
           }@empty {
           <div class="m-auto mt-4">
-            <h3 class="text-center">Oops! Não encontrei a informação.</h3>
+            <h3 class="text-center">⚠️ Oops! Não encontrei a informação.</h3>
           </div>
           }
         </div>
@@ -425,20 +436,15 @@
               </div>
               } @empty {
               <div class="m-auto mt-4">
-                <h3 class="text-center">Oops! Não encontrei a informação.</h3>
+                <h3 class="text-center">
+                  ⚠️ Oops! Não encontrei a informação.
+                </h3>
               </div>
               }
             </div>
           </div>
         </div>
-        @if(isLoading){
-        <div class="m-auto mt-4">
-          <div class="loading-container">
-            <mat-spinner></mat-spinner>
-            <h3 class="text-center">{{ textLoading }}</h3>
-          </div>
-        </div>
-        }
+
         <!-- Botão de Submit -->
         <div class="mt-4 algin-center">
           <button
@@ -454,7 +460,7 @@
               postosSelecionados.length === 0
             "
           >
-           ATUALIZAR
+            ATUALIZAR
           </button>
         </div>
       </div>

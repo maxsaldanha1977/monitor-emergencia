@@ -67,7 +67,7 @@ export class CriarComponent implements OnInit {
   private postosService = inject(PostoService);
   private examesService = inject(ExameService);
   private configuracaoService = inject(ConfiguracaoService);
-  private lolcalInternacaoService = inject(LocalInternacaoService);
+  private localInternacaoService = inject(LocalInternacaoService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
 
@@ -103,9 +103,9 @@ export class CriarComponent implements OnInit {
   }
 
   carregarDados(): void {
-        this.textLoading = 'Carregando as informações!';
+        this.textLoading = '⌛ Carregando as informações!';
     // Carrega locais de internação primeiro
-    this.lolcalInternacaoService.getAllLocalInternacao().subscribe({
+    this.localInternacaoService.getAllLocalInternacao().subscribe({
       next: (locais) => {
         this.locaisInternacaoDisponiveis = locais;
         // Depois carrega os postos
@@ -119,18 +119,18 @@ export class CriarComponent implements OnInit {
               }))
               .filter((posto) => posto.locaisDisponiveis.length > 0); // Filtra postos com locais;
           },
-          error: (error) => console.error('Erro ao carregar postos', error),
+          error: (error) => console.error('❌ Erro ao carregar postos', error),
         });
          this.isLoading= false;
       },
       error: (error) =>
-        console.error('Erro ao carregar locais de internação', error),
+        console.error('❌ Erro ao carregar locais de internação', error),
     });
 
     // Carrega exames disponíveis
     this.examesService.getAllExames().subscribe({
       next: (exames) => (this.examesDisponiveis = exames),
-      error: (error) => console.error('Erro ao carregar exames', error),
+      error: (error) => console.error('❌ Erro ao carregar exames', error),
     });
   }
 
@@ -145,7 +145,7 @@ export class CriarComponent implements OnInit {
         (l) => l.codLocalInternacao === local.codLocalInternacao
       )
     ) {
-      console.error('Oops! O local selecionado não pertence ao posto informado.');
+      console.error('⚠️ Oops! O local selecionado não pertence ao posto informado.');
       return;
     }
 
@@ -327,7 +327,7 @@ export class CriarComponent implements OnInit {
 
   onSubmit(): void {
     this.isLoading= true;
-    this.textLoading = 'Aguardando resposta do servidor';
+    this.textLoading = '⌛ Aguardando resposta do servidor';
     if (
       this.configuracaoForm.valid &&
       this.examesSelecionados.length > 0 &&
@@ -380,10 +380,9 @@ export class CriarComponent implements OnInit {
             icon: 'success',
             title: 'Cadastro criado com sucesso!',
             showConfirmButton: false,
-            timer: 1000,
-          }).then(() => {
-        this.router.navigate(['/configuracao']); // Redireciona para a página inicial
-      });
+              footer:
+                '<a class="btn m-3" href="/configuracao"> <i class="bi bi-gear"></i> Ir para CONFIGURACAO</a> <a class="btn m-3"  href="/criar"> <i class="bi bi-file-earmark-plus"></i> Novo perfil</a>',
+            });
         },
         (error) => {
           console.error('Erro:', error);

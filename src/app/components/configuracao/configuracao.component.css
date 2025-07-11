@@ -25,17 +25,13 @@ span.Não {
   text-transform: uppercase;
 }
 
-.loading-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 56px;
-  right: 0;
-  background: rgba(0, 0, 0, 0.15);
-  z-index: 99;
+.loading-indicator {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 20px auto;
+  gap: 10px;
 }
 
 mat-spinner {

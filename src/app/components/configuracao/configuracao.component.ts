@@ -52,7 +52,7 @@ export class ConfiguracaoComponent implements OnInit {
   // Método chamado ao digitar no input
   onSearchInput(event: any): void {
     this.searchTerm = event.target.value.trim(); // Remove espaços em branco
-     this.textLoading = 'Oops! Não encontrei a informação.';
+     this.textLoading = '⚠️ Oops! Não encontrei a informação.';
   }
   //Serviço retorna os dados de monitoramento.
   private getAllConfiguracao(): void {
@@ -73,16 +73,16 @@ export class ConfiguracaoComponent implements OnInit {
             Swal.fire({
               position: 'top-end',
               icon: 'success',
-              title: 'Carregado com sucesso!',
+              title: 'Listagem, carregada com sucesso!',
               showConfirmButton: false,
               timer: 1500,
             });
           } else {
-            this.textLoading = 'Oops! Sem perfil de configuração para exibir.';
+            this.textLoading = '⚠️ Oops! Sem perfil de configuração para exibir.';
           }
         },
         error: (error) => {
-          this.textLoading = 'Erro no carregamento ...'; //Defini o texto para o pré carregando
+          this.textLoading = '❌ Erro no carregamento ...'; //Defini o texto para o pré carregando
           Swal.fire({
             icon: 'error',
             text: 'Oops! Ocorreu um erro, o carregamento das informações!',
@@ -134,7 +134,7 @@ export class ConfiguracaoComponent implements OnInit {
       Swal.fire({
         icon: 'error',
         title: 'Erro na exclusão do perfil',
-        text: 'Oops! Ocorreu um erro ao salvar as alterações',
+        text: 'Oops! Ocorreu um erro ao realizar a operação!',
       });
     }
   }

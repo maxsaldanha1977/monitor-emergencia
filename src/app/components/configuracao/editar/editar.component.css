@@ -5,6 +5,7 @@ mat-toolbar {
 .example-spacer {
     flex: 1 1 auto;
   }
+
 .loading-indicator {
   display: flex;
   flex-direction: column;
@@ -13,22 +14,21 @@ mat-toolbar {
   padding: 20px auto;
   gap: 10px;
 }
-  .loading-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 56px;
-  right: 0;
-  background: rgba(0, 0, 0, 0.15);
-  z-index: 99;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 mat-spinner {
     margin: 20px auto;
 }
 label {
   user-select: none;
+}
+
+a{
+  color: #fff;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:hover:not {
+  color: #fff;
+  background-color: transparent;
 }

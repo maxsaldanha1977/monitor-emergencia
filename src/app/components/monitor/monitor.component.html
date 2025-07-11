@@ -1,6 +1,5 @@
 <mat-toolbar class="user-select-none">
   <div *ngIf="loadingProfileImage" class="mx-3">Carregando imagem...</div>
-  <div *ngIf="profileImageError" class="error">{{ profileImageError }}</div>
   <img
     *ngIf="profileImageUrl"
     [src]="profileImageUrl"
@@ -9,26 +8,26 @@
   />
   <span class="example-spacer"></span>
   <div class="mx-1">
-    <span class="text-danger mt-1 text-bolder text-sz-1 text-center none">{{
+    <span class="text-danger mt-1 text-bolder h2 text-center none">{{
       title
     }}</span>
   </div>
   <span class="example-spacer"></span>
   <div>
-    <p class="text-sz-2 card-title fw-lighter text-center">
-      <i class="bi bi-person-square mx-2"></i>{{ configuracao?.idConfig }} -
+    <p class="h4 card-title fw-lighter text-center">
+      <i class="bi bi-person-square mx-1"></i>{{ configuracao?.idConfig }} -
       {{ configuracao?.descricao }}
     </p>
 
-    <span class="text-sz-2"> {{ dataHoraFormatada }}.</span>
+    <span class="h3"> {{ dataHoraFormatada }}.</span>
   </div>
   <span class="example-spacer"></span>
   <div>
-    <p class="text-sz-2 card-title fw-lighter">
+    <p class="h4 card-title fw-lighter">
       <i class="bi bi-stopwatch"></i> Tempo Médio:
     </p>
     @if(tempoMedio.tempoMedio !== '' ) {
-    <span class="text-sz-2 fw-medium">
+    <span class="h4 fw-medium">
       {{ tempoMedio.tempoMedio }} nas últimas
       {{ tempoMedio.baseCalculo }}h.</span
     >
@@ -82,84 +81,81 @@
                   (item.decorrido | appTempoDecorridoNumber) > limiteAlertaAtrasado-->
               <div class="card-body">
                 <div class="row">
-                   @if(configuracao.exibirRegistroAtendimento === true){
-                    <div
-                    class="col-4 col-xxl-4 col-xl-4 col-lg-4 col-md-6 align-start text-truncate"
+                  @if(configuracao.exibirRegistroAtendimento === true){
+                  <div
+                    class="col-4 col-xxl-4 col-xl-3 col-lg-4 col-md-6 align-start text-truncate"
                   >
-                    <span class="card-title text-capitalize text-sz-3 h3">
+                    <span class="card-title text-capitalize h2">
                       {{ item.nomePaciente }}
                     </span>
                   </div>
                   <div
-                    class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-3 align-start"
+                    class="col-2 col-xxl-2 col-xl-3 col-lg-2 col-md-6 align-start"
                   >
-
-                    <i class="bi bi-person-lines-fill fs-3 mx-1"></i>
-                    <span class="text-sz-4 h4">{{ item.registroPosto }}</span>
-
+                    <i class="bi bi-person-lines-fill mx-1 fs-4"></i>
+                    <span class="h3">{{ item.registroPosto }}</span>
                   </div>
 
                   <div
-                    class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-3 align-start"
+                    class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-4 align-start"
                   >
                     <i class="bi bi-clock-history mx-1 fs-4"></i>
-                    <span class="text-sz-4 h4">{{
+                    <span class="h3">{{
                       item.dtCadastro | date : "HH'h'mm"
                     }}</span>
                   </div>
                   <div
-                    class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-6 align-start"
+                    class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-4 align-start"
                   >
                     <i class="bi bi-hourglass-top mx-1 fs-4"></i>
-                    <span class="text-sz-4 h4">{{ item.decorrido }}</span>
+                    <span class="h3">{{ item.decorrido }}</span>
                   </div>
                   <div
-                    class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-6 text-center"
+                    class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-4 text-center"
                   >
-                    <span class="{{ status(item.situacao) }} text-sz-4">
+                    <span class="{{ status(item.situacao) }} h3">
                       {{ item.situacao }}</span
                     >
                   </div>
-                   } @else {
-                    <div
-                    class="col-5 col-xxl-5 col-xl-5 col-lg-5 col-md-5 align-start text-truncate"
+                  } @else {
+                  <div
+                    class="col-4 col-xxl-4 col-xl-4 col-lg-12 col-md-6 align-start text-truncate"
                   >
-                    <span class="card-title text-capitalize text-sz-3 h3">
+                    <span class="card-title text-capitalize h2">
                       {{ item.nomePaciente }}
                     </span>
                   </div>
 
                   <div
-                    class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-2 align-start"
+                    class="col-2 col-xxl-2 col-xl-2 col-lg-4 col-md-6 align-start"
                   >
                     <i class="bi bi-clock-history mx-1 fs-4"></i>
-                    <span class="text-sz-4 h4">{{
+                    <span class="h3">{{
                       item.dtCadastro | date : "HH'h'mm"
                     }}</span>
                   </div>
                   <div
-                    class="col-3 col-xxl-3 col-xl-3 col-lg-3 col-md-3 align-start"
+                    class="col-3 col-xxl-3 col-xl-3 col-lg-4 col-md-6 align-start"
                   >
                     <i class="bi bi-hourglass-top mx-1 fs-4"></i>
-                    <span class="text-sz-4 h4">{{ item.decorrido }}</span>
+                    <span class="h3">{{ item.decorrido }}</span>
                   </div>
                   <div
-                    class="col-2 col-xxl-2 col-xl-2 col-lg-2 col-md-2 text-center"
+                    class="col-3 col-xxl-3 col-xl-3 col-lg-4 col-md-6 text-center"
                   >
-                    <span class="{{ status(item.situacao) }} text-sz-4">
+                    <span class="{{ status(item.situacao) }} h3">
                       {{ item.situacao }}</span
                     >
                   </div>
 
-                   }
-<div
+                  }
+                  <div
                     class="col-lg-12 col-md-12 col-sm-12 align-start text-truncate"
                   >
                     @for (exame of item.exames; track exame.mne) {
-                    <span
-                      class="{{ statusExame(exame.status) }} text-sz-1 bold"
-                      >{{ exame.mne }}</span
-                    >
+                    <span class="{{ statusExame(exame.status) }} h2 bold">{{
+                      exame.mne
+                    }}</span>
                     <span class="me-2">;</span>
                     } @empty {
                     <div class="m-auto mt-3">

@@ -1,6 +1,6 @@
 mat-toolbar {
   background-color: transparent;
-  height: fit-content;
+  height: 80px;
 }
 
 .example-spacer {
@@ -19,25 +19,25 @@ mat-toolbar {
 }
 
 span.Liberado {
-  color: rgb(5, 100, 18);
+  color: var(--st-liberado);
   font-weight: bold;
   text-transform: uppercase;
 }
 
 span.Pronto {
-  color: #d3b300;
+  color: var(--st-pronto);
   font-weight: bold;
   text-transform: uppercase;
 }
 
 span.Analise {
-  color: #d3b300;
+  color: var(--st-pronto);
   font-weight: bold;
   text-transform: uppercase;
 }
 
 span.Solicitado {
-  color: rgb(119, 117, 117);
+  color: var(--st-solicitado);
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -49,19 +49,6 @@ span.Solicitado {
   justify-content: center;
   padding: 20px auto;
   gap: 10px;
-}
-
-.loading-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 56px;
-  right: 0;
-  background: rgba(0, 0, 0, 0.15);
-  z-index: 99;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 mat-spinner {
@@ -110,146 +97,34 @@ mat-spinner {
   animation: piscarSuaveVermelho 5s infinite ease-in-out;
 }
 
-@media (min-width: 768px) and (max-width: 1024px) {
+/*Medium	md */
+@media (min-width: 768px) and (max-width: 991px) {
   .none {
     display: none;
   }
-
-  .center-vertical {
-    margin-top: 1%;
-  }
-
-  .img-tam {
-    width: 180px;
-    height: 80px;
-  }
-
-  /*Titulo principal*/
-  .text-sz-1 {
-    font-size: 2.2rem;
-  }
-
-  /*Label data e tempo médio*/
-  .text-sz-2 {
-    font-size: 1.2rem;
-  }
-
-  /*Label nome*/
-  .text-sz-3 {
-    font-size: 1.6rem;
-  }
-
-  /*Label status, registro posto, data de cadastro e tempo decorrido*/
-  .text-sz-4 {
+  .h4{
     font-size: 1rem;
   }
-}
 
-@media (min-width: 1025px) and (max-width: 1200px) {
+}
+/*Large	lg*/
+@media (min-width: 992px) and (max-width: 1199px) {
   .none {
     display: none;
   }
 
-  /*Titulo principal*/
-  .text-sz-1 {
-    font-size: 2.2rem;
-  }
+}
 
-  /*Label data e tempo médio*/
-  .text-sz-2 {
-    font-size: 1.4rem;
+/*Extra large	xl*/
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .none {
+    display: none;
   }
-
-  /*Label nome*/
-  .text-sz-3 {
-    font-size: 1.8rem;
-  }
-
-  /*Label status, registro posto, data de cadastro e tempo decorrido*/
-  .text-sz-4 {
+  span.h3{
     font-size: 1.5rem;
   }
-
-  .text-sz-5 {
-    font-size: 1.3rem;
-  }
-}
-
-/*Breakpoint para TV*/
-@media (min-width: 1201px) and (max-width: 1399px) {
-  /*Titulo principal*/
-  .text-sz-1 {
-    font-size: 2.2rem;
-  }
-
-  /*Label data e tempo médio*/
-  .text-sz-2 {
-    font-size: 1.4rem;
-  }
-
-  /*Label nome*/
-  .text-sz-3 {
-    font-size: 1.7rem;
-  }
-
-  /*Label status, registro posto, data de cadastro e tempo decorrido*/
-  .text-sz-4 {
-    font-size: 1.5rem;
-  }
-
-  .text-sz-5 {
-    font-size: 1.4rem;
-  }
-}
-
-@media (min-width: 1400px) and (max-width: 1599px) {
-  /*Titulo principal*/
-  .text-sz-1 {
-    font-size: 2.2rem;
-  }
-
-  /*Label data e tempo médio*/
-  .text-sz-2 {
-    font-size: 1.7rem;
-  }
-
-  /*Label nome*/
-  .text-sz-3 {
-    font-size: 1.8rem;
-  }
-
-  /*Label status, registro posto, data de cadastro e tempo decorrido*/
-  .text-sz-4 {
-    font-size: 1.6rem;
-  }
-
-  .text-sz-5 {
-    font-size: 1.4rem;
-  }
-}
-
-@media (min-width: 1600px) {
-  /*Titulo principal*/
-  .text-sz-1 {
-    font-size: 2.9rem;
-  }
-
-  /*Label data e tempo médio*/
-  .text-sz-2 {
+   span.h2{
     font-size: 2rem;
   }
 
-  /*Label nome*/
-  .text-sz-3 {
-    font-size: 2.5rem;
-  }
-
-  /*Label status, registro posto, data de cadastro e tempo decorrido*/
-  .text-sz-4 {
-    font-size: 2.1rem;
-  }
-
-  .text-sz-5 {
-    font-size: 1.7rem;
-  }
 }

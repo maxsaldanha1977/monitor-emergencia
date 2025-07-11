@@ -11653,6 +11653,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
     --bs-link-hover-color: #e91e63;
     --bs-code-color: #d63384;
     --bs-highlight-bg: #fcf8e3;
+    --st-liberado:  #0d5c03;
+  --st-solicitado: #747272;
+  --st-pronto: #d3b300;
   }
 
   *,

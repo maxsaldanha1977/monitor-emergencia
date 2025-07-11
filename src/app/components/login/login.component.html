@@ -1,9 +1,12 @@
 <div class="background-image">
   <mat-toolbar class="user-select-none">
-
-<div *ngIf="loadingProfileImage" class="mx-3">Carregando imagem...</div>
-    <div *ngIf="profileImageError" class="error">{{ profileImageError }}</div>
-    <img *ngIf="profileImageUrl" [src]="profileImageUrl" alt="Profile" style="mix-blend-mode: multiply; max-width: 150px; max-height: 150px" />
+    <div *ngIf="loadingProfileImage" class="mx-3">Carregando imagem...</div>
+    <img
+      *ngIf="profileImageUrl"
+      [src]="profileImageUrl"
+      alt="Profile"
+      style="mix-blend-mode: multiply; max-width: 150px; max-height: 150px"
+    />
     <span class="example-spacer"></span>
     <img
       src="assets/img/ic-monitor.svg"
@@ -35,7 +38,7 @@
         <div class="card">
           <div class="card-body mt-1">
             <span class="mt-5 fs-4 user-select-none">Selecione um perfil</span>
-            <div class="border rounded mt-4 ">
+            <div class="border rounded mt-4">
               <select
                 class="form-select px-2"
                 [(ngModel)]="id"
@@ -47,7 +50,7 @@
                   {{ item.idConfig }} - {{ item.descricao }}
                 </option>
                 } @empty {
-                <option value="0">Nenhum perfil encontrado</option>
+                <option value="0">⚠️ Oops, nenhum perfil encontrado</option>
                 }
               </select>
             </div>

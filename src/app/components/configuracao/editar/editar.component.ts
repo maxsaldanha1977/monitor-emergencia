@@ -31,7 +31,7 @@ import { PostoPost } from '../../../model/PostoPost';
 import { ConfiguracaoUpdate } from '../../../model/ConfiguracaoUpdate';
 import { ValidaInputDirective } from '../../../utils/valida-input.directive';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ServerStatusComponent } from "../../serve-status/serve-status.component";
+import { ServerStatusComponent } from '../../serve-status/serve-status.component';
 import { retry } from 'rxjs';
 
 interface PostoComLocais extends Posto {
@@ -57,8 +57,8 @@ interface PostoComLocais extends Posto {
     FilterPipeModule,
     MatProgressSpinnerModule,
     ValidaInputDirective,
-    ServerStatusComponent
-],
+    ServerStatusComponent,
+  ],
   templateUrl: './editar.component.html',
   styleUrl: './editar.component.css',
 })
@@ -75,7 +75,7 @@ export class EditarComponent implements OnInit {
   private router = inject(Router);
 
   posto: any;
-   textLoading: string = '';
+  textLoading: string = '';
   filterExame: string = '';
   filterPosto: string = '';
   isLoading: boolean = true;
@@ -87,7 +87,6 @@ export class EditarComponent implements OnInit {
   postosSelecionados: PostoPost[] = [];
   locaisInternacaoDisponiveis: LocalInternacao[] = [];
   locaisInternacaoSelecionados: LocalInternacao[] = [];
-
 
   constructor() {
     this.configuracaoForm = this.fb.group({
@@ -106,7 +105,7 @@ export class EditarComponent implements OnInit {
   }
 
   carregarDados(): void {
-     this.textLoading = 'Carregando o perfil de configuração!';
+    this.textLoading = '⌛ Carregando o perfil de configuração!';
     const itemId = this.route.snapshot.paramMap.get('id');
 
     // Primeiro carrega todos os dados disponíveis
@@ -129,68 +128,76 @@ export class EditarComponent implements OnInit {
   carregarDadosDisponiveis(): Promise<void> {
     return new Promise((resolve) => {
       // Carrega locais de internação primeiro
-      this.lolcalInternacaoService.getAllLocalInternacao()
-      .pipe(
-        retry({
-          count: 3,
-          delay: 1000,
-        })
-      ).subscribe({
-        next: (locais) => {
-          this.locaisInternacaoDisponiveis = locais;
+      this.lolcalInternacaoService
+        .getAllLocalInternacao()
+        .pipe(
+          retry({
+            count: 3,
+            delay: 1000,
+          })
+        )
+        .subscribe({
+          next: (locais) => {
+            this.locaisInternacaoDisponiveis = locais;
 
-          // Depois carrega os postos
-          this.postosService.getAllPostos().pipe(
-                  retry({
-                    count: 3,
-                    delay: 1000,
-                  })
-                ).subscribe({
-            next: (postos) => {
-              this.postosDisponiveis = postos
-                .map((posto) => ({
-                  ...posto,
-                  locaisDisponiveis: this.filtrarLocaisPorPosto(posto),
-                }))
-                .filter((posto) => posto.locaisDisponiveis.length > 0);
+            // Depois carrega os postos
+            this.postosService
+              .getAllPostos()
+              .pipe(
+                retry({
+                  count: 3,
+                  delay: 1000,
+                })
+              )
+              .subscribe({
+                next: (postos) => {
+                  this.postosDisponiveis = postos
+                    .map((posto) => ({
+                      ...posto,
+                      locaisDisponiveis: this.filtrarLocaisPorPosto(posto),
+                    }))
+                    .filter((posto) => posto.locaisDisponiveis.length > 0);
 
-              resolve();
-            },
-            error: (error) => {
-              console.error('Erro ao carregar postos', error);
-              resolve();
-            },
-          });
-        },
-        error: (error) => {
-          console.error('Erro ao carregar locais de internação', error);
-          resolve();
-        },
-      });
+                  resolve();
+                },
+                error: (error) => {
+                  console.error('❌ Erro ao carregar postos', error);
+                  resolve();
+                },
+              });
+          },
+          error: (error) => {
+            console.error('❌ Erro ao carregar locais de internação', error);
+            resolve();
+          },
+        });
 
       // Carrega exames disponíveis em paralelo
-      this.examesService.getAllExames()
-      .pipe(
-        retry({
-          count: 3,
-          delay: 1000,
-        })
-      ).subscribe({
-        next: (exames) => (this.examesDisponiveis = exames),
-        error: (error) => console.error('Erro ao carregar exames', error)
-      });
-
+      this.examesService
+        .getAllExames()
+        .pipe(
+          retry({
+            count: 3,
+            delay: 1000,
+          })
+        )
+        .subscribe({
+          next: (exames) => (this.examesDisponiveis = exames),
+          error: (error) => console.error('❌ Erro ao carregar exames', error),
+        });
     });
   }
 
-    carregarConfiguracaoExistente(itemId: string): void {
-      this.configuracaoService.getConfiguracaoById(itemId)
+  carregarConfiguracaoExistente(itemId: string): void {
+    this.configuracaoService
+      .getConfiguracaoById(itemId)
       .pipe(
         retry({
           count: 3,
           delay: 1000,
         })
-      ).subscribe({
+      )
+      .subscribe({
         next: (configuracaoExistente) => {
           console.log('Configuração existente:', configuracaoExistente); // <-- Mostra o retorno no console
 
@@ -209,11 +216,14 @@ export class EditarComponent implements OnInit {
           this.changeDetectorRef.detectChanges();
         },
         error: (error) => {
-          console.error('Oops! Erro ao carregar configuração existente', error);
+          console.error(
+            '⚠️ Oops! Erro ao carregar configuração existente',
+            error
+          );
           this.isLoading = false;
         },
       });
-    }
+  }
 
   processarPostosSelecionados(configuracaoExistente: any): void {
     if (
@@ -301,8 +311,10 @@ export class EditarComponent implements OnInit {
   }
 
   isExameSelecionado(exame: Exame): boolean {
-    const selecionado = this.examesSelecionados.some((e) => e.mne === exame.mne);
-   // console.log(`Exame ${exame.mne} selecionado:`, selecionado);
+    const selecionado = this.examesSelecionados.some(
+      (e) => e.mne === exame.mne
+    );
+    // console.log(`Exame ${exame.mne} selecionado:`, selecionado);
     return selecionado;
   }
 
@@ -324,7 +336,9 @@ export class EditarComponent implements OnInit {
         (l) => l.codLocalInternacao === local.codLocalInternacao
       )
     ) {
-      console.error('Oops! O local selecionado não pertence ao posto informado.');
+      console.error(
+        '⚠️ Oops! O local selecionado não pertence ao posto informado.'
+      );
       return;
     }
 
@@ -386,7 +400,7 @@ export class EditarComponent implements OnInit {
   }
 
   isTodosLocaisSelecionados(posto: PostoPost): boolean {
-     const locaisDoPosto = this.getLocaisDoPosto(posto.codPosto);
+    const locaisDoPosto = this.getLocaisDoPosto(posto.codPosto);
     const postoSelecionado = this.postosSelecionados.find(
       (p) => p.codPosto === posto.codPosto
     );
@@ -401,7 +415,6 @@ export class EditarComponent implements OnInit {
       postoSelecionado.locaisSelecionados?.includes(local.codLocalInternacao)
     );
   }
-
 
   toggleLocalParaPosto(posto: PostoPost, local: LocalInternacao): void {
     const postoIndex = this.postosSelecionados.findIndex(
@@ -455,8 +468,8 @@ export class EditarComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.isLoading= true;
-    this.textLoading = 'Aguardando resposta do servidor';
+    this.isLoading = true;
+    this.textLoading = '⌛ Aguardando resposta do servidor';
     if (
       this.configuracaoForm.valid &&
       this.examesSelecionados.length > 0 &&
@@ -495,27 +508,28 @@ export class EditarComponent implements OnInit {
       console.log('Dados a enviar:', JSON.stringify(configuracao, null, 2));
 
       const itemId = this.route.snapshot.paramMap.get('id');
-      const operacao = this.configuracaoService.putConfiguracao(
-        itemId,
-        configuracao
-      )
-      .pipe(
-        retry({
-          count: 3,
-          delay: 1000,
-        })
-      );
+      const operacao = this.configuracaoService
+        .putConfiguracao(itemId, configuracao)
+        .pipe(
+          retry({
+            count: 3,
+            delay: 1000,
+          })
+        );
       operacao.subscribe({
         next: (response) => {
           this.isLoading = false;
           Swal.fire({
             icon: 'success',
             title: 'Cadastro atualizado com sucesso!',
-            showConfirmButton: false,
-            timer: 1000,
-          }).then(() => {
-        this.router.navigate(['/configuracao']); // Redireciona para a página inicial
-      });
+            confirmButtonText: 'Ir para CONFIGURAÇÃO',
+            cancelButtonText: 'Continuar edição...',
+            showCancelButton: true,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigate(['/configuracao']); // Redireciona para a página inicial
+            }
+          });
         },
         error: (error) => {
           console.error('Erro:', error);

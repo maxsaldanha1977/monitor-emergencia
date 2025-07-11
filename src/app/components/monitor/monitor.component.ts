@@ -45,13 +45,14 @@ import { TempoDecorridoNumberPipe } from '../../pipe/tempo-decorrido-number.pipe
     MatToolbarModule,
     MatProgressSpinnerModule,
     ServerStatusComponent,
-    TempoDecorridoNumberPipe
+    TempoDecorridoNumberPipe,
   ],
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.css',
 })
 export class MonitorComponent implements OnInit, OnDestroy {
   title = 'Monitor de Emergência';
+
 
   private monitorService = inject(MonitorService);
   private tempoMedioService = inject(TempoMedioService);
@@ -72,6 +73,8 @@ export class MonitorComponent implements OnInit, OnDestroy {
 
   private resizeSubject = new Subject<number>();
   private previousHeight: number = 0;
+
+   private tamCard = 147;
 
   status$ = this.serverStatus.serverStatus$;
   windowHeight: number = 0;
@@ -107,7 +110,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
       )
       .subscribe((height) => {
         this.windowHeight = height;
-        this.pageSize = Math.floor((this.windowHeight - 60) / 147);
+        this.pageSize = Math.floor((this.windowHeight - 80) / this.tamCard);
         this.getMonitoramento();
         console.log('Nova altura:', this.windowHeight);
       });
@@ -132,6 +135,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     const newHeight = window.innerHeight;
+
     // Verifica se a altura realmente mudou
     if (newHeight !== this.previousHeight) {
       this.previousHeight = newHeight;
@@ -144,7 +148,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
       if (status === 'offline') {
         Swal.fire({
           icon: 'error',
-          title: 'Oops...',
+          title: 'Oops... Aconteceu alguma coisa.',
           text: 'Parece que você está offline. Verifique sua conexão com a internet.',
           showConfirmButton: false,
           timer: 1500,
@@ -170,7 +174,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
           const tempoMaximoVisita =
             (this.configuracao.tempoMaximoVisita || 6) * 60000; //Unidade Minutos
           const tempoMedicao = (this.configuracao.tempoMedicao || 8) * 60000; //Unidade Minutos
-          this.pageSize = Math.floor((this.windowHeight - 60) / 146.52); //Unidade Minutos altura -
+          this.pageSize = Math.floor((this.windowHeight - 80) / this.tamCard); //Unidade Minutos altura -
 
           this.intervalIdTempoMedio = setInterval(() => {
             this.getTempoMedio();
@@ -194,11 +198,11 @@ export class MonitorComponent implements OnInit, OnDestroy {
           } else {
             Swal.fire({
               icon: 'error',
-              title: 'Oops...',
+              title: 'Oops... Aconteceu alguma coisa.',
               text: 'O Perfil, não possui exame ou posto cadastrado! ',
               showConfirmButton: false,
               footer:
-                '<a class="btn m-3" href="/configuracao"> <i class="bi bi-gear"></i> CONFIGURACAO</a> <a class="btn m-3" style="color:#dc3c46;" href="/"> <i class="bi bi-box-arrow-right"></i> SAIR</a>',
+                '<a class="btn btn-danger m-3" href="/configuracao"> <i class="bi bi-gear fa-2x"></i>Ir para CONFIGURACAO</a> <a class="btn m-3"  href="/"> <i class="bi bi-box-arrow-right fa-2x"></i> SAIR</a>',
             });
           }
           this.intervalIdHora = setInterval(() => {
@@ -222,7 +226,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
 
   //Serviço retorna os dados de monitoramento.
   private getMonitoramento(): void {
-    this.textLoading = 'Carregando os slides...'; //Defini o texto para o pré carregando
+    this.textLoading = '⌛ Carregando os slides...'; //Defini o texto para o pré carregando
     this.monitorService
       .getMonitoramentoById(this.itemId)
       .pipe(
@@ -239,28 +243,21 @@ export class MonitorComponent implements OnInit, OnDestroy {
               this.monitoramento.length / this.pageSize
             );
             this.currentPage = 0;
-            /* Swal.fire({
-              position: 'top-end',
-              icon: 'success',
-              title: 'Carregado com sucesso!',
-              showConfirmButton: false,
-              timer: 1500,
-            }); */
           } else {
-            this.textLoading = 'Oops! Sem exames em análise no momento!';
+            this.textLoading = '⚠️ Oops! Sem exames em análise no momento!';
           }
 
           console.log('getMonitoramento from Monitor');
         },
         error: (error) => {
-          this.textLoading = 'Erro no carregamento ...'; //Defini o texto para o pré carregando
+          this.textLoading = '❌ Erro no carregamento ...'; //Defini o texto para o pré carregando
           Swal.fire({
             icon: 'error',
             text: 'Oops! Ocorreu um erro no caregamento das informações! Atualize o navegador ou tente mais tarde.',
             showConfirmButton: false,
             timer: 1500,
           });
-          console.error('Erro ao carregar monitoramento:', error);
+          console.error('❌ Erro ao carregar monitoramento:', error);
         },
       });
   }
@@ -291,14 +288,14 @@ export class MonitorComponent implements OnInit, OnDestroy {
           console.log('getTempoMedio');
         },
         error: (error) => {
-          this.textLoading = 'Oops! Erro no carregamento ...'; //Defini o texto para o pré carregando
+          this.textLoading = '⚠️ Oops! Erro no carregamento ...'; //Defini o texto para o pré carregando
           Swal.fire({
             icon: 'error',
             text: 'Oops! Ocorreu um erro no carregamento do tempo médio!',
             showConfirmButton: false,
             timer: 1500,
           });
-          console.error('Erro ao carregar tempo médio:', error);
+          console.error('❌ Erro ao carregar tempo médio:', error);
         },
       });
   }
@@ -320,7 +317,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
       //Atendimento Liberado: Todos os exames LB
       const LB = statusVisita.exames.every((exame) => exame.status === 'LB');
 
-      //Atendimento Pronto: Todos os exames PT/LB, e com pelo menos 1 PT
+      //Atendimento Pronto: Todos os exames PT, ou LB com pelo menos 1 PT
       const PT =
         statusVisita.exames.some((exame) => exame.status === 'PT') &&
         statusVisita.exames.every(

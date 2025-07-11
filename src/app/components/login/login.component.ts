@@ -72,13 +72,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response: any) => {
           this.configs = response;
-          Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'Listagem de Perfil, carregada com sucesso!',
-            showConfirmButton: false,
-            timer: 1500,
-          });
+
         },
         error: (error) => {
           console.error('Erro ao carregar os perfis:', error);

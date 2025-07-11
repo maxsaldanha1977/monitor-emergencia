@@ -22,6 +22,7 @@ export const httpStatusInterceptor: HttpInterceptorFn = (req, next) => {
       if (isImageRequest(req)) {
         return throwError(() => error);
       }
+
      // Detecta erros de conexão
       if (error.status === 0 || error.error instanceof ErrorEvent) {
         serverStatus.checkConnection().subscribe();
@@ -38,26 +39,32 @@ export const httpStatusInterceptor: HttpInterceptorFn = (req, next) => {
           break;
 
         case 400: // Bad Request
+         serverStatus.checkConnection().subscribe();
           handleBadRequest(error);
           break;
 
         case 401: // Unauthorized
+         serverStatus.checkConnection().subscribe();
           handleUnauthorizedError(router);
           break;
 
         case 403: // Forbidden
+         serverStatus.checkConnection().subscribe();
           showErrorAlert('Oops! Acesso negado', 'Você não tem permissão para acessar este recurso');
           break;
 
         case 404: // Not Found
+         serverStatus.checkConnection().subscribe();
           showErrorAlert('Oops! Recurso não encontrado', 'O endereço solicitado não existe');
           break;
 
         case 408: // Request Timeout
+         serverStatus.checkConnection().subscribe();
           showErrorAlert('Oops! Tempo esgotado', 'O servidor demorou muito para responder. Tente novamente mais tarde.');
           break;
 
         case 429: // Too Many Requests
+         serverStatus.checkConnection().subscribe();
           showErrorAlert('Oops! Muitas requisições', 'Por favor, aguarde antes de fazer novas requisições');
           break;
 
@@ -84,7 +91,7 @@ export const httpStatusInterceptor: HttpInterceptorFn = (req, next) => {
 
 // Funções auxiliares para tratamento de erros
 function handleBadRequest(error: HttpErrorResponse): void {
-  let errorMessage = 'Oops! Requisição inválida';
+  let errorMessage = '⚠️ Oops! Requisição inválida';
 
   if (error.error?.errors) {
     errorMessage = Object.values(error.error.errors).join('\n');
