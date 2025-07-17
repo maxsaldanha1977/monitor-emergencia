@@ -33,6 +33,7 @@ import { ServerStatusService } from '../../services/server-status.service';
 import { ServerStatusComponent } from '../serve-status/serve-status.component';
 import { LogoService } from '../../services/logo.service';
 import { TempoDecorridoNumberPipe } from '../../pipe/tempo-decorrido-number.pipe';
+import { NgPipesModule } from 'ngx-pipes';
 
 @Component({
   selector: 'app-monitor',
@@ -45,6 +46,7 @@ import { TempoDecorridoNumberPipe } from '../../pipe/tempo-decorrido-number.pipe
     MatToolbarModule,
     MatProgressSpinnerModule,
     ServerStatusComponent,
+     NgPipesModule,
     TempoDecorridoNumberPipe,
   ],
   templateUrl: './monitor.component.html',
@@ -280,7 +282,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
 
           if (tempoMedioMinutos > 0) {
             this.tempoMedio.tempoMedio =
-              horas > 0 ? `${horas}h ${minutos}min` : `${minutos}min`;
+              horas > 0 ? `${horas}h e ${minutos}min` : `${minutos}min`;
           } else {
             this.tempoMedio.tempoMedio = '';
           }

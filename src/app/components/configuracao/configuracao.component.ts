@@ -52,7 +52,7 @@ export class ConfiguracaoComponent implements OnInit {
   // Método chamado ao digitar no input
   onSearchInput(event: any): void {
     this.searchTerm = event.target.value.trim(); // Remove espaços em branco
-     this.textLoading = '⚠️ Oops! Não encontrei a informação.';
+    this.textLoading = '⚠️ Oops! Não encontrei a informação.';
   }
   //Serviço retorna os dados de monitoramento.
   private getAllConfiguracao(): void {
@@ -78,7 +78,8 @@ export class ConfiguracaoComponent implements OnInit {
               timer: 1500,
             });
           } else {
-            this.textLoading = '⚠️ Oops! Sem perfil de configuração para exibir.';
+            this.textLoading =
+              '⚠️ Oops! Sem perfil de configuração para exibir.';
           }
         },
         error: (error) => {
@@ -111,6 +112,8 @@ export class ConfiguracaoComponent implements OnInit {
             title: 'Deletar Perfil',
             text: 'Perfil, deletado com sucesso!.',
             icon: 'success',
+            showConfirmButton: false,
+            timer: 1500,
           });
           this.configuraracaoService
             .deleteConfiguracao(id)
@@ -122,9 +125,9 @@ export class ConfiguracaoComponent implements OnInit {
             )
             .subscribe({
               next: () => {
-                  this.configuracao = this.configuracao.filter(
-                    (item) => item.idConfig !== id
-                  );
+                this.configuracao = this.configuracao.filter(
+                  (item) => item.idConfig !== id
+                );
               },
             });
         }

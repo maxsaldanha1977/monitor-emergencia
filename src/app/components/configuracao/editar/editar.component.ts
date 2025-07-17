@@ -524,6 +524,8 @@ export class EditarComponent implements OnInit {
             title: 'Cadastro atualizado com sucesso!',
             confirmButtonText: 'Ir para CONFIGURAÇÃO',
             cancelButtonText: 'Continuar edição...',
+            confirmButtonColor: '#969696ff',
+            cancelButtonColor: '#EC407A',
             showCancelButton: true,
           }).then((result) => {
             if (result.isConfirmed) {

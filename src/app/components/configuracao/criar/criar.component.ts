@@ -379,10 +379,18 @@ export class CriarComponent implements OnInit {
           Swal.fire({
             icon: 'success',
             title: 'Cadastro criado com sucesso!',
-            showConfirmButton: false,
-              footer:
-                '<a class="btn m-3" href="/configuracao"> <i class="bi bi-gear"></i> Ir para CONFIGURACAO</a> <a class="btn m-3"  href="/criar"> <i class="bi bi-file-earmark-plus"></i> Novo perfil</a>',
-            });
+            confirmButtonText: 'Ir para CONFIGURAÇÃO',
+            cancelButtonText: 'Novo perfil',
+            confirmButtonColor: '#969696ff',
+            cancelButtonColor: '#EC407A',
+            showCancelButton: true,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigate(['/configuracao']); // Redireciona para a página inicial
+            } else if(result.isDismissed){
+              window.location.href = '/criar'; //Recarrega para a pagína de cadastro
+            }
+          });
         },
         (error) => {
           console.error('Erro:', error);

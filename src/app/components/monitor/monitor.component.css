@@ -61,7 +61,11 @@ mat-spinner {
     background-color: rgba(255, 255, 255, 0.8);
   }
 
-  /* Verde com opacidade 0 */
+  /* Verde com opacidade 0 .color1 { #057710 };
+.color2 { #04660c };
+.color3 { #035608 };
+.color4 { #014504 };
+.color5 { #003400 }; */
   25% {
     background-color: rgba(81, 196, 85, 0.7);
   }

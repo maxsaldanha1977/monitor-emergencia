@@ -125,7 +125,6 @@
                       {{ item.nomePaciente }}
                     </span>
                   </div>
-
                   <div
                     class="col-2 col-xxl-2 col-xl-2 col-lg-4 col-md-6 align-start"
                   >
@@ -147,16 +146,14 @@
                       {{ item.situacao }}</span
                     >
                   </div>
-
                   }
                   <div
                     class="col-lg-12 col-md-12 col-sm-12 align-start text-truncate"
                   >
                     @for (exame of item.exames; track exame.mne) {
-                    <span class="{{ statusExame(exame.status) }} h2 bold">{{
+                    <span class="{{ statusExame(exame.status) }} h2 bold me-2">{{
                       exame.mne
                     }}</span>
-                    <span class="me-2">;</span>
                     } @empty {
                     <div class="m-auto mt-3">
                       <div class="card">
