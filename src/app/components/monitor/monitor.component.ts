@@ -32,7 +32,6 @@ import { ConfigService } from '../../services/config.service';
 import { ServerStatusService } from '../../services/server-status.service';
 import { ServerStatusComponent } from '../serve-status/serve-status.component';
 import { LogoService } from '../../services/logo.service';
-import { TempoDecorridoNumberPipe } from '../../pipe/tempo-decorrido-number.pipe';
 import { NgPipesModule } from 'ngx-pipes';
 
 @Component({
@@ -46,8 +45,7 @@ import { NgPipesModule } from 'ngx-pipes';
     MatToolbarModule,
     MatProgressSpinnerModule,
     ServerStatusComponent,
-     NgPipesModule,
-    TempoDecorridoNumberPipe,
+     NgPipesModule
   ],
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.css',
