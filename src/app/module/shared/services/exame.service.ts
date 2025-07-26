@@ -1,0 +1,22 @@
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Exame } from '../../core/model/ConfiguracaoPost';
+import { ConfigService } from '../../core/services/config.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ExameService {
+  private http = inject(HttpClient);
+  private api = inject(ConfigService).getConfig().apiUrl;
+
+  getAllExames(): Observable<Exame[]> {
+    return this.http.get<Exame[]>(`${this.api}/exames`);
+  }
+
+  getExameById(id: any):  Observable<Exame> {
+    return this.http.get<Exame>(`${this.api}/exames/${id}`);
+  }
+
+}

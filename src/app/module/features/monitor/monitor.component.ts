@@ -11,11 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { calcularDiferencaHora } from '../../shared/utils/time/time-utils';
-import { Monitor } from '../../core/model/Monitor';
-
 import Swal from 'sweetalert2';
-
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {
   catchError,
@@ -27,14 +23,16 @@ import {
   Subject,
 } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ServerStatusComponent } from '../../shared/serve-status/serve-status.component';
 import { NgPipesModule } from 'ngx-pipes';
-import { MonitorService } from '../../shared/services/monitor.service';
-import { TempoMedioService } from '../../shared/services/tempoMedio.service';
-import { ConfiguracaoService } from '../../shared/services/configuracao.service';
-import { LogoService } from '../../shared/services/logo.service';
-import { ServerStatusService } from '../../shared/services/server-status.service';
-import { ConfigService } from '../../shared/services/config.service';
+import { Monitor } from '../../../core/model/Monitor';
+import { ConfigService } from '../../../core/services/config.service';
+import { ConfiguracaoService } from '../../../core/services/configuracao.service';
+import { LogoService } from '../../../core/services/logo.service';
+import { MonitorService } from '../../../core/services/monitor.service';
+import { ServerStatusService } from '../../../core/services/server-status.service';
+import { TempoMedioService } from '../../../core/services/tempoMedio.service';
+import { ServerStatusComponent } from '../../shared/serve-status/serve-status.component';
+import { calcularDiferencaHora } from '../../shared/utils/time/time-utils';
 
 @Component({
   selector: 'app-monitor',

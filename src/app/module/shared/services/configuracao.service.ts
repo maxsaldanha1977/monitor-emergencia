@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ConfigService } from './config.service';
 import { Configuracao } from '../../core/model/Configuracao';
 import { ConfiguracaoPost } from '../../core/model/ConfiguracaoPost';
 import { ConfiguracaoUpdate } from '../../core/model/ConfiguracaoUpdate';
+import { ConfigService } from '../../core/services/config.service';
 
 @Injectable({
   providedIn: 'root'

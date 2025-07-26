@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { ServerStatusService } from './shared/services/server-status.service';
+import { ServerStatusService } from './core/services/server-status.service';
 
 @Component({
   selector: 'app-root',

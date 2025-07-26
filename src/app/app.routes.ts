@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { MonitorComponent } from './features/monitor/monitor.component';
-import { ConfiguracaoComponent } from './features/configuracao/configuracao.component';
-import { EditarComponent } from './features/configuracao/editar/editar.component';
-import { CriarComponent } from './features/configuracao/criar/criar.component';
-import { LoginComponent } from './features/login/login.component';
+import { LoginComponent } from './module/features/login/login.component';
+import { MonitorComponent } from './module/features/monitor/monitor.component';
+import { ConfiguracaoComponent } from './module/features/configuracao/configuracao.component';
+import { EditarComponent } from './module/features/configuracao/editar/editar.component';
+import { CriarComponent } from './module/features/configuracao/criar/criar.component';
 
 export const routes: Routes = [
   {

@@ -4,7 +4,6 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { Posto } from '../../../core/model/Posto';
 import {
   FormBuilder,
   FormGroup,
@@ -14,25 +13,25 @@ import {
 } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Exame } from '../../../core/model/Exame';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
-import { LocalInternacao } from '../../../core/model/LocalInternacao';
 import { OrderModule } from 'ngx-order-pipe';
 import { FilterPipeModule } from 'ngx-filter-pipe';
-import { CustomFilterPipePipe } from '../../../shared/pipe/custom-filter-pipe.pipe';
-import { CharacterCounterDirective } from '../../../shared/utils/character-counter/character-counter.directive';
-import { ExamePost } from '../../../core/model/ExamePost';
-import { PostoPost } from '../../../core/model/PostoPost';
-import { ConfiguracaoUpdate } from '../../../core/model/ConfiguracaoUpdate';
-import { ValidaInputDirective } from '../../../shared/directives/valida-input.directive';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ServerStatusComponent } from '../../../shared/serve-status/serve-status.component';
 import { retry } from 'rxjs';
-import { PostoService } from '../../../shared/services/posto.service';
-import { ExameService } from '../../../shared/services/exame.service';
-import { ConfiguracaoService } from '../../../shared/services/configuracao.service';
-import { LocalInternacaoService } from '../../../shared/services/localInternacao.service';
+import { LocalInternacao } from '../../../../core/model/LocalInternacao';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Exame, Posto } from '../../../../core/model/ConfiguracaoPost';
+import { ConfiguracaoUpdate } from '../../../../core/model/ConfiguracaoUpdate';
+import { ExamePost } from '../../../../core/model/ExamePost';
+import { PostoPost } from '../../../../core/model/PostoPost';
+import { ConfiguracaoService } from '../../../../core/services/configuracao.service';
+import { ExameService } from '../../../../core/services/exame.service';
+import { LocalInternacaoService } from '../../../../core/services/localInternacao.service';
+import { PostoService } from '../../../../core/services/posto.service';
+import { ValidaInputDirective } from '../../../shared/directives/valida-input.directive';
+import { CustomFilterPipePipe } from '../../../shared/pipe/custom-filter-pipe.pipe';
+import { ServerStatusComponent } from '../../../shared/serve-status/serve-status.component';
+import { CharacterCounterDirective } from '../../../shared/utils/character-counter/character-counter.directive';
 
 interface PostoComLocais extends Posto {
   locaisDisponiveis: LocalInternacao[];

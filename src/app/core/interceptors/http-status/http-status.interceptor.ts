@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { ServerStatusService } from '../../../shared/services/server-status.service';
+import { ServerStatusService } from '../../services/server-status.service';
 
 export const httpStatusInterceptor: HttpInterceptorFn = (req, next) => {
   const serverStatus = inject(ServerStatusService);
