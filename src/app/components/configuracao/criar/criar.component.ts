@@ -7,31 +7,31 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ConfiguracaoPost } from '../../../model/ConfiguracaoPost';
-import { Posto } from '../../../model/Posto';
-import { Exame } from '../../../model/Exame';
-import { PostoService } from '../../../services/posto.service';
-import { ExameService } from '../../../services/exame.service';
+import { ConfiguracaoPost } from '../../../core/model/ConfiguracaoPost';
+import { Posto } from '../../../core/model/Posto';
+import { Exame } from '../../../core/model/Exame';
 import { CommonModule } from '@angular/common';
-import { PostoPost } from '../../../model/PostoPost';
-import { ExamePost } from '../../../model/ExamePost';
+import { PostoPost } from '../../../core/model/PostoPost';
+import { ExamePost } from '../../../core/model/ExamePost';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { LocalInternacao } from '../../../model/LocalInternacao';
-import { LocalInternacaoService } from '../../../services/localInternacao.service';
+import { LocalInternacao } from '../../../core/model/LocalInternacao';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { OrderModule } from 'ngx-order-pipe';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { CustomFilterPipePipe } from '../../../pipe/custom-filter-pipe.pipe';
-import { CharacterCounterDirective } from '../../../utils/character-counter/character-counter.directive';
+import { CustomFilterPipePipe } from '../../../shared/pipe/custom-filter-pipe.pipe';
+import { CharacterCounterDirective } from '../../../shared/utils/character-counter/character-counter.directive';
 import Swal from 'sweetalert2';
-import { ConfiguracaoService } from '../../../services/configuracao.service';
-import { ValidaInputDirective } from '../../../utils/valida-input.directive';
+import { ValidaInputDirective } from '../../../shared/utils/valida-input.directive';
 import { ServerStatusComponent } from '../../serve-status/serve-status.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PostoService } from '../../../shared/services/posto.service';
+import { ExameService } from '../../../shared/services/exame.service';
+import { ConfiguracaoService } from '../../../shared/services/configuracao.service';
+import { LocalInternacaoService } from '../../../shared/services/localInternacao.service';
 
 interface PostoComLocais extends Posto {
   locaisDisponiveis: LocalInternacao[];

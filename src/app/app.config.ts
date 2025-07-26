@@ -11,11 +11,11 @@ import localeES from '@angular/common/locales/es';
 import localeDE from '@angular/common/locales/de';
 import localeFR from '@angular/common/locales/fr';
 
-import { numberInterceptor } from './interceptors/number/number.interceptor';
-import { httpStatusInterceptor } from './interceptors/http-status/http-status.interceptor';
-import { ConfigService } from './services/config.service';
-import { ConfigStatusService } from './services/configStatus.service';
+import { numberInterceptor } from './core/interceptors/number/number.interceptor';
+import { httpStatusInterceptor } from './core/interceptors/http-status/http-status.interceptor';
 import { provideServiceWorker } from '@angular/service-worker'; //npm install @angular/service-worker
+import { ConfigService } from './shared/services/config.service';
+import { ConfigStatusService } from './shared/services/configStatus.service';
 
 registerLocaleData(localePT);
 registerLocaleData(localeES);

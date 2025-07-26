@@ -3,16 +3,16 @@ import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { ConfiguracaoService } from '../../services/configuracao.service';
-import { Configuracao } from '../../model/Configuracao';
+import { Configuracao } from '../../core/model/Configuracao';
 import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
-import { CustomFilterPipePipe } from '../../pipe/custom-filter-pipe.pipe';
+import { CustomFilterPipePipe } from '../../shared/pipe/custom-filter-pipe.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { retry } from 'rxjs';
 import { NgPipesModule } from 'ngx-pipes';
 import { ServerStatusComponent } from '../serve-status/serve-status.component';
+import { ConfiguracaoService } from '../../shared/services/configuracao.service';
 
 @Component({
   selector: 'app-configuracao',

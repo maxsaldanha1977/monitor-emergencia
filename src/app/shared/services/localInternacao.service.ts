@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LocalInternacao } from '../model/LocalInternacao';
 import { ConfigService } from './config.service';
+import { LocalInternacao } from '../../core/model/LocalInternacao';
 
 @Injectable({
   providedIn: 'root',

@@ -1,13 +1,10 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
-import { ConfiguracaoService } from '../../../services/configuracao.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { PostoService } from '../../../services/posto.service';
-import { ExameService } from '../../../services/exame.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { Posto } from '../../../model/Posto';
+import { Posto } from '../../../core/model/Posto';
 import {
   FormBuilder,
   FormGroup,
@@ -17,22 +14,25 @@ import {
 } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Exame } from '../../../model/Exame';
+import { Exame } from '../../../core/model/Exame';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
-import { LocalInternacao } from '../../../model/LocalInternacao';
-import { LocalInternacaoService } from '../../../services/localInternacao.service';
+import { LocalInternacao } from '../../../core/model/LocalInternacao';
 import { OrderModule } from 'ngx-order-pipe';
 import { FilterPipeModule } from 'ngx-filter-pipe';
-import { CustomFilterPipePipe } from '../../../pipe/custom-filter-pipe.pipe';
-import { CharacterCounterDirective } from '../../../utils/character-counter/character-counter.directive';
-import { ExamePost } from '../../../model/ExamePost';
-import { PostoPost } from '../../../model/PostoPost';
-import { ConfiguracaoUpdate } from '../../../model/ConfiguracaoUpdate';
-import { ValidaInputDirective } from '../../../utils/valida-input.directive';
+import { CustomFilterPipePipe } from '../../../shared/pipe/custom-filter-pipe.pipe';
+import { CharacterCounterDirective } from '../../../shared/utils/character-counter/character-counter.directive';
+import { ExamePost } from '../../../core/model/ExamePost';
+import { PostoPost } from '../../../core/model/PostoPost';
+import { ConfiguracaoUpdate } from '../../../core/model/ConfiguracaoUpdate';
+import { ValidaInputDirective } from '../../../shared/utils/valida-input.directive';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ServerStatusComponent } from '../../serve-status/serve-status.component';
 import { retry } from 'rxjs';
+import { PostoService } from '../../../shared/services/posto.service';
+import { ExameService } from '../../../shared/services/exame.service';
+import { ConfiguracaoService } from '../../../shared/services/configuracao.service';
+import { LocalInternacaoService } from '../../../shared/services/localInternacao.service';
 
 interface PostoComLocais extends Posto {
   locaisDisponiveis: LocalInternacao[];
