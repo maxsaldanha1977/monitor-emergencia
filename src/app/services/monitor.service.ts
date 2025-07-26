@@ -1,14 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, of, throwError } from 'rxjs';
-import { ConfigService } from './config.service';
 import { Monitor } from '../model/Monitor';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MonitorService {
-  private http = inject(HttpClient);
+  private http = inject(HttpClient); 
    private api = inject(ConfigService).getConfig().apiUrl;
 
   getMonitoramentoById(id: any): Observable<Monitor | null> {
@@ -18,7 +18,7 @@ export class MonitorService {
           return of(null);
         }
         return throwError(error);
-
+        
       })
     );
   }

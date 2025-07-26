@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './module/features/login/login.component';
-import { MonitorComponent } from './module/features/monitor/monitor.component';
-import { ConfiguracaoComponent } from './module/features/configuracao/configuracao.component';
-import { EditarComponent } from './module/features/configuracao/editar/editar.component';
-import { CriarComponent } from './module/features/configuracao/criar/criar.component';
+import { MonitorComponent } from './components/monitor/monitor.component';
+import { ConfiguracaoComponent } from './components/configuracao/configuracao.component';
+import { EditarComponent } from './components/configuracao/editar/editar.component';
+import { CriarComponent } from './components/configuracao/criar/criar.component';
+import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
   {
@@ -15,7 +15,7 @@ export const routes: Routes = [
     component: MonitorComponent,
   },
   {
-    path: '',
+    path: '',    
     children: [{
         path: 'configuracao',
         component: ConfiguracaoComponent

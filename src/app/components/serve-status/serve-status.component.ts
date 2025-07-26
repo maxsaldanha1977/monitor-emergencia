@@ -1,7 +1,7 @@
 // server-status.component.ts
 import { Component, inject } from '@angular/core';
+import { ServerStatusService } from '../../services/server-status.service';
 import { CommonModule } from '@angular/common';
-import { ServerStatusService } from '../../../core/services/server-status.service';
 
 @Component({
   selector: 'app-server-status',

@@ -7,16 +7,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
+import { Configuracao } from '../../model/Configuracao';
 import { MatSelectModule } from '@angular/material/select';
+import { ConfiguracaoService } from '../../services/configuracao.service';
 import { OrderModule } from 'ngx-order-pipe';
 import { count, delay, retry } from 'rxjs';
-import Swal from 'sweetalert2';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Configuracao } from '../../../core/model/Configuracao';
-import { ConfigService } from '../../../core/services/config.service';
-import { ConfiguracaoService } from '../../../core/services/configuracao.service';
-import { LogoService } from '../../../core/services/logo.service';
-import { ServerStatusComponent } from '../../shared/serve-status/serve-status.component';
+import { ConfigService } from '../../services/config.service';
+import { ServerStatusComponent } from "../serve-status/serve-status.component";
+import { LogoService } from '../../services/logo.service';
 @Component({
   selector: 'app-login',
   imports: [
