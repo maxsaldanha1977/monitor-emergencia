@@ -27,7 +27,7 @@ import {
   Subject,
 } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ServerStatusComponent } from '../serve-status/serve-status.component';
+import { ServerStatusComponent } from '../../shared/serve-status/serve-status.component';
 import { NgPipesModule } from 'ngx-pipes';
 import { MonitorService } from '../../shared/services/monitor.service';
 import { TempoMedioService } from '../../shared/services/tempoMedio.service';

@@ -1,6 +1,6 @@
 // server-status.component.ts
 import { Component, inject } from '@angular/core';
-import { ServerStatusService } from '../../shared/services/server-status.service';
+import { ServerStatusService } from '../services/server-status.service';
 import { CommonModule } from '@angular/common';
 
 @Component({

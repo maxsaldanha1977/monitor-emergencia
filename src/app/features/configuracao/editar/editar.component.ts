@@ -25,9 +25,9 @@ import { CharacterCounterDirective } from '../../../shared/utils/character-count
 import { ExamePost } from '../../../core/model/ExamePost';
 import { PostoPost } from '../../../core/model/PostoPost';
 import { ConfiguracaoUpdate } from '../../../core/model/ConfiguracaoUpdate';
-import { ValidaInputDirective } from '../../../shared/utils/valida-input.directive';
+import { ValidaInputDirective } from '../../../shared/directives/valida-input.directive';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ServerStatusComponent } from '../../serve-status/serve-status.component';
+import { ServerStatusComponent } from '../../../shared/serve-status/serve-status.component';
 import { retry } from 'rxjs';
 import { PostoService } from '../../../shared/services/posto.service';
 import { ExameService } from '../../../shared/services/exame.service';

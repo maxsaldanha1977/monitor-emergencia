@@ -13,7 +13,7 @@ import { OrderModule } from 'ngx-order-pipe';
 import { count, delay, retry } from 'rxjs';
 import Swal from 'sweetalert2';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ServerStatusComponent } from "../serve-status/serve-status.component";
+import { ServerStatusComponent } from "../../shared/serve-status/serve-status.component";
 import { ConfiguracaoService } from '../../shared/services/configuracao.service';
 import { ConfigService } from '../../shared/services/config.service';
 import { LogoService } from '../../shared/services/logo.service';

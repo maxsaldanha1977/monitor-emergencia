@@ -11,7 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { retry } from 'rxjs';
 import { NgPipesModule } from 'ngx-pipes';
-import { ServerStatusComponent } from '../serve-status/serve-status.component';
+import { ServerStatusComponent } from '../../shared/serve-status/serve-status.component';
 import { ConfiguracaoService } from '../../shared/services/configuracao.service';
 
 @Component({
